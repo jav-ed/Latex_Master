@@ -1,0 +1,198 @@
+% =================================================
+% ================ Meet \gls{cnm} =======================
+% =================================================
+\section{Cluster-based Network Modeling (CNM)}
+\label{sec_1_1_2_CNM}
+In this subsection, the workflow of \gls{cnm} \cite{Fernex2021} will be elaborated, as well as the previous attempt to expand the algorithm to accommodate a range of model parameter values $\vec{\beta}$.
+\gls{cnm} \cite{Fernex2021} is the basis on which \gls{cnmc} is built or rather
+\gls{cnmc} invokes \gls{cnm} multiple times for one of its preprocessing steps.
+CNM can be split up into 4 main tasks, which are 
+data collection, clustering, calculating 
+transition properties and propagation.
+The first step is to collect the data, which can be provided from any dynamic system or numerical simulations. 
+In this study, only dynamical systems are investigated.
+Once the data for the dynamical system is passed to \gls{cnm}, the data is clustered, e.g., with k-means++ algorithm \cite{Arthur2006}. 
+A detailed elaboration about this step is given in section \ref{sec_2_3_Clustering}. \gls{cnm} exploits graph theory for approximating the trajectory as a movement on nodes. 
+These nodes are equivalent to the centroids, which are acquired through clustering. 
+Next, the motion, i.e., movement from one centroid to another, shall be clarified.\newline
+
+In order to fully describe the motion on the centroids, the time at which 
+one centroid is visited is exited, and also the order of movement must be known. 
+Note, when saying the motion is on the centroids, that 
+means the centroids or characteristic nodes do not move 
+at all. The entire approximated motion of the original trajectory
+on the nodes is described with the transition 
+property matrices $\bm Q$ and $\bm T$.
+The matrices $\bm Q$ and $\bm T$ are the transition probability and transition time matrices, respectively. 
+$\bm Q$ is used to apply probability theory for predicting the next following most likely centroid. In other words, if 
+the current location is at any node $c_i$, 
+$\bm Q$ will provide all possible successor centroids 
+with their corresponding transition probabilities.
+Thus, the motion on the centroids 
+through $\bm Q$ is probability-based.
+In more detail, the propagation of the motion on the centroids can be described as equation \eqref{eq_34}. 
+The variables are denoted as the propagated $\vec{x}(t)$ trajectory, time $t$, centroid positions $\vec{c}_k,\, \vec{c}_j$, the time $t_j$ where centroid $\vec{c}_j$ is left and the transition time $T_{k,j}$ from $\vec{c}_j$ to $\vec{c}_k$  \cite{Fernex2021}.
+Furthermore, for the sake of a smooth trajectory, the motion between the centroids is interpolated through a spline interpolation.\newline
+
+\begin{equation}
+    \vec{x}(t) = \alpha_{kj} (t) \, \vec{c}_k + [\, 1 - \alpha_{kj} (t)\,] \, \vec{c}_j, \quad \alpha_{kj} (t) = \frac{t-t_j}{T_{k,j}}
+    \label{eq_34}
+\end{equation}
+
+
+The $\bm Q$ matrix only contains non-trivial transitions, i.e., 
+if after a transition the centroid remains on the same centroid, the transition is not considered to be a real transition in \gls{cnm}. 
+This idea 
+is an advancement to the original work of Kaiser et al. \cite{Kaiser2014}.
+In Kaiser et al. \cite{Kaiser2014} the transition is modeled 
+as a Markov model. Markov models enable non-trivial transitions. Consequently,
+the diagonals of the resulting non-direct transition matrix $\bm{Q_n}$  
+exhibits the highest values. The diagonal elements stand for non-trivial 
+transitions which lead to idling on the same centroid 
+many times. Such behavior is encountered and described by Kaiser et al. \cite{Kaiser2014}.\newline 
+
+
+There are 3 more important aspects that come along when 
+adhering to Markov models. First, the propagation of motion is done 
+by matrix-vector multiplication. In the case of the existence of a 
+stationary state, the solution 
+will converge to the stationary state, with an increasing number of iterations, where no change with time happens.
+A dynamical system can only survive as long as change with time exists.
+In cases where no change with respect to time is encountered, equilibrium 
+or fixed points are found.
+ Now, if a stationary state or fixed point 
+exists in the considered dynamical system, the propagation 
+will tend to converge to this fixed point. However, the nature of 
+Markov models must not necessarily be valid for general dynamical systems. 
+Another way to see that is by applying some linear algebra. The 
+long-term behavior of the Markov transition matrix can be obtained 
+with equation \eqref{eq_3_Infinite}. Here, $l$ is the number 
+of iterations to get from one stage to another. Kaiser et al. 
+\cite{Kaiser2014} depict in a figure, how the values of  
+$\bm{Q_n}$ evolves after $1 \mathrm{e}{+3}$ steps. $\bm{Q_n}$ has 
+become more uniform. 
+
+\begin{equation}
+    \label{eq_3_Infinite}
+    \lim\limits_{l \to \infty} \bm{Q_n}^l
+\end{equation}
+
+If the number of steps is increased even further 
+and all the rows would have the same probability value, 
+$\bm{Q_n}$ would converge to a stationary point. What
+also can be concluded from rows being equal is that it does not matter 
+from where the dynamical system was started or what its 
+initial conditions were. The probability 
+to end at one specific state or centroid is constant as 
+the number of steps approaches infinity. Following that,
+it would violate the sensitive dependency on initial conditions, 
+which often is considered to be mandatory for modeling chaotic systems. Moreover, chaotic
+systems amplify any perturbation exponentially, whether at time 
+$t = 0$ or at time $t>>0$. \newline 
+
+Thus, a stationary transition matrix $\bm{Q_n}$ is prohibited by chaos at any time step.
+This can be found to be one of the main reasons, why 
+the  \textbf{C}luster \textbf{M}arkov based \textbf{M}odeling (\gls{cmm}) 
+often fails to 
+predict the trajectory. 
+Li et al. \cite{Li2021} summarize this observation 
+compactly as after some time the initial condition 
+would be forgotten and the asymptotic distribution would be reached.
+Further, they stated, that due to this fact, \gls{cmm} would 
+not be suited for modeling dynamical systems. 
+The second problem which is involved, when deploying 
+regular Markov modeling is that the future only depends
+on the current state. However, \cite{Fernex2021} has shown
+with the latest \gls{cnm} version that incorporating also past 
+centroid positions for predicting the next centroid position 
+increases the prediction quality. The latter effect is especially 
+true when systems are complex.\newline 
+
+
+However, for multiple consecutive time steps 
+the trajectories position still could be assigned to the same 
+centroid position (trivial transitions).
+Thus, past centroids are those centroids that are found when going 
+back in time through only non-trivial transitions. The number of incorporated 
+past centroids is given as equation \eqref{eq_5_B_Past}, where $L$ is denoted 
+as the model order number. It represents the number of all 
+considered centroids, where the current and all the past centroids are included, with which the prediction of the successor centroid 
+is made.
+
+\begin{equation}
+    B_{past} = L -1
+    \label{eq_5_B_Past}
+\end{equation}
+
+Furthermore, in \cite{Fernex2021} it is not simply believed that an 
+increasing model 
+order $L$ would increase the outcome quality in every case. 
+Therefore, a study on the number of $L$ and the clusters $K$
+was conducted. The results proved that the choice of 
+$L$ and $K$ depend on the considered dynamical system.
+\newline
+
+The third problem encountered when Markov models are used is 
+that the time step must be provided. This time step is used 
+to define when a transition is expected. In case 
+the time step is too small, some amount of iterations is 
+required to transit to the next centroid. Thus, non-trivial 
+transitions would occur. In case the time step is too high, 
+the intermediate centroids would be missed. Such behavior
+would be a coarse approximation of the real dynamics. Visually this can 
+be thought of as jumping from one centroid to another while
+having skipped one or multiple centroids. The reconstructed 
+trajectory could lead to an entirely wrong representation of the 
+state-space.
+CNM generates the transition time matrix $\bm T$ from data 
+and therefore no input from the user is required.\newline
+
+A brief review of how the $\bm Q$ is built shall be provided. 
+Since the concept of 
+model order, $L$ has been explained, it can be clarified that
+it is not always right to call $\bm Q$ and $\bm T$ matrices. 
+The latter is only correct, if $L = 1$, otherwise it must be 
+denoted as a tensor. $\bm Q$ and $\bm T$ can always be 
+referred to as tensors since a tensor incorporates matrices, i.e., a matrix is a tensor of rank 2. 
+In order to generate $\bm Q$, 
+$L$ must be defined, such that the shape of $\bm Q$ is 
+known. The next step is to gather all sequences of clusters 
+$c_i$. To understand that, we imagine the following scenario, 
+$L = 3$, which means 2 centroids from the past and the 
+current one are 
+incorporated to predict the next centroid.
+Furthermore, imagining that two cluster sequence scenarios were found,
+$c_0 \rightarrow c_1 \rightarrow c_2 $ and  $c_5 \rightarrow c_1 \rightarrow c_2 $. 
+These cluster sequences tell us that the current centroid is $c_2$ and the remaining centroids belong to the past. 
+In order to complete the sequence for $L = 3$, the successor cluster also needs 
+to be added, $c_0 \rightarrow c_1 \rightarrow c_2 \rightarrow c_5 $ and $c_5 \rightarrow c_1 \rightarrow c_2 \rightarrow c_4$.
+The following step is to calculate the likelihood 
+of a transition to a specific successor cluster. This is done with equation \eqref{eq_4_Poss}, where $n_{k, \bm{j}}$
+is the amount of complete sequences, where also the successor
+is found. The index $j$ is written as a vector in order 
+to generalize the equation for $L \ge 1$. It then contains 
+all incorporated centroids from the past and the current centroid.
+The index $k$ represents the successor centroid ($\bm{j} \rightarrow k$).
+Finally, $n_{\bm{j}}$ counts all the matching incomplete sequences.
+
+\begin{equation}
+    \label{eq_4_Poss}
+     P_{k, \bm j} = \frac{n_{k,\bm{j}}}{n_{\bm{j}}}
+\end{equation}
+
+After having collected all the possible complete cluster sequences with their corresponding probabilities $\bm Q$, the transition time tensors $\bm T$ can be inferred from the data.
+With that, the residence time on each cluster is known and can be 
+used for computing the transition times for every 
+single transition. At this stage, it shall be highlighted again, 
+CNM approximates its data fully with only two 
+matrices or when $L \ge 2$ tensors, $\bm Q$ and $\bm T$. The 
+final step is the prorogation following equation \eqref{eq_34}. 
+For smoothing the propagation between two centroids the B-spline interpolation 
+is applied.
+
+% It can be concluded that one of the major differences between \gls{cnm} and \gls{cmm} is that {cnm} dismissed Markov modeling. 
+% Hence, only direct or non-trivial transition are possible.
+% Fernex et al. \cite{Fernex2021} improved \cite{Li2021} by 
+% rejecting one more property of Markov chains, namely 
+% that the future state could be inferred exclusively from the current state. 
+% Through the upgrade of \cite{Fernex2021}, incorporating past states for the prediction of future states could be exploited.

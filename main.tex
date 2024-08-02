@@ -1,0 +1,257 @@
+\documentclass[a4paper, 11pt]{scrreprt}
+
+%Region
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% To get some features - page styling
+\usepackage{fancyhdr}
+\usepackage[left= 3.5cm,right = 2cm, bottom = 3 cm]{geometry}
+
+% Clickable Ref and fast navigation through table of
+% recognition of a table of content
+% see: https://tex.stackexchange.com/questions/50747/options-for-appearance-of-links-in-hyperref
+\usepackage{hyperref}
+ \hypersetup{
+    %  deactivate the border
+     colorlinks=true,
+    %  color of the refs
+     linkcolor=black,
+     filecolor=blue,
+     citecolor = black,
+     urlcolor=cyan,
+     }
+
+
+% graphics library
+\usepackage{graphicx}
+
+% both packages required for Inkscape pic imports
+\usepackage{transparent}
+\usepackage{color}
+
+% bold symbols in math mode
+\usepackage{bm}
+
+% %  So the graphics can be found
+\graphicspath{{2_Figures/},
+               {2_Figures/0_Deco/}, 
+               {2_Figures/1_Task/},
+               {2_Figures/2_Task/},
+               {2_Figures/2_Task/0_N_Study},
+               {2_Figures/2_Task/1_Tracking},
+               {2_Figures/3_Task/},
+               {2_Figures/3_Task/1_Tracking},
+               {2_Figures/3_Task/2_Mod_CPE},
+               {2_Figures/3_Task/3_SVD_QT},
+               {2_Figures/3_Task/4_SLS},
+               {2_Figures/3_Task/5_Models},
+               }
+               
+
+% \graphicspath{{2_Figures/*} }
+
+
+% Um den Namen des Autos aus Bibtex anzuzeigen
+%\usepackage[round, authoryear]{natbib}
+\usepackage{natbib}
+
+%Zitationsstil
+%\bibliographystyle{unsrt}
+%\bibliographystyle{unsrtnat}
+% \bibliographystyle{plainnat}
+% \bibliographystyle{apacite}
+\bibliographystyle{plain} %[plain]
+
+
+\usepackage{multirow}
+
+% % --------------- Table and Color ---------------
+% % for tables which needs more than one page
+\usepackage{longtable}
+
+% % Table coloring
+% \usepackage[table]{xcolor}
+% \definecolor{lightgray}{gray}{0.9}
+% \definecolor{lightblue}{rgb}{0.93,0.95,1.0}
+% \definecolor{orange}{rgb}{0.93,0.95,1.0}
+
+% %\usepackage{tabu}
+% \usepackage[table]{xcolor}
+
+% \definecolor{tableHeader}{RGB}{211, 47, 47}
+% \definecolor{tableLineOne}{RGB}{245, 245, 245}
+% \definecolor{tableLineTwo}{RGB}{249, 199, 29}
+% % --------------- Table and Color- END ---------------
+
+% For splited lists
+\usepackage{multicol}
+
+%If you want to generate a caption without being inside of a float object
+\usepackage{caption}
+
+% for packe subfigure
+\usepackage{subcaption}
+
+% For optimization problems definition's
+\usepackage{optidef}
+
+\usepackage{printlen}
+
+% to include full pdf pages
+\usepackage{pdfpages}
+
+
+% % Code-Implementation matlab
+% \usepackage[numbered,framed]{matlab-prettifier}
+
+% % Load Tikz
+% \usepackage{pgfplots}
+
+% % Abbreviation-Table
+% \usepackage{acronym}
+
+\usepackage[acronym, toc]{glossaries}
+\makeglossaries
+
+% \usepackage{mfirstuc}
+% % ---------------------- XDSM --------------------------
+
+\usepackage{tikz}
+
+% % Optional packages such as sfmath set through python interface
+\usepackage{sfmath}
+
+\usepackage{blindtext, rotating}
+
+
+% % Define the set of TikZ packages to be included in the architecture diagram document
+\usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+% % Set the border around all of the architecture diagrams to be tight to the diagrams themselves
+% % (i.e. no longer need to tinker with page size parameters)
+% \usepackage[active,tightpage]{preview}
+% \PreviewEnvironment{tikzpicture}
+% \setlength{\PreviewBorder}{5pt}
+
+
+% % ---------------------- XDSM  END --------------------------
+% to automatically ensure floats do not go into the next section.
+\usepackage[section]{placeins}
+
+
+
+% --------------- page header ---------------
+\pagestyle{fancy}
+\fancyhf{}
+
+% on the left side - section name
+\fancyhead[L]{\rightmark}
+
+% pagenumber
+\fancyhead[R]{\thepage}
+
+
+% This sets the header line thickness to 0pt.
+\renewcommand{\headrulewidth}{0pt}
+%--------------- Page Header END ---------------
+
+
+% Shortcuts - see:
+% https://github.com/James-Yu/LaTeX-Workshop/wiki/Snippets#Font-commands
+
+% For optimization
+\DeclareMathOperator*{\argmin}{argmin} 
+%Endregion
+
+% % ------------------------ BEGIN DOCUMENT ------------------------------------
+\begin{document}
+
+
+% % % ---------------- Deco Stuff  ------------------------------
+\input{1_Latex_Files/0_Deco/0_Frontpage.tex}
+\input{1_Latex_Files/0_Deco/2_Thanks.tex}
+
+% % % % ---------------- Selbstständigkeitserklärung ------------------------
+\input{1_Latex_Files/0_Deco/1_erkl.tex}
+
+% % % % ---------------- Aufgabenstellung ------------------------
+\includepdf[pages=-]{1_Latex_Files/0_Deco/4_Mast.pdf}
+\includepdf[pages=-]{1_Latex_Files/0_Deco/5_Mast.pdf}
+
+% % ------------------------ Abstract ------------------------------------------
+\input{1_Latex_Files/0_Deco/2_1_Abstract.tex}
+
+% % ------------------------ LISTS ---------------------------------------------
+\tableofcontents
+
+% \clearpage %\cleardoublepage %for openright
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+% \clearpage %\cleardoublepage %for openright
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+% \clearpage %\cleardoublepage %for openright
+
+
+% % ------------------------ Abbrev --------------------------------------------
+% Just required to get all the symbol numbers in
+% order to define the symbol numbers for the arabic language
+% \input{1_Latex_Files/0_Arabic_Letters.tex
+
+\input{1_Latex_Files/0_Deco/3_Used_Abbrev.tex}
+\printglossary[type=\acronymtype, nonumberlist, title=Abbreviations]
+
+% =====================================================================
+% ========================= Main Tasks ================================
+% =====================================================================
+
+% % % ---------------- Task 1  ------------------------------
+\input{1_Latex_Files/1_Task/1_Introduction.tex}
+\input{1_Latex_Files/1_Task/2_State_Of_Art.tex}
+\input{1_Latex_Files/1_Task/3_CNM.tex}
+\input{1_Latex_Files/1_Task/4_CNMc.tex}
+
+% % % ---------------- Task 2  ------------------------------
+\input{1_Latex_Files/2_Task/0_Methodlogy.tex}
+\input{1_Latex_Files/2_Task/1_Data_Gen.tex}
+\input{1_Latex_Files/2_Task/2_Clustering.tex}
+\input{1_Latex_Files/2_Task/3_Tracking.tex}
+\input{1_Latex_Files/2_Task/4_Track_Workflow.tex}
+\input{1_Latex_Files/2_Task/5_Track_Validity.tex}
+\input{1_Latex_Files/2_Task/6_Modeling.tex}
+\input{1_Latex_Files/2_Task/7_QT.tex}
+
+
+
+% % % ---------------- Task 3  ------------------------------
+\input{1_Latex_Files/3_Task/0_Results.tex}
+\input{1_Latex_Files/3_Task/1_Track_Results.tex}
+\input{1_Latex_Files/3_Task/2_Mod_CPE.tex}
+\input{1_Latex_Files/3_Task/3_SVD_NMF.tex}
+\input{1_Latex_Files/3_Task/4_SVD_Regression.tex}
+\input{1_Latex_Files/3_Task/5_Pred.tex}
+\input{1_Latex_Files/3_Task/6_SLS.tex}
+\input{1_Latex_Files/3_Task/7_Models.tex}
+
+% % % % ---------------- Task 4 ------------------------------
+\input{1_Latex_Files/4_Task/1_Concl.tex}
+\input{1_Latex_Files/4_Task/2_Zusammen_Deutsch.tex}
+
+
+% % % ---------------- Appendix ------------------------------
+\input{1_Latex_Files/0_Deco/10_Appendix.tex}
+
+% =====================================================================
+% ========================= Bib =======================================
+% =====================================================================
+% % % define the bib file
+\bibliography{3_Bibtex/jabref.bib}
+
+
+\end{document}

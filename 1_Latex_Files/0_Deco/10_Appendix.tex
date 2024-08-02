@@ -1,0 +1,216 @@
+\appendix
+\chapter{Further implemented dynamical systems}
+\label{ch_Ap_Dyna}
+\begin{enumerate}
+    \item \textbf{Chen} \cite{Chen1999}: 
+    \begin{equation}
+        \label{eq_8_Chen}
+        \begin{aligned}
+            \dot x &= a\, (y - x) \\
+            \dot y &= x \,(\beta - a) - xz + \beta y \\
+            \dot z &= x y -b z
+        \end{aligned}
+    \end{equation}
+
+    \item \textbf{Lu} \cite{Lu2002}:
+    \begin{equation}
+        \label{eq_9_Lu}
+        \begin{aligned}
+            \dot x &= a \, (y -x) \\
+            \dot y &= \beta y -x z  \\
+            \dot z &= x y - b z
+        \end{aligned}
+    \end{equation}
+
+    \item \textbf{Van der Pol} \cite{VanderPol}:
+    \begin{equation}
+        \label{eq_14_VDP}
+        \begin{aligned}
+            \dot x &= y \\
+            \dot y &= y \beta\,(1-x^2) -x
+        \end{aligned}
+    \end{equation}
+
+\end{enumerate}
+
+\chapter{Some basics about chaotic systems}
+\label{ch_Ap_Chaotic}
+Since 
+Chaotic systems are the height 
+of intricacy when considering dynamical systems. 
+The reason why the term intricacy was chosen
+instead of complexity is that chaotic systems can be, but are not necessarily 
+complex. For the relation between complex and 
+chaotic the reader is referred to \cite{Rickles2007}. 
+The mentioned intricacy of chaotic systems shall be explained by 
+reviewing two reasons. First, 
+chaotic systems are sensitive to their initial conditions. 
+To understand this, imagine we want to solve an \gls{ode}. In order to solve any
+differential 
+equation, the initial condition or starting state must be known. Meaning, that the 
+solution to the \gls{ode} at the very first initial step, from where the 
+remaining interval is solved, must be identified beforehand. 
+One might believe, a starting point, which is not guessed unreasonably off, 
+should suffice to infer the system's future dynamics.\newline
+
+This is 
+an educated attempt, however, it is not true for systems that exhibit
+sensitivity to initial conditions. These systems amplify any 
+perturbation or deviation exponentially 
+as time increases. From this it can be concluded
+that even in case the initial value would be accurate to, e.g., 10 decimal places,
+still after some time, the outcome can not be trusted anymore. 
+Visually 
+this can be comprehended by thinking of initial conditions
+as locations in space. Let us picture two points with two initial conditions
+that are selected to be next to each other. Only by zooming in multiple times, 
+a small spatial deviation should be perceivable. 
+As the time changes, the points will leave the location defined through the initial condition. \newline 
+
+
+With 
+chaotic systems in mind, both initially neighboring 
+points will diverge exponentially fast from each other.
+As a consequence of the initial condition not being
+known with infinite precision, the initial microscopic
+errors become macroscopic with increasing time. Microscopic mistakes 
+might be considered to be imperceptible and thus have no impact 
+on the outcome, which would be worth to be mentioned.
+Macroscopic mistakes on the other hand are visible. Depending on 
+accuracy demands solutions might be or might not be accepted.
+However, as time continues further, the results eventually 
+will become completely unusable and diverge from the actual output on a macroscopic scale.\newline 
+
+
+The second reason, why chaotic systems are very difficult 
+to cope with, is the lack of a clear definition. It can be 
+argued that even visually, it is not always possible to
+unambiguously identify a chaotic system. The idea 
+is that at some time step, a chaotic system appears to 
+be evolving randomly over time. The question then arises,
+how is someone supposed to distinguish between something which 
+is indeed evolving randomly and something which only appears 
+to be random. The follow-up question most likely is going to be, 
+what is the difference between chaos and randomness, or 
+even if there is a difference. \newline 
+
+Maybe randomness itself is only 
+a lack of knowledge, e.g., the movement of gas particles 
+can be considered to be chaotic or random. If the 
+velocity and spatial position of each molecule are 
+trackable, the concept of temperature is made 
+redundant. Gibbs only invented the concept of temperature 
+in order to be able to make some qualitative statements 
+about a system \cite{Argyris2017}.
+A system that can not be described microscopically.
+Here the question arises if the movement of the molecules 
+would be random, how is it possible that every time 
+some amount of heat is introduced into a system, the temperature
+changes in one direction. If a random microscale system 
+always tends to go in one direction within a macroscale view,  
+a clear definition of randomness is required. \newline
+
+Laplace once said if the initial condition
+(space and velocity) of each atom would be known,  
+the entire future 
+could be calculated. In other words, if a system is 
+build on equations, which is a deterministic way 
+to describe an event, the outcome should just 
+depend on the values of the variables. 
+Thus, the future, for as long as it is desired could be predicted 
+or computed exactly. To briefly summarize this conversion, 
+Albert Einstein once remarked that God would not play dice. Nils 
+Bohr replied that it 
+would be presumptuous of us human beings to prescribe to the Almighty 
+how he is to take his decisions. A more in-depth introduction to 
+this subject is provided by \cite{Argyris2017}. 
+Nevertheless, by doing literature research, one way to 
+visually distinguish between
+randomness and chaos was found \cite{Boeing2016}. 
+Yet, in \cite{Boeing2016} the method was only 
+deployed on a logistic map. Hence, further research 
+is required here. \newline
+
+As explained, a clear definition of chaos does not exist. 
+However, some parts of definitions do occur regularly, e.g., 
+the already mentioned \glsfirst{sdic}. Other definition parts are the following: Chaotic 
+motion is \textbf{aperiodic} and based on a \textbf{deterministic} system.
+An aperiodic system is not repeating any 
+previous \textbf{trajectory} and a deterministic system is 
+described by governing equations. A trajectory is the evolution 
+of a dynamical system over time. For instance, a dynamical system 
+consisting of 3 variables is denoted as a 3-dimensional dynamical system.
+Each of the variables has its own representation axis.
+Assuming these 
+3 variables capture space, motion in the x-,y- and z-direction 
+is possible. For each point in a defined time range, there is one set of x, y and z values, which fully describes the output of the dynamical system or the position at a chosen time point. 
+Simply put, the trajectory is the movement 
+or change of the variables of the differential equation over time. Usually, the 
+trajectory is displayed in the phase space, i.e., the axis represents the state or values of the variables of a dynamical system. An example can be observed in section \ref{subsec_1_1_3_first_CNMc}. \newline
+
+
+One misconception which is often believed \cite{Taylor2010} 
+and found, e.g., in
+Wikipedia \cite{Wiki_Chaos} is that
+strange attractors would only appear as a consequence of 
+chaos. Yet, Grebogi et al. \cite{Grebogi1984} proved
+otherwise. According to 
+\cite{Boeing2016,Taylor2010} strange attractors exhibit 
+self-similarity. This can be understood visually by imaging any shape 
+of a trajectory. Now by zooming in or out, the exact same shape 
+is found again. The amount of zooming in or out and consequently 
+changing the view scale, will not change the perceived 
+shape of the trajectory. Self-similarity happens to be
+one of the fundamental properties of a geometry 
+in order to be called a fractal \cite{Taylor2010}. 
+In case one believes,
+strange attractors would always be chaotic and knows that by definition strange attractors phase 
+space is self-similar, then 
+something further misleading is concluded.
+Namely, if a geometry is turned out not only
+to be self-similar but also to be a fractal, this 
+would demand interpreting every fractal to be
+chaotic. \newline 
+
+To refute this, consider the Gophy 
+attractor \cite{Grebogi1984}. 
+It exhibits the described self-similarity,  
+moreover, it is a fractal, and it is also a 
+strange attractor. However, the Gophy 
+attractor is not chaotic. The reason is found, when 
+calculating the Lyapunov exponent, which is negative
+\cite{Taylor2010}. Latter tells us that two neighboring 
+trajectories are not separating exponentially fast 
+from each other. Thus, it does not obey the 
+sensitive dependence 
+of initial conditions requirement and is 
+regarded to be non-chaotic. The key messages are 
+that a chaotic attractor surely is a strange 
+attractor and a strange attractor is not necessarily 
+chaotic. A strange attractor refers to a fractal
+geometry in which chaotic behavior may
+or may not exist \cite{Taylor2010}. 
+Having acquired the knowledge that strange attractors 
+can occur in chaotic systems and form a fractal, 
+one might infer another question. If a chaotic 
+strange attractor always generates a geometry, which 
+stays constant when scaled, can chaos be 
+regarded to be random?\newline 
+
+
+This question will not be discussed in detail here, but for the sake of completeness, the 3 known types of nonstrange attractors 
+shall be mentioned. These are
+the fixed point attractor, the limit cycle attractor, and the
+torus attractor \cite{Taylor2010}. 
+A fixed point attractor is one point in the phase space, which attracts or pulls nearby trajectories to itself. 
+Inside the fix-point attractor, there is no motion, meaning 
+the derivative of the differential equation is zero. 
+In simpler words,
+once the trajectory runs into a fix-point, the trajectory ends there. 
+This is because no change over time can be found here. 
+A limit cycle can be expressed as an endlessly repeating loop, e.g. in the shape of a circle. 
+The trajectory can start at
+any given initial condition, still, it can go through a place in the phase space, from where the trajectory is continued as an infinitely
+repeating loop. 
+For a visualization of the latter and the tours, as well more 
+detail the reader is referred to \cite{Argyris2017, Kutz2022, Strogatz2019, Taylor2010}.

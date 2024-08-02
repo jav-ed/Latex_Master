@@ -1,0 +1,476 @@
+\glsdefs@newdocentry{ode}%
+{%
+name={\acronymfont {\glsentryshort {ode}}},%
+sort={ODE},%
+type={acronym},%
+first={ODE},%
+firstplural={ODEs},%
+text={ODE},%
+plural={ODEs},%
+description={\glstextformat {\textbf {O}}rdinary \glstextformat {\textbf {D}}ifferential \glstextformat {\textbf {E}}quation},%
+descriptionplural={\glstextformat {\textbf {O}}rdinary \glstextformat {\textbf {D}}ifferential \glstextformat {\textbf {E}}quation},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {O}rdinary \protect \textbf  {D}ifferential \protect \textbf  {E}quation},%
+longplural={\protect \textbf  {O}rdinary \protect \textbf  {D}ifferential \protect \textbf  {E}quations},%
+short={ODE},%
+shortplural={ODEs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cnm}%
+{%
+name={\acronymfont {\glsentryshort {cnm}}},%
+sort={CNM},%
+type={acronym},%
+first={CNM},%
+firstplural={CNMs},%
+text={CNM},%
+plural={CNMs},%
+description={\glstextformat {\textbf {C}}luster-based \glstextformat {\textbf {N}}etwork \glstextformat {\textbf {M}}odeling},%
+descriptionplural={\glstextformat {\textbf {C}}luster-based \glstextformat {\textbf {N}}etwork \glstextformat {\textbf {M}}odeling},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}luster-based \protect \textbf  {N}etwork \protect \textbf  {M}odeling},%
+longplural={\protect \textbf  {C}luster-based \protect \textbf  {N}etwork \protect \textbf  {M}odelings},%
+short={CNM},%
+shortplural={CNMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cnmc}%
+{%
+name={\acronymfont {\glsentryshort {cnmc}}},%
+sort={\glstextformat {\emph {CNMc}}},%
+type={acronym},%
+first={\protect \emph  {CNMc}},%
+firstplural={\protect \emph  {CNMc}s},%
+text={\protect \emph  {CNMc}},%
+plural={\protect \emph  {CNMc}s},%
+description={\glstextformat {\textbf {c}}ontrol-oriented \glstextformat {\textbf {C}}luster-based \glstextformat {\textbf {N}}etwork \glstextformat {\textbf {M}}odeling},%
+descriptionplural={\glstextformat {\textbf {c}}ontrol-oriented \glstextformat {\textbf {C}}luster-based \glstextformat {\textbf {N}}etwork \glstextformat {\textbf {M}}odeling},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {c}ontrol-oriented \protect \textbf  {C}luster-based \protect \textbf  {N}etwork \protect \textbf  {M}odeling},%
+longplural={\protect \textbf  {c}ontrol-oriented \protect \textbf  {C}luster-based \protect \textbf  {N}etwork \protect \textbf  {M}odelings},%
+short={\protect \emph  {CNMc}},%
+shortplural={\protect \emph  {CNMc}s},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cmm}%
+{%
+name={\acronymfont {\glsentryshort {cmm}}},%
+sort={CMM},%
+type={acronym},%
+first={CMM},%
+firstplural={CMMs},%
+text={CMM},%
+plural={CMMs},%
+description={\glstextformat {\textbf {C}}luster \glstextformat {\textbf {M}}arkov-based \glstextformat {\textbf {M}}odeling},%
+descriptionplural={\glstextformat {\textbf {C}}luster \glstextformat {\textbf {M}}arkov-based \glstextformat {\textbf {M}}odeling},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}luster \protect \textbf  {M}arkov-based \protect \textbf  {M}odeling},%
+longplural={\protect \textbf  {C}luster \protect \textbf  {M}arkov-based \protect \textbf  {M}odelings},%
+short={CMM},%
+shortplural={CMMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cfd}%
+{%
+name={\acronymfont {\glsentryshort {cfd}}},%
+sort={CFD},%
+type={acronym},%
+first={CFD},%
+firstplural={CFDs},%
+text={CFD},%
+plural={CFDs},%
+description={\glstextformat {\textbf {C}}omputational \glstextformat {\textbf {F}}luid \glstextformat {\textbf {D}}ynamics},%
+descriptionplural={\glstextformat {\textbf {C}}omputational \glstextformat {\textbf {F}}luid \glstextformat {\textbf {D}}ynamics},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}omputational \protect \textbf  {F}luid \protect \textbf  {D}ynamics},%
+longplural={\protect \textbf  {C}omputational \protect \textbf  {F}luid \protect \textbf  {D}ynamicss},%
+short={CFD},%
+shortplural={CFDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rans}%
+{%
+name={\acronymfont {\glsentryshort {rans}}},%
+sort={RANS},%
+type={acronym},%
+first={RANS},%
+firstplural={RANSs},%
+text={RANS},%
+plural={RANSs},%
+description={\glstextformat {\textbf {R}}eynolds \glstextformat {\textbf {A}}veraged \glstextformat {\textbf {N}}avier \glstextformat {\textbf {S}}tockes},%
+descriptionplural={\glstextformat {\textbf {R}}eynolds \glstextformat {\textbf {A}}veraged \glstextformat {\textbf {N}}avier \glstextformat {\textbf {S}}tockes},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {R}eynolds \protect \textbf  {A}veraged \protect \textbf  {N}avier \protect \textbf  {S}tockes},%
+longplural={\protect \textbf  {R}eynolds \protect \textbf  {A}veraged \protect \textbf  {N}avier \protect \textbf  {S}tockess},%
+short={RANS},%
+shortplural={RANSs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{dlr}%
+{%
+name={\acronymfont {\glsentryshort {dlr}}},%
+sort={DLR},%
+type={acronym},%
+first={DLR},%
+firstplural={DLRs},%
+text={DLR},%
+plural={DLRs},%
+description={German Aerospace Center},%
+descriptionplural={German Aerospace Center},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={German Aerospace Center},%
+longplural={German Aerospace Centers},%
+short={DLR},%
+shortplural={DLRs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{gpu}%
+{%
+name={\acronymfont {\glsentryshort {gpu}}},%
+sort={GPU},%
+type={acronym},%
+first={GPU},%
+firstplural={GPUs},%
+text={GPU},%
+plural={GPUs},%
+description={\glstextformat {\textbf {G}}raphics \glstextformat {\textbf {P}}rocessing \glstextformat {\textbf {U}}nit},%
+descriptionplural={\glstextformat {\textbf {G}}raphics \glstextformat {\textbf {P}}rocessing \glstextformat {\textbf {U}}nit},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {G}raphics \protect \textbf  {P}rocessing \protect \textbf  {U}nit},%
+longplural={\protect \textbf  {G}raphics \protect \textbf  {P}rocessing \protect \textbf  {U}nits},%
+short={GPU},%
+shortplural={GPUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cpu}%
+{%
+name={\acronymfont {\glsentryshort {cpu}}},%
+sort={CPU},%
+type={acronym},%
+first={CPU},%
+firstplural={CPUs},%
+text={CPU},%
+plural={CPUs},%
+description={\glstextformat {\textbf {C}}omputer \glstextformat {\textbf {P}}rocessing \glstextformat {\textbf {U}}nit},%
+descriptionplural={\glstextformat {\textbf {C}}omputer \glstextformat {\textbf {P}}rocessing \glstextformat {\textbf {U}}nit},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}omputer \protect \textbf  {P}rocessing \protect \textbf  {U}nit},%
+longplural={\protect \textbf  {C}omputer \protect \textbf  {P}rocessing \protect \textbf  {U}nits},%
+short={CPU},%
+shortplural={CPUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{sdic}%
+{%
+name={\acronymfont {\glsentryshort {sdic}}},%
+sort={SDIC},%
+type={acronym},%
+first={SDIC},%
+firstplural={SDICs},%
+text={SDIC},%
+plural={SDICs},%
+description={\glstextformat {\textbf {S}}ensitive \glstextformat {\textbf {D}}ependence on \glstextformat {\textbf {I}}nitial \glstextformat {\textbf {C}}onditions},%
+descriptionplural={\glstextformat {\textbf {S}}ensitive \glstextformat {\textbf {D}}ependence on \glstextformat {\textbf {I}}nitial \glstextformat {\textbf {C}}onditions},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {S}ensitive \protect \textbf  {D}ependence on \protect \textbf  {I}nitial \protect \textbf  {C}onditions},%
+longplural={\protect \textbf  {S}ensitive \protect \textbf  {D}ependence on \protect \textbf  {I}nitial \protect \textbf  {C}onditionss},%
+short={SDIC},%
+shortplural={SDICs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{nmf}%
+{%
+name={\acronymfont {\glsentryshort {nmf}}},%
+sort={NMF},%
+type={acronym},%
+first={NMF},%
+firstplural={NMFs},%
+text={NMF},%
+plural={NMFs},%
+description={\glstextformat {\textbf {N}}on-negative \glstextformat {\textbf {M}}atrix \glstextformat {\textbf {F}}actorization},%
+descriptionplural={\glstextformat {\textbf {N}}on-negative \glstextformat {\textbf {M}}atrix \glstextformat {\textbf {F}}actorization},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {N}on-negative \protect \textbf  {M}atrix \protect \textbf  {F}actorization},%
+longplural={\protect \textbf  {N}on-negative \protect \textbf  {M}atrix \protect \textbf  {F}actorizations},%
+short={NMF},%
+shortplural={NMFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{svd}%
+{%
+name={\acronymfont {\glsentryshort {svd}}},%
+sort={SVD},%
+type={acronym},%
+first={SVD},%
+firstplural={SVDs},%
+text={SVD},%
+plural={SVDs},%
+description={\glstextformat {\textbf {S}}ingular \glstextformat {\textbf {V}}alue \glstextformat {\textbf {D}}ecomposition},%
+descriptionplural={\glstextformat {\textbf {S}}ingular \glstextformat {\textbf {V}}alue \glstextformat {\textbf {D}}ecomposition},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {S}ingular \protect \textbf  {V}alue \protect \textbf  {D}ecomposition},%
+longplural={\protect \textbf  {S}ingular \protect \textbf  {V}alue \protect \textbf  {D}ecompositions},%
+short={SVD},%
+shortplural={SVDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rf}%
+{%
+name={\acronymfont {\glsentryshort {rf}}},%
+sort={RF},%
+type={acronym},%
+first={RF},%
+firstplural={RFs},%
+text={RF},%
+plural={RFs},%
+description={\glstextformat {\textbf {R}}andom \glstextformat {\textbf {F}}orest},%
+descriptionplural={\glstextformat {\textbf {R}}andom \glstextformat {\textbf {F}}orest},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {R}andom \protect \textbf  {F}orest},%
+longplural={\protect \textbf  {R}andom \protect \textbf  {F}orests},%
+short={RF},%
+shortplural={RFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cpd}%
+{%
+name={\acronymfont {\glsentryshort {cpd}}},%
+sort={CPD},%
+type={acronym},%
+first={CPD},%
+firstplural={CPDs},%
+text={CPD},%
+plural={CPDs},%
+description={\glstextformat {\textbf {C}}luster \glstextformat {\textbf {P}}robability \glstextformat {\textbf {D}}istribution},%
+descriptionplural={\glstextformat {\textbf {C}}luster \glstextformat {\textbf {P}}robability \glstextformat {\textbf {D}}istribution},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}luster \protect \textbf  {P}robability \protect \textbf  {D}istribution},%
+longplural={\protect \textbf  {C}luster \protect \textbf  {P}robability \protect \textbf  {D}istributions},%
+short={CPD},%
+shortplural={CPDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cpevol}%
+{%
+name={\acronymfont {\glsentryshort {cpevol}}},%
+sort={CPE},%
+type={acronym},%
+first={CPE},%
+firstplural={CPEs},%
+text={CPE},%
+plural={CPEs},%
+description={\glstextformat {\textbf {C}}entroid \glstextformat {\textbf {P}}osition \glstextformat {\textbf {E}}volution},%
+descriptionplural={\glstextformat {\textbf {C}}entroid \glstextformat {\textbf {P}}osition \glstextformat {\textbf {E}}volution},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {C}entroid \protect \textbf  {P}osition \protect \textbf  {E}volution},%
+longplural={\protect \textbf  {C}entroid \protect \textbf  {P}osition \protect \textbf  {E}volutions},%
+short={CPE},%
+shortplural={CPEs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{dtw}%
+{%
+name={\acronymfont {\glsentryshort {dtw}}},%
+sort={DTW},%
+type={acronym},%
+first={DTW},%
+firstplural={DTWs},%
+text={DTW},%
+plural={DTWs},%
+description={\glstextformat {\textbf {D}}ynamical \glstextformat {\textbf {T}}ime \glstextformat {\textbf {W}}arping},%
+descriptionplural={\glstextformat {\textbf {D}}ynamical \glstextformat {\textbf {T}}ime \glstextformat {\textbf {W}}arping},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {D}ynamical \protect \textbf  {T}ime \protect \textbf  {W}arping},%
+longplural={\protect \textbf  {D}ynamical \protect \textbf  {T}ime \protect \textbf  {W}arpings},%
+short={DTW},%
+shortplural={DTWs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{knn}%
+{%
+name={\acronymfont {\glsentryshort {knn}}},%
+sort={KNN},%
+type={acronym},%
+first={KNN},%
+firstplural={KNNs},%
+text={KNN},%
+plural={KNNs},%
+description={\glstextformat {\textbf {K}-\textbf {N}}earest \glstextformat {\textbf {N}}eighbor},%
+descriptionplural={\glstextformat {\textbf {K}-\textbf {N}}earest \glstextformat {\textbf {N}}eighbor},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={\protect \textbf  {K}-\protect \textbf  {N}earest \protect \textbf  {N}eighbor},%
+longplural={\protect \textbf  {K}-\protect \textbf  {N}earest \protect \textbf  {N}eighbors},%
+short={KNN},%
+shortplural={KNNs},%
+counter={page},%
+parent={},%
+%
+}%
+

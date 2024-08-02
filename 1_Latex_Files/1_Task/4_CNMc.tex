@@ -1,0 +1,114 @@
+\subsection{First version of CNMc}
+\label{subsec_1_1_3_first_CNMc}
+Apart from  this thesis, there already has been an 
+attempt to build \glsfirst{cnmc}. 
+The procedure, progress and results of the most recent effort are described in \cite{Max2021}.
+Also, in the latter, the main idea was to predict the trajectories
+for dynamical systems with a control term or a model parameter value $\beta$. 
+In this subsection, a review of 
+\cite{Max2021} shall be given with pointing out which parts need to be improved. In addition, some distinctions between the previous version of \gls{cnmc} and the most recent version are named. 
+Further applied modifications are provided in chapter \ref{chap_2_Methodlogy}.\newline
+
+To avoid confusion between the \gls{cnmc} version described in this thesis and the prior \gls{cnmc} version, the old version will be referred to as \emph{first CNMc}. 
+\emph{First CNMc} starts by defining a range of model parameter values
+$\vec{\beta}$. 
+It was specifically designed to only be able to make predictions for the Lorenz attractor \cite{lorenz1963deterministic}, which is described with the set of equations \eqref{eq_6_Lorenz} given in section \ref{sec_2_2_Data_Gen}. 
+An illustrative trajectory is of the Lorenz system \cite{lorenz1963deterministic} with $\beta = 28$ is depicted in figure \ref{fig_2_Lorenz_Example}.\newline
+%
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =\textwidth]
+    % In order to insert an eps file - Only_File_Name (Without file extension)
+    {2_Figures/1_Task/2_Lorenz.pdf}
+    \caption{Illustrative trajectory of the Lorenz attractor \cite{lorenz1963deterministic}, $\beta = 28$}
+    \label{fig_2_Lorenz_Example}
+\end{figure}
+%
+
+Having chosen a range of model parameter values $\vec{\beta}$, the Lorenz system was solved numerically and its solution was supplied to \gls{cnm} in order to run k-means++ on all received trajectories.
+% It assigns each data point to a cluster and
+% calculates all the $K$ cluster centroids for all provided trajectories.
+% Each cluster has an identity that in literature is known as a label, with which it can be accessed.
+The centroid label allocation by the k-means+ algorithm is conducted randomly. 
+Thus, linking or matching centroid labels from one model parameter value $\beta_i$ to another model parameter value $\beta_j$, where $i \neq j$, is performed in 3 steps.
+The first two steps are ordering the $\vec{\beta}$ in ascending
+order and transforming the Cartesian coordinate system into a spherical coordinate system. 
+With the now available azimuth angle, each centroid is labeled in increasing order of the azimuth angle. 
+The third step is to match the centroids across $\vec{\beta}$, i.e., $\beta_i$ with $\beta_j$.
+For this purpose, the centroid label from the prior model parameter value
+is used as a reference to match its corresponding nearest centroid in the next model parameter value. 
+As a result, one label can be assigned to one centroid across the available $\vec{\beta}$.\newline
+
+
+Firstly, \cite{Max2021} showed that ambiguous regions can 
+occur. Here the matching of the centroids across the $\vec{\beta}$ can 
+not be trusted anymore.
+Secondly, the deployed coordinate transformation is assumed to only work properly in 3 dimensions. There is the possibility to set one 
+or two variables to zero in order to use it in two or one dimension, respectively. 
+However, it is not known, whether such an artificially decrease of dimensions yields a successful outcome for lower-dimensional (2- and 1-dimensional) dynamical systems.  In the event of a 4-dimensional or even higher dimensional case, the proposed coordinate transformation cannot be used anymore. 
+In conclusion, the transformation is only secure to be utilized in 3 dimensions. 
+Thirdly, which is also acknowledged by \cite[]{Max2021} is that the 
+coordinate transformation forces the dynamical system to have 
+a circular-like trajectory, e.g., as the in figure \ref{fig_2_Lorenz_Example} depicted Lorenz system does. 
+Since not every dynamical system is forced to have a circular-like trajectory, it is one of the major parts which needs to be improved, when \emph{first CNMc} is meant to be leveraged for all kinds of dynamical systems. 
+Neither the number of dimensions nor the shape of the trajectory should matter for a generalized \gls{cnmc}.\newline 
+
+
+Once the centroids are matched across all the available $\vec{\beta}$ pySINDy \cite{Brunton2016,Silva2020, Kaptanoglu2022} is used
+to build a regression model. This regression model serves the purpose 
+of capturing all centroid positions of the calculated model parameter
+values $\vec{\beta }$ and making predictions for unseen $\vec{\beta}_{unseen}$. 
+Next, a preprocessing step is performed on the
+transition property tensors $\bm Q$ and $\bm T$. Both are
+scaled, such that the risk of a bias is assumed to be reduced. 
+Then, on both \glsfirst{nmf} \cite{Lee1999} is
+applied. 
+Following equation \eqref{eq_5_NMF} \gls{nmf} \cite{Lee1999} returns
+two matrices, i.e., $\bm W$ and $\bm H$. 
+The matrices exhibit a physically
+relevant meaning. $\bm W$ corresponds to a mode collection and $\bm H$ contains 
+the weighting factor for each corresponding mode.\newline
+
+\begin{equation}
+    \label{eq_5_NMF}
+    \bm {A_{i \mu}} \approx \bm A^{\prime}_{i \mu}  = (\bm W  \bm H)_{i \mu}  = \sum_{a = 1}^{r} 
+    \bm W_{ia} \bm H_{a \mu}
+\end{equation}
+
+The number of modes $r$ depends on the underlying dynamical system.
+Firstly, the \gls{nmf} is utilized by deploying optimization. 
+The goal is to satisfy the condition that, the deviation between the original matrix and the approximated matrix shall be below a chosen threshold. 
+For this purpose, the number of required optimization iterations easily can be 
+in the order of $\mathcal{O} (1 \mathrm{e}+7)$. The major drawback here is that such a high number of iterations is computationally very expensive.
+Secondly, for \emph{first CNMc} the number of modes $r$ must be known beforehand. 
+Since in most cases this demand cannot be fulfilled two issues arise. 
+On the one hand, running \gls{nmf} on a single known $r$ can already be considered to be computationally expensive.
+On the other hand, conducting a study to find the appropriate $r$ involves even more computational effort. 
+Pierzyna \cite[]{Max2021} acknowledges this issue and defined it to be one of the major limitations. \newline
+
+
+The next step is to generate a regression model with \glsfirst{rf}.
+Some introductory words about \gls{rf} are given in subsection \ref{subsec_2_4_2_QT}. 
+As illustrated in \cite{Max2021}, \gls{rf} was able to reproduce the training data reasonably well.
+However, it faced difficulties to approximate spike-like curves. 
+Once the centroid positions and the two transitions property tensors $\bm Q$ and $\bm T$ are known, they are passed to \gls{cnm} to calculate the predicted trajectories. 
+For assessing the prediction quality two methods are used, i.e., the autocorrelation and the \glsfirst{cpd}. 
+\gls{cpd} outlines the probability of being on one of the $K$ clusters. 
+The autocorrelation given in equation \eqref{eq_35} allows comparing two trajectories with a phase-mismatch \cite{protas2015optimal} and it measures how well a point in trajectory correlates with a point that is some time steps ahead.
+The variables in equation \eqref{eq_35} are denoted as time lag $\tau$, state space vector $\bm x$, time $t$ and the inner product $(\bm x, \bm y) = \bm x \cdot \bm{y}^T$.  \newline
+
+\begin{equation}
+    R(\tau) = \frac{1}{T - \tau} \int\limits_{0}^{T-\tau}\, (\bm{x} (t), \bm{x}(t+ \tau))    dt, \quad \tau \in [\, 0, \, T\,]
+    \label{eq_35}
+\end{equation}
+
+\emph{First CNMc} proved to work well for the Lorenz system only for the number of centroids up to $K=10$ and small $\beta$. 
+Among the points which need to be improved is the method to match the centroids across the chosen $\vec{\beta}$. 
+Because of this, two of the major problems occur, i.e., the limitation to 3 dimensions and the behavior of the trajectory must be circular, similar to the Lorenz system \cite{lorenz1963deterministic}. 
+These demands are the main obstacles to the application of \emph{first CNMc} to all kinds of dynamical systems. 
+The modal decomposition with \gls{nmf} is the most computationally intensive part and should be replaced by a faster alternative.
+
+

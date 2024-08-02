@@ -1,0 +1,320 @@
+\subsection{Results of further dynamical systems}
+\label{subsec_3_5_2_Models}
+In this subsection, the \gls{cnmc} prediction results for other models will be displayed. 
+The chosen dynamical systems with their configurations are the following.
+% ==============================================================================
+\begin{enumerate}
+    \item  \emph{FW50}, based on the \emph{Four Wing} set of equations \eqref{eq_10_4_Wing} with $K=50, \, \vec{\beta }_{tr} = [\, \beta_0 = 8 ; \, \beta_{end} = 11 \,], \, n_{\beta, tr} = 13$.
+
+    \item  \emph{Rössler15}, based on the \emph{Rössler} set of equations \eqref{eq_7_Ross} with $K=15, \, \vec{\beta }_{tr} = [\, \beta_0 = 6 ; \, \beta_{end} = 13 \,], \, n_{\beta, tr} = 15$.
+
+    \item  \emph{TS15}, based on the \emph{Two Scroll} set of equations \eqref{eq_9_2_Scroll} with $K=15, \, \vec{\beta }_{tr} = [\, \beta_0 = 5 ; \, \beta_{end} = 12 \,], \, n_{\beta, tr} = 15$.    
+\end{enumerate}
+All the presented outputs were generated with \gls{svd} as the decomposition method and \gls{rf} as the $\bm Q / \bm T$ regressor.
+Furthermore, the B-spline interpolation in the propagation step of \gls{cnm} was replaced with linear interpolation. 
+The B-spline interpolation was originally utilized for smoothing the motion between two centroids. 
+However, it was discovered for a high number of $K$, the B-spline interpolation is not able to reproduce the motion between two centroids accurately, but rather would impose unacceptable high deviations or oscillations into the predictions. 
+This finding is also mentioned in \cite{Max2021} and addressed as one of \emph{ first CNMc's} limitations.  
+Two illustrative examples of the unacceptable high deviations caused by the B-spline interpolation are given in figures \ref{fig_82_Traject} and \ref{fig_82_Autocorr}. 
+The results are obtained for \emph{LS20} for $\beta = 31.75$ and $\beta = 51.75$ with $L=3$. 
+In figures \ref{fig_82_Traj_B} and \ref{fig_83_Traj_B} it can be inspected that the B-spline interpolation has a highly undesired impact on the predicted trajectories.
+In Contrast to that, in figures, \ref{fig_82_Traj_L} and \ref{fig_83_Traj_L}, where linear interpolation is utilized, no outliers are added to the predictions.
+The impact of the embedded outliers, caused by the B-spline interpolation, on the autocorrelation is depicted in figures \ref{fig_82_Auto_B} and \ref{fig_83_Auto_B}.
+The order of the deviation between the true and the \gls{cnmc} predicted autocorrelation can be grasped by inspecting the vertical axis scale.
+Comparing it with the linear interpolated autocorrelations, shown in figures \ref{fig_82_Auto_L} and \ref{fig_83_Auto_L}, it can be recorded that the deviation between the true and predicted autocorrelations is significantly lower than in the B-spline interpolation case.
+\newline 
+
+Nevertheless, it is important to highlight that the B-spline interpolation is only a tool for smoothing the motion between two centroids. 
+The quality of the modeled $\bm Q / \bm T$ cannot be assessed directly by comparing the trajectories and the autocorrelations.
+To stress that the \gls{cpd} in figure \ref{fig_82_CPD_B} and \ref{fig_83_CPD_B} shall be considered.
+It can be observed that \gls{cpd} does not represent the findings of the autocorrelations, i.e., the true and predicted behavior agree acceptably overall. 
+This is because the type of interpolation has no influence on the modeling of the probability tensor $\bm Q$.
+Thus, the outcome with the B-spline interpolation should not be regarded as an instrument that enables making assumptions about the entire prediction quality of \gls{cnmc}.  The presented points underline again the fact that more than one method should be considered to evaluate the prediction quality of \gls{cnmc}.
+\newline
+
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, B-spline, $\beta_{unseen} = 31.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/18_lb_31.75_All.pdf}
+        \label{fig_82_Traj_B}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, B-spline, $\beta_{unseen} = 51.75$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/19_lb_51.75_All.pdf}
+        \label{fig_83_Traj_B}
+    \end{subfigure}
+    
+    % ------------- Linear ----------------------
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, linear, $\beta_{unseen} = 31.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/24_lb_31.75_All.pdf}
+        \label{fig_82_Traj_L}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, linear, $\beta_{unseen} = 51.75$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/25_lb_51.75_All.pdf}
+        \label{fig_83_Traj_L}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Illustrative undesired oscillations cased by the B-spline interpolation and its impact on the predicted trajectory contrasted with linear interpolation, \emph{LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$}
+    \label{fig_82_Traject}
+\end{figure}
+
+%----------------------------------- AUTOCOR -----------------------------------
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, B-spline, $\beta = 31.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/20_lb_3_all_31.75.pdf}
+        \label{fig_82_Auto_B}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, B-spline, $\beta_{unseen} = 51.75$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/21_lb_3_all_51.75.pdf}
+        \label{fig_83_Auto_B}
+    \end{subfigure}
+    
+    \smallskip
+    % ------------- LINEAR ----------------------
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, linear, $\beta = 31.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/26_lb_3_all_31.75.pdf}
+        \label{fig_82_Auto_L}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, linear, $\beta_{unseen} = 51.75$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/27_lb_3_all_51.75.pdf}
+        \label{fig_83_Auto_L}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Illustrative undesired oscillations cased by the B-spline interpolation and its impact on the predicted autocorrelations contrasted with linear interpolation, \emph{LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$}
+    \label{fig_82_Autocorr}
+\end{figure}
+    
+\begin{figure}[!h]
+    % ------------- CPD ----------------------
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}, $\beta = 31.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/22_lb_31.75.pdf}
+        \label{fig_82_CPD_B}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}, $\beta_{unseen} = 51.75$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/23_lb_51.75.pdf}
+        \label{fig_83_CPD_B}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Illustrative the B-spline interpolation and its impact on the \glspl{cpd}, \emph{LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$}
+\end{figure}
+
+\FloatBarrier
+The results generated with the above mentioned linear interpolation for  \emph{FW50}, \emph{Rössler15} and \emph{TS15} are depicted in figures \ref{fig_79} to \ref{fig_81}, respectively. 
+Each of them consists of an illustrative trajectory, 3D and 2D trajectories, the autocorrelations, the \gls{cpd} and the MAE error between the true and \gls{cnmc} predicted trajectories for a range of $\vec{L}$ and some $\vec{\beta}_{unseen}$.
+The illustrative trajectory includes arrows, which provide additional information.
+First, the direction of the motion, then the size of the arrows represents the velocity of the system. Furthermore, the change in the size of the arrows is equivalent to a change in the velocity, i.e., the acceleration.
+Systems like the \emph{TS15} exhibit a fast change in the size of the arrows, i.e., the acceleration is nonlinear. 
+The more complex the behavior of the acceleration is, the more complex the overall system becomes.
+The latter statement serves to emphasize that \gls{cnmc} can be applied not only to rather simple systems such as the Lorenz attractor \cite{lorenz1963deterministic}, but also to more complex systems such as the \emph{FW50} and \emph{TS15}.\newline 
+
+All in all, the provided results for the 3 systems are very similar to those already explained in the previous subsection \ref{subsec_3_5_1_SLS}.
+Thus, the results presented are for demonstration purposes and will not be discussed further.
+However, the 3 systems also have been calculated with different values for $K$. 
+For \emph{FW50}, the range of $\vec{K}= [\, 15, \, 30, \, 50 \, ]$ was explored with the finding that the influence of $K$ remained quite small.
+For \emph{Rössler15} and \emph{TS15}, the ranges were chosen as $\vec{K}= [\, 15, \, 30, \, 100\,]$ and $\vec{K}= [\, 15, \, 75 \,]$, respectively.
+The influence of $K$ was found to be insignificant also for the latter two systems.
+% ==============================================================================
+% ======================= FW50 =================================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Illustrative trajectory $\beta = 9$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/0_lb_9.000.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, $\beta_{unseen} = 8.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/1_lb_8.1_All.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{2D-trajectories, $\beta_{unseen} = 8.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/2_lb_8.1_3V_All.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, $\beta_{unseen} = 8.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/3_lb_3_all_8.1.pdf}
+    \end{subfigure}
+    
+    
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}, $\beta_{unseen} = 8.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/4_lb_8.1.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations $MAE(L,\, \beta_{unseen})$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/5_lb_1_Orig_CNMc.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Results for \emph{FW50}, $\beta_{unseen} = 8.1, \, L= 2$}
+    \label{fig_79}
+\end{figure}
+% ==============================================================================
+% ======================= FW50 =================================================
+% ==============================================================================
+
+% ==============================================================================
+% ======================= Rossler 15 ===========================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Illustrative trajectory $\beta = 7.5$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/6_lb_7.500.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, $\beta_{unseen} = 9.6$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/7_lb_9.6_All.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{2D-trajectories, $\beta_{unseen} = 9.6$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/8_lb_9.6_3V_All.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, $\beta_{unseen} = 9.6$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/9_lb_3_all_9.6.pdf}
+    \end{subfigure}
+    
+    
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}, $\beta_{unseen} = 9.6$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/10_lb_9.6.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations $MAE(L,\, \beta_{unseen})$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/11_lb_1_Orig_CNMc.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Results for \emph{Rössler15}, $\beta_{unseen} = 9.6,\, L =1$}
+    \label{fig_80}
+\end{figure}
+% ==============================================================================
+% ======================= Rossler 15 ===========================================
+% ==============================================================================
+
+
+% ==============================================================================
+% ======================= TS 15 ===========================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Illustrative trajectory $\beta = 11$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/12_lb_11.000.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Trajectories, $\beta_{unseen} = 5.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/13_lb_5.1_All.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{2D-trajectories, $\beta_{unseen} = 5.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/14_lb_5.1_3V_All.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations, $\beta_{unseen} = 5.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/15_lb_3_all_5.1.pdf}
+    \end{subfigure}
+    
+    
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}, $\beta_{unseen} = 5.1$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/16_lb_5.1.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Autocorrelations $MAE(L,\, \beta_{unseen})$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/5_Models/17_lb_1_Orig_CNMc.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Results for \emph{TS15}, $\beta_{unseen} = 5.1,\, L =2$}
+    \label{fig_81}
+\end{figure}
+% ==============================================================================
+% ======================= TS 15 ================================================
+% ==============================================================================
+

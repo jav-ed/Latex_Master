@@ -1,0 +1,239 @@
+\begin{thebibliography}{10}
+
+\bibitem{Sergei_Visual}
+k-means finding set of initial points.
+\newblock https://theory.stanford.edu/~sergei/slides/kdd10-thclust.pdf - 30.11.2021.
+
+\bibitem{Sergei_Black_Art}
+k-means++ visual explanation.
+\newblock https://theory.stanford.edu/~sergei/slides/BATS-Means.pdf - 30.11.2021.
+
+\bibitem{Wiki_Chaos}
+Wikipedia entry on chaos theory, November 2021.
+\newblock https://en.wikipedia.org/wiki/Chaos\_theory - (29.11.2021).
+
+\bibitem{pysindy_Home}
+pysindy's remark on rk45 vs. lsoda, April 2022.
+\newblock https://pysindy.readthedocs.io/en/latest/examples/1\_feature\_overview.html - (2022-04-06).
+
+\bibitem{Argyris2017}
+John Argyris, Gunter Faust, Maria Haase, and Rudolf Friedrich.
+\newblock {\em Die Erforschung des Chaos}.
+\newblock Springer Berlin Heidelberg, 2017.
+\newblock Translation conducted by the author of this thesis.
+
+\bibitem{Arthur2006}
+David Arthur and Sergei Vassilvitskii.
+\newblock k-means++: The advantages of careful seeding.
+\newblock Technical report, Stanford, 2006.
+
+\bibitem{bishop2006pattern}
+Christopher Bishop.
+\newblock {\em Pattern Recognition and Machine Learning}.
+\newblock Springer, January 2006.
+
+\bibitem{Boeing2016}
+Geoff Boeing.
+\newblock Visual analysis of nonlinear dynamical systems: Chaos, fractals, self-similarity and the limits of prediction.
+\newblock {\em Systems}, 4(4):37, nov 2016.
+
+\bibitem{Brunton2019}
+Steven Brunton and J~Kutz.
+\newblock Data-driven science and engineering, 1 2019.
+
+\bibitem{Brunton2016}
+Steven~L Brunton, Joshua~L Proctor, and J~Nathan Kutz.
+\newblock Sparse identification of nonlinear dynamics with control (sindyc).
+\newblock {\em IFAC-PapersOnLine}, 49(18):710--715, 2016.
+
+\bibitem{Butt2021}
+Javed Butt.
+\newblock Development of a module for mission analysis for a gradient-based aerodynamic shape optimization process.
+\newblock Technical report, TU Braunschweig, September 2021.
+
+\bibitem{Adaboost}
+Ying CAO, Qi-Guang MIAO, Jia-Chen LIU, and Lin GAO.
+\newblock Advance and prospects of adaboost algorithm.
+\newblock {\em Acta Automatica Sinica}, 39(6):745--758, 2013.
+
+\bibitem{Chen1999}
+Guanrong Chen and Tetsushi Ueta.
+\newblock Yet another chaotic attractor.
+\newblock {\em International Journal of Bifurcation and chaos}, 9(07):1465--1466, 1999.
+
+\bibitem{Silva2020}
+Brian de~Silva, Kathleen Champion, Markus Quade, Jean-Christophe Loiseau, J.~Kutz, and Steven Brunton.
+\newblock {PySINDy}: A python package for the sparse identification of nonlinear dynamical systems from data.
+\newblock {\em Journal of Open Source Software}, 5(49):2104, may 2020.
+
+\bibitem{VanderPol}
+Diana Devia~Narvaez, German Velez, and Diego Devia~Narvaez.
+\newblock Bifurcation analysis of the van der pol oscillator.
+\newblock {\em Contemporary Engineering Sciences}, 11(85):4245--4252, 2018.
+
+\bibitem{Fernex2021}
+Daniel Fernex, Bernd~R. Noack, and Richard Semaan.
+\newblock Cluster-based network modeling{\textemdash}from snapshots to complex dynamical systems.
+\newblock {\em Science Advances}, 7(25), jun 2021.
+
+\bibitem{Fernex2021a}
+Daniel Fernex, Richard Semaan, and Bernd Noack.
+\newblock {\em Generalized Cluster-Based Network Model for an Actuated Turbulent Boundary Layer}.
+\newblock American Institute of Aeronautics and Astronautics, 1 2021.
+
+\bibitem{Frochte2020}
+Jörg Frochte.
+\newblock {\em Maschinelles Lernen}.
+\newblock Carl Hanser Verlag {GmbH} {\&} Co. {KG}, April 2020.
+\newblock Translation conducted by the author of this thesis.
+
+\bibitem{gerbrands1981relationships}
+Jan~J Gerbrands.
+\newblock On the relationships between svd, klt and pca.
+\newblock {\em Pattern recognition}, 14(1-6):375--381, 1981.
+
+\bibitem{Grebogi1984}
+Celso Grebogi, Edward Ott, Steven Pelikan, and James~A. Yorke.
+\newblock Strange attractors that are not chaotic.
+\newblock {\em Physica D: Nonlinear Phenomena}, 13(1):261--268, 1984.
+
+\bibitem{harris2020array}
+Charles~R. Harris, K.~Jarrod Millman, St{\'{e}}fan~J. van~der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg, Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van Kerkwijk, Matthew Brett, Allan Haldane, Jaime~Fern{\'{a}}ndez del R{\'{i}}o, Mark Wiebe, Pearu Peterson, Pierre G{\'{e}}rard-Marchant, Kevin Sheppard, Tyler Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis~E. Oliphant.
+\newblock Array programming with {NumPy}.
+\newblock {\em Nature}, 585(7825):357--362, September 2020.
+
+\bibitem{Hunter:2007}
+J.~D. Hunter.
+\newblock Matplotlib: A 2d graphics environment.
+\newblock {\em Computing in Science \& Engineering}, 9(3):90--95, 2007.
+
+\bibitem{plotly}
+Plotly~Technologies Inc.
+\newblock Collaborative data science, 2015.
+
+\bibitem{Kaiser2014}
+Eurika Kaiser, Bernd~R Noack, Laurent Cordier, Andreas Spohn, Marc Segond, Markus Abel, Guillaume Daviller, Jan {\"O}sth, Sini{\v{s}}a Krajnovi{\'c}, and Robert~K Niven.
+\newblock Cluster-based reduced-order modelling of a mixing layer.
+\newblock {\em Journal of Fluid Mechanics}, 754:365--414, 2014.
+
+\bibitem{Kaptanoglu2022}
+Alan Kaptanoglu, Brian De~Silva, Urban Fasel, Kadierdan Kaheman, Andy Goldschmidt, Jared Callaham, Charles Delahunt, Zachary Nicolaou, Kathleen Champion, Jean-Christophe Loiseau, J~Kutz, and Steven Brunton.
+\newblock Pysindy: A comprehensive python package for robust sparse system identification.
+\newblock {\em Journal of Open Source Software}, 7(69):3994, 1 2022.
+
+\bibitem{Kutz2022}
+Prof. J.~Nathan Kutz.
+\newblock Amath 568advanced differential equations: Asymptotics \& perturbations, April 2022.
+\newblock Lecutre Notes of Course.
+
+\bibitem{Lambe2012}
+Andrew~B. Lambe and Joaquim R. R.~A. Martins.
+\newblock Extensions to the design structure matrix for the description of multidisciplinary design, analysis, and optimization processes.
+\newblock {\em Structural and Multidisciplinary Optimization}, 46:273--284, 2012.
+
+\bibitem{Langer2014}
+Stefan Langer, Axel Schw{\"o}ppe, and Norbert Kroll.
+\newblock The dlr flow solver tau - status and recent algorithmic developments.
+\newblock In {\em 52nd Aerospace Sciences Meeting}, January 2014.
+
+\bibitem{Lee1999}
+Daniel~D Lee and H~Sebastian Seung.
+\newblock Learning the parts of objects by non-negative matrix factorization.
+\newblock {\em Nature}, 401(6755):788--791, 1999.
+
+\bibitem{FourWing}
+Chunbiao Li, Ihsan Pehlivan, Julien~Clinton Sprott, and Akif Akgul.
+\newblock A novel four-wing strange attractor born in bistablity.
+\newblock {\em IEICE Electronics Express}, 12, 02 2015.
+
+\bibitem{Li2021}
+Hao Li, Daniel Fernex, Richard Semaan, Jianguo Tan, Marek Morzy{\'n}ski, and Bernd~R Noack.
+\newblock Cluster-based network model.
+\newblock {\em Journal of Fluid Mechanics}, 906, 2021.
+
+\bibitem{Lloyd1982}
+Stuart Lloyd.
+\newblock Least squares quantization in pcm.
+\newblock {\em IEEE transactions on information theory}, 28(2):129--137, 1982.
+
+\bibitem{lorenz1963deterministic}
+Edward~N Lorenz.
+\newblock Deterministic nonperiodic flow.
+\newblock {\em Journal of atmospheric sciences}, 20(2):130--141, 1963.
+
+\bibitem{Lu2002}
+Jinhu Lu and Guanrong Chen.
+\newblock A new chaotic attractor coined.
+\newblock {\em I. J. Bifurcation and Chaos}, 12:659--661, 03 2002.
+
+\bibitem{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel, M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos, D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock {\em Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{Max2021}
+Maximilian Pierzyna.
+\newblock Control-oriented cluster-basednetwork modeling.
+\newblock resreport, TU Braunschweig, August 2021.
+
+\bibitem{protas2015optimal}
+Bartosz Protas, Bernd~R Noack, and Jan {\"O}sth.
+\newblock Optimal nonlinear eddy viscosity in galerkin models of turbulent flows.
+\newblock {\em Journal of Fluid Mechanics}, 766:337--367, 2015.
+
+\bibitem{Rasmussen2004}
+Carl~Edward Rasmussen.
+\newblock Gaussian processes in machine learning.
+\newblock In {\em Advanced Lectures on Machine Learning}, pages 63--71. Springer Berlin Heidelberg, 2004.
+
+\bibitem{Rickles2007}
+D.~Rickles, P.~Hawe, and A.~Shiell.
+\newblock A simple guide to chaos and complexity.
+\newblock {\em Journal of Epidemiology {\&} Community Health}, 61(11):933--937, nov 2007.
+
+\bibitem{Roessler1976}
+O.E. Rössler.
+\newblock An equation for continuous chaos.
+\newblock {\em Physics Letters A}, 57(5):397--398, 1976.
+
+\bibitem{sprott2020we}
+Julien SPROTT.
+\newblock Do we need more chaos examples?
+\newblock {\em Chaos Theory and Applications}, 2(2):49--51, 2020.
+
+\bibitem{Strogatz2019}
+Steven Strogatz.
+\newblock {\em Nonlinear dynamics and chaos : with applications to physics, biology, chemistry, and engineering}.
+\newblock CRC Press, Boca Raton, 2019.
+
+\bibitem{Taylor2010}
+Robert~LV Taylor.
+\newblock Attractors: Nonstrange to chaotic.
+\newblock {\em Society for Industrial and Applied Mathematics, Undergraduate Research Online}, pages 72--80, 2010.
+
+\bibitem{Lasso}
+Robert Tibshirani.
+\newblock Regression shrinkage and selection via the lasso.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Methodological)}, 58(1):267--288, 1996.
+
+\bibitem{TwoScroll}
+Sundarapandian Vaidyanathan, Aceng Sambas, Sen Zhang, Yicheng Zeng, Mohamad~Afendee Mohamed, and Mustafa Mamat.
+\newblock A new two-scroll chaotic system with two nonlinearities: dynamical analysis and circuit simulation.
+\newblock {\em Telkomnika}, 17(5):2465--2474, 2019.
+
+\bibitem{VanRossum2009}
+Guido Van~Rossum and Fred~L. Drake.
+\newblock {\em Python 3 Reference Manual}.
+\newblock CreateSpace, Scotts Valley, CA, 2009.
+
+\bibitem{2020SciPy-NMeth}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, Matt Haberland, Tyler Reddy, David Cournapeau, Evgeni Burovski, Pearu Peterson, Warren Weckesser, Jonathan Bright, St{\'e}fan~J. {van der Walt}, Matthew Brett, Joshua Wilson, K.~Jarrod Millman, Nikolay Mayorov, Andrew R.~J. Nelson, Eric Jones, Robert Kern, Eric Larson, C~J Carey, {\.I}lhan Polat, Yu~Feng, Eric~W. Moore, Jake {VanderPlas}, Denis Laxalde, Josef Perktold, Robert Cimrman, Ian Henriksen, E.~A. Quintero, Charles~R. Harris, Anne~M. Archibald, Ant{\^o}nio~H. Ribeiro, Fabian Pedregosa, Paul {van Mulbregt}, and {SciPy 1.0 Contributors}.
+\newblock {{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in Python}.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
+
+\bibitem{SR3}
+Peng Zheng, Travis Askham, Steven~L Brunton, J~Nathan Kutz, and Aleksandr~Y Aravkin.
+\newblock A unified framework for sparse relaxed regularized regression: Sr3.
+\newblock {\em IEEE Access}, 7:1404--1423, 2018.
+
+\end{thebibliography}

@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: 3_Bibtex/jabref.bib
+Warning--entry type for "plotly" isn't style-file defined
+--line 193 of file 3_Bibtex/jabref.bib
+Warning--I didn't find a database entry for "sec_2_3_Clustering"
+Warning--to sort, need author or key in pysindy_Home
+Warning--to sort, need author or key in Sergei_Visual
+Warning--to sort, need author or key in Sergei_Black_Art
+Warning--to sort, need author or key in Wiki_Chaos
+Warning--empty chapter and pages in Fernex2021a
+You've used 48 entries,
+            2118 wiz_defined-function locations,
+            825 strings with 13123 characters,
+and the built_in function-call counts, 17036 in all, are:
+= -- 1576
+> -- 1069
+< -- 2
++ -- 435
+- -- 380
+* -- 1368
+:= -- 2933
+add.period$ -- 141
+call.type$ -- 48
+change.case$ -- 331
+chr.to.int$ -- 0
+cite$ -- 53
+duplicate$ -- 516
+empty$ -- 1175
+format.name$ -- 380
+if$ -- 3391
+int.to.chr$ -- 0
+int.to.str$ -- 48
+missing$ -- 44
+newline$ -- 239
+num.names$ -- 88
+pop$ -- 346
+preamble$ -- 1
+purify$ -- 286
+quote$ -- 0
+skip$ -- 349
+stack$ -- 0
+substring$ -- 894
+swap$ -- 60
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 180
+warning$ -- 5
+while$ -- 137
+width$ -- 50
+write$ -- 509
+(There were 7 warnings)

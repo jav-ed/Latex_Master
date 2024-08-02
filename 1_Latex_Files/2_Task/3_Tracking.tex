@@ -1,0 +1,107 @@
+\section{Tracking}
+\label{sec_2_3_Tracking}
+In this section, it is the pursuit to explain the third step, tracking, by initially answering the following questions. 
+What is tracking, why is it regarded to be complex and why is it important? 
+In the subsection \ref{subsec_2_3_1_Tracking_Workflow} the final workflow will be elaborated. Furthermore, a brief discussion on the advancements in tracking of \gls{cnmc} to \emph{first CNMc} shall be given. 
+Since the data and workflow of tracking are extensive, for the sake of a better comprehension the steps are visually separated with two horizontal lines in the upcoming subsection. 
+The lines introduce new tracking subtasks, which are intended to provide clear guidance to orient readers within the workflow.
+Note, the tracking results will be presented in subsection \ref{sec_3_1_Tracking_Results}. \newline
+
+To define the term tracking some explanations from subsection \ref{subsec_1_1_3_first_CNMc} shall be revisited.
+Through the clustering step, each centroid is defined with a label.
+The label allocation is performed randomly as showed in subsection \ref{subsec_2_2_1_Parameter_Study}.
+Thus, matching centroid labels from one model parameter value $\beta_i$ to 
+another model parameter value $\beta_j$, where $i \neq j$, becomes an issue.
+In order first, to understand the term tracking, figure \ref{fig_21} shall be considered. 
+The centroids of the Lorenz system \eqref{eq_6_Lorenz} for two $\beta$ values $\beta_i = 31.333$ in green and $\beta_j = 32.167$ in yellow are plotted next to each other.
+The objective is to match each centroid of $\beta_i$ with one corresponding centroid of $\beta _j$.
+It is important to understand that the matching must be done across the two $\beta $ values $\beta_i$ and $\beta_j$ and not within the same $\beta$.\newline 
+
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =0.8\textwidth]{2_Figures/2_Task/1_Tracking/0_Matching.pdf}
+    \caption{Unrealistic tracking example for the Lorenz system with $\beta_i=31.333, \, \beta_j=32.167, \, K = 10$}
+    \label{fig_21}    
+\end{figure}
+
+By inspecting the depicted figure closer it can be observed that each green centroid $\beta_i$ has been connected with a corresponding yellow centroid $\beta_j$ with an orange line. 
+The centroids which are connected through the orange lines shall be referred to as \emph{inter} $\beta$ \emph{connected} centroids. 
+Determining the \emph{inter} $\beta$ \emph{connected} centroids is the outcome of tracking. Thus, it is matching centroids across different model parameter values $\beta$ based on their corresponding distance to each other. The closer two \emph{inter} $\beta $ centroids are, the more likely they are to be matched. 
+The norm for measuring distance can be chosen from 
+one of the 23 possible norms defined in \emph{SciPy} \cite{2020SciPy-NMeth}. 
+However, the default metric is the euclidean norm which is defined as equation \eqref{eq_16}.\newline
+
+ \begin{equation}
+     \label{eq_16}
+     d(\vec x, \vec y) = \sqrt[]{\sum_{i=1}^n \left(\vec{x}_i - \vec{y}_i\right)^2}
+ \end{equation}
+
+\vspace{0.2cm}
+The orange legend on the right side of figure \ref{fig_21} outlines the tracked results.
+In this rare and not the general case, the \emph{inter} $\beta$ labeling is straightforward in two ways. First, the closest centroids from $\beta_i$ to $\beta_j$ have the same label. Generally, this is not the case, since the centroid labeling is assigned randomly.
+Second, the \emph{inter} $\beta$ centroid positions can be matched easily visually. 
+Ambiguous regions, where visually tracking is not possible, are not present.
+To help understand what ambiguous regions could look like, figure \ref{fig_22} shall be viewed. It illustrates the outcome of the Lorenz system \eqref{eq_6_Lorenz} with $\beta_i=39.004,\, \beta_j = 39.987$ and with a number of centroids of $K= 50$.
+Overall, the tracking seems to be fairly obvious, but paying attention to the centroids in the center, matching the centroids becomes more difficult. 
+This is a byproduct of the higher number of centroids $K$. 
+With more available centroids, more centroids can fill a small area.
+As a consequence, multiple possible reasonable matchings are allowed.
+Note, that due to spacing limitations, not all tracking results are listed in the right orange legend of figure \ref{fig_22}. 
+The emergence of such ambiguous regions is the main driver why tracking is considered to be complex.\newline
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =\textwidth]
+    {2_Figures/2_Task/1_Tracking/2_Ambiguous_Regions.pdf}
+    \caption{Ambiguous regions in the tracking example for the Lorenz system with $\beta_i=39.004,\, \beta_j = 39.987,\, K= 50$}
+    \label{fig_22}
+\end{figure}
+
+
+In general, it can be stated that the occurrence of ambiguous regions can be regulated well with the number of centroids $K$. 
+$K$ itself depends on the underlying dynamical system. 
+Thus, $K$ should be only as high as required to capture the complexity of the dynamical system.
+Going above that generates unnecessary many centroids in the state space. 
+Each of them increases the risk of enabling ambiguous regions to appear. Consequently, incorrect tracking results can arise.\newline 
+
+
+In figure \ref{fig_23} a second example of tracked outcome for the Lorenz system \eqref{eq_6_Lorenz} with $\beta_i=30.5,\, \beta_j=31.333, \, K = 10$ is given. 
+Here it can be inspected that the immediate \emph{inter} $\beta $ centroid neighbors do not adhere to the same label. Hence, it is representative of a more general encountered case. The latter is only true when the $K$ is chosen in a reasonable magnitude. The reason why centroids are tracked by employing distance measurements is grounded in the following. 
+If the clustering parameter \emph{n\_init} is chosen appropriately (see \ref{subsec_2_2_1_Parameter_Study}), the position of the centroids are expected to change only slightly when $\beta $ is changed. 
+In simpler terms, a change in $\beta$ should not move a centroid much, if the clustering step was performed satisfactorily in the first place.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =0.8\textwidth]{2_Figures/2_Task/1_Tracking/1_Non_Matching.pdf}
+    \caption{Realistic tracking example for the Lorenz system with $\beta_i=30.5$ and $\beta_j=31.333$}
+    \label{fig_23}    
+\end{figure}
+
+The next point is to answer the question, of why tracking is of such importance to \gls{cnmc}. 
+The main idea of \gls{cnmc} is to approximate dynamical systems and allow prediction trajectories for unseen $\beta_{unseen}$. 
+The motion, i.e., the trajectory, is replicated by the movement from one centroid to another centroid. Now, if the centroids are labeled wrong, the imitation of the motion is wrong as well. 
+For instance, the considered dynamical system is only one movement from left to right. 
+For instance, imagining a dynamical system, where the trajectory is comprised of solely one movement. 
+Namely, moving from left to right.
+Following that, labeling the left centroid $c_l$ to be the right centroid $c_r$, would fully change the direction of the movement, i.e. $(c_l \rightarrow c_r) \neq (c_r \rightarrow c_l)$.
+In one sentence, the proper tracking is vital because otherwise \gls{cnmc} cannot provide reliably predicted trajectories. \newline
+
+\subsection{Tracking workflow}
+\label{subsec_2_3_1_Tracking_Workflow}
+In this subsection, the main objective is to go through the designed tracking workflow. As side remarks, other attempted approaches to tracking and the reason for their failure will be mentioned briefly.\newline
+
+
+To recapitulate on the term tracking, it is a method to match centroids across a set of different model parameter values $\vec{\beta}$ based on their respective distances. One obvious method for handling this task could be \gls{knn}. However, having implemented it, undesired results were encountered. 
+Namely, one centroid label could be assigned to multiple centroids within the same $\beta$. The demand for tracking, on the hand, is that, e.g., with $K=10$, each of the 10 available labels is found exactly once for one $\beta $. 
+Therefore, it can be stated that \gls{knn} is not suitable for tracking, as it might not be possible to impose \gls{knn} to comply with the tracking demand.\newline
+
+The second approach was by applying \gls{dtw}. The conclusion is that DTW's tracking results highly depended on the order in which the inter $\beta $ distances are calculated. Further, it can be stated that DTW needs some initial wrong matching before the properly tracked outcomes are provided. 
+The initial incorrect matching can be seen as the reason, why DTW is mostly used when very long signals, as in speech recognition, are provided.
+In these cases, some mismatching is tolerated. For \gls{cnmc}, where only a few $K$ centroids are available, a mismatch is strongly unwelcome.\newline
+
+The third method was based on the sequence of the labels. 
+The idea was that the order of the movement from one centroid to another centroid is known. In other terms, if the current position is at centroid $c_i$ and the next position for centroid $c_{i+1}$ is known. Assuming that the sequences across the $\vec{\beta}$ should be very similar to each other, a majority vote should return the correct tracking results. It can be recorded that this was not the case and the approach was dismissed.\newline
+

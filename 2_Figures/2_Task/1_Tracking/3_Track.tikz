@@ -1,0 +1,146 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_track) {$\begin{array}{c}\text{tracking settings}\end{array}$};&
+&
+&
+&
+&
+&
+&
+&
+\\
+%Row 1
+\node [Function] (track) {$\begin{array}{c}\text{Tracking}\end{array}$};&
+\node [DataInter] (track-ordering) {$\begin{array}{c}\text{clustered data}$$(\vec{\beta}),$$  \\ \text{ordering settings}\end{array}$};&
+&
+&
+&
+&
+&
+&
+\\
+%Row 2
+&
+\node [Function,stack] (ordering) {$\begin{array}{c}\text{ordering}$$\,(\vec{\beta})$$\end{array}$};&
+\node [DataInter] (ordering-cost_A) {$\begin{array}{c}\text{ord}$$_O\,(\vec{\beta})$$ \end{array}$};&
+&
+&
+&
+&
+&
+\node [DataIO] (right_output_ordering) {$\begin{array}{c}\text{save: trajectories,} \\ \text{plots}\end{array}$};\\
+%Row 3
+&
+&
+\node [Function] (cost_A) {$\begin{array}{c}\text{calc. } $$A\, (\vec{\beta})$$\end{array}$};&
+\node [DataInter] (cost_A-path) {$\begin{array}{c}$$A\,(\vec{\beta})$$ \end{array}$};&
+&
+&
+&
+&
+\\
+%Row 4
+&
+&
+&
+\node [Function] (path) {$\begin{array}{c}\text{best path} $$\,(\vec{\beta})$$\end{array}$};&
+\node [DataInter] (path-validity) {$\begin{array}{c}\text{path}$$_O\,(\vec{\beta})$$ \end{array}$};&
+&
+&
+&
+\\
+%Row 5
+&
+&
+&
+&
+\node [Function] (validity) {$\begin{array}{c}\text{validity} \\ \text{check}\end{array}$};&
+\node [DataInter] (validity-final) {$\begin{array}{c}\text{outcome} \end{array}$};&
+&
+&
+\\
+%Row 6
+&
+&
+&
+&
+&
+\node [Function] (final) {$\begin{array}{c}\text{truncate,} \\ \text{final path}\end{array}$};&
+\node [DataInter] (final-transform) {$\begin{array}{c}\text{final path}$$_O$$ \end{array}$};&
+&
+\\
+%Row 7
+&
+&
+&
+&
+&
+&
+\node [Function,stack] (transform) {$\begin{array}{c}\text{transform}\end{array}$};&
+&
+\node [DataIO] (right_output_transform) {$\begin{array}{c}\text{save: trajectories,} \\ \text{plots}\end{array}$};\\
+%Row 8
+&
+&
+&
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (track);
+\chainin (ordering) [join=by ProcessHVA];
+\chainin (cost_A) [join=by ProcessHVA];
+\chainin (path) [join=by ProcessHVA];
+\chainin (validity) [join=by ProcessHVA];
+\chainin (final) [join=by ProcessHVA];
+\chainin (transform) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(track) edge [DataLine] (track-ordering)
+(ordering) edge [DataLine] (ordering-cost_A)
+(cost_A) edge [DataLine] (cost_A-path)
+(path) edge [DataLine] (path-validity)
+(validity) edge [DataLine] (validity-final)
+(final) edge [DataLine] (final-transform)
+(ordering) edge [DataLine] (right_output_ordering)
+(transform) edge [DataLine] (right_output_transform)
+% Vertical edges
+(track-ordering) edge [DataLine] (ordering)
+(ordering-cost_A) edge [DataLine] (cost_A)
+(cost_A-path) edge [DataLine] (path)
+(path-validity) edge [DataLine] (validity)
+(validity-final) edge [DataLine] (final)
+(final-transform) edge [DataLine] (transform)
+(track) edge [DataLine] (output_track);
+\end{pgfonlayer}
+
+\end{tikzpicture}

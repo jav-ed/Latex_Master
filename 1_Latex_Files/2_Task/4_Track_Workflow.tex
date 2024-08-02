@@ -1,0 +1,131 @@
+After having explained 3 methods, which did not lead to a satisfactory outcome, the data and workflow of the final successful approach shall be presented.
+First very concisely, followed by an in-depth account.
+For that, figure \ref{fig_24_Tracking_Workflow} shall be analyzed.
+The initial input is obtained through \emph{settings.py}, where execution, storage and plotting attributes are defined. 
+For the further sub-steps, it shall be noted that the index big O stands for output of the respective sub-step.
+The clustered results from step two, described in section \cite{sec_2_3_Clustering} are used as input for the so-called ordering step.
+The ordered state can be stored and plotted if desired and exploited to calculate a cost matrix $\bm A (\vec{\beta})$. \newline
+
+ % =============================================================================
+ % ================ Tracking Workflow ==========================================
+ % =============================================================================
+ \begin{sidewaysfigure} [!]
+    \hspace*{-2cm} 
+     \resizebox{\textwidth}{!}{
+     \input{2_Figures/2_Task/1_Tracking/3_Track.tikz}
+}
+     \caption{General data and workflow overview of the third step, tracking}
+     \label{fig_24_Tracking_Workflow}
+ \end{sidewaysfigure}
+
+The tracking demand is applied on $\bm A (\vec{\beta})$, e.g., each row element must be matched to exactly one column element with the constraint that their additive sum is minimized. 
+It will return a suggested best path, i.e., the proposed optimized tracking path.
+It is possible that the proposed optimized tracking path may not be feasible concerning a linking condition, it undergoes a validity check.
+If required the suggested path will be chopped off and replaced such that the linking condition is met. The final path is then imposed to a transition such that the centroid labeling across all available $\vec{\beta}$ matches.
+The transformed final paths are designated as the tracked outcome and can be saved and plotted.\newline
+
+Since the fast description leaves some open questions, the in-depth explanation shall be tackled. Defining \emph{settings.py} is 
+analogously done to the two previous steps, i.e. data generation \ref{sec_2_2_Data_Gen} and clustering \ref{sec_2_3_Clustering}. 
+Therefore, accounts regarding the sub-tasks \emph{settings.py} and the clustered data are not repeated.\newline 
+
+\textbf{1. Ordering$\,(\vec{\boldsymbol\beta})$}
+\hrule
+\vspace{0.05cm}
+\hrule
+\vspace{0.25cm}
+The ordering of the clustered data can be understood by viewing figures \ref{fig_25_Clust}  and \ref{fig_26_Ord}.
+Both depict the clustered Lorenz system \eqref{eq_6_Lorenz} for $\beta = 30.5$. 
+The difference between the two figures is that figure \ref{fig_25_Clust} shows the clustering as it is obtained from the clustering step. It shall be referred to as the initial state.
+Figure \ref{fig_26_Ord} on the other shows the ordered state, i.e. the state after applying the ordering sub-step. The labeling of the ordered step represents to some degree the actual movement of the trajectory. 
+It can be observed that moving from label $1$ up to $6$ in a consecutive manner the resulting trajectory is generating the left ear of the Lorenz system. 
+Analogously, moving from label $7$ up to $10$ produces the right ear of the Lorenz system. Furthermore, the transition from centroid $6$ to $7$ captures the transition from one ear to the other.\newline 
+
+\begin{figure}[!h]
+     %\vspace{0.5cm}
+     \begin{minipage}[h]{0.47\textwidth}
+         \centering
+         \includegraphics[width =\textwidth]{2_Figures/2_Task/1_Tracking/4_Clus_30_5.pdf}
+         \caption{Initial State - centroids of the Lorenz system  \eqref{eq_6_Lorenz} $\beta =30.5$}
+         \label{fig_25_Clust}    
+     \end{minipage}
+     \hfill
+     \begin{minipage}{0.47\textwidth}
+         \centering
+         \includegraphics[width =\textwidth]{2_Figures/2_Task/1_Tracking/5_Ordered_30_5.pdf}
+         \caption{Ordered State - centroids of the Lorenz system  \eqref{eq_6_Lorenz} $\beta =30.5$}
+         \label{fig_26_Ord}    
+     \end{minipage}
+ \end{figure}
+
+ The way the ordered state is retrieved is as follows. The entire sequence of the motion along the centroids is available. In simpler terms, the first centroid from where the trajectory will start, all the upcoming centroids and the order in which they will be visited are known. 
+ Therefore, the initial centroid can be labeled as $1$, the second as $2$ and so on. 
+ However, it is important to note that with modifying one label of the trajectory sequence, the same label needs to be found in the entire sequence and modified as well. 
+ Otherwise, the ordered-state is true for one turn and a wrong initial-ordered-state mixture is kept for the remaining turns. 
+ Such an approach would also falsify the trajectory.
+ The labeling in the ordered state provides information about the trajectory. 
+Further, the original motion of the trajectory is untouched. Labeling the characteristic centroids with different numbers or with Greek letters does not impose any change on the original dynamics. For that to be fully true, the newly introduced labeling must be consistent across the entire sequence. 
+Although it is obvious, nevertheless \gls{cnmc} performs a sanity check, i.e., it is verified, whether the resulting trajectory in the ordered state is the same as the original trajectory. 
+Note, that all the same 4 types of plots stated in section \ref{sec_2_3_Clustering} are also available for visualizing the ordered state.
+\newline
+
+\textbf{2. Calculating $\bm A \, (\vec{\boldsymbol\beta})$ \& best path$\,(\vec{\boldsymbol\beta})$  }
+\hrule
+\vspace{0.05cm}
+\hrule
+\vspace{0.25cm}
+In the next sub-task the cost or similarity matrix $\bm A(\vec{\beta})$ is calculated. 
+First, the assignment problem shall be elaborated.
+Let $\beta_1$ and $\beta_2$ be two different model parameter values $\beta_1 \neq \beta_2$ and both shall consist of $K$ centroids. Each centroid is not only associated with a label but described fully with a position. 
+The goal is to match each centroid from $\beta_1$ to exactly one corresponding centroid from $\beta_2$ such that the overall spatial distance is minimized. 
+This idea was given as part of the definition of the term tracking itself. 
+The difference between tracking and the assignment problem is that first, tracking solves the assignment problem multiple times and thus the assignment problem is only a part of tracking.
+Second, the tracked results are also feasible and transformed, which will be covered later in this subsection.\newline
+
+For construction an illustrative cost matrix $\bm A(\vec{\beta})$, 
+3 pairwise different $\beta$ values, $\beta_1, \, \beta_2, \beta_3$ with $(\beta_1,\neq \beta_2) \neq \beta_3$ shall be considered.
+Again, each $\beta_i$, where $i = \{1,2,3\}$, consists of $K$ centroid positions.
+The assignment problem is solved by exploiting \emph{SciPy} \cite{2020SciPy-NMeth}. 
+Its solution, e.g., for $\beta_1$ and $\beta_2$ only matches the centroids from the two different $\beta$ such that the overall spatial distance is minimized. 
+The addition of the spatial distances of $\beta_1$ and $\beta_2$ shall be designated as the cost value $\beta_{i=1,j=2}$.
+With this level of understanding, the similarity matrix given in equation \eqref{eq_17_Dist_A} can be read.\newline
+
+\begin{equation}
+     \bm A_{3\times 3}\,(\vec{\beta}) = 
+     \begin{bmatrix}
+      \beta_{1,1} & \beta_{1,2} & \beta_{1,3}\\
+       \beta_{2,1}  &\beta_{2,2} & \beta_{2,3}\\
+       \beta_{3,1} & \beta_{3,2} &\beta_{3,3}
+     \end{bmatrix}
+     \label{eq_17_Dist_A}
+   \end{equation}
+
+Considering equation \eqref{eq_18_Expl}, if the assignment problem is solved for equal $\beta \Rightarrow \beta_i = \beta_j$, the centroid positions overlap exactly. 
+As a consequence, the distance between all the centroids across the two same $\beta$ is zero. 
+Further, adding up the zero spatial distances yields a cost of zero $\beta_{i,i} = 0$.\newline 
+
+\begin{equation}
+  \begin{aligned}
+    i &= j \\ 
+    \Rightarrow \beta_i &= \beta_j  \\
+    \Rightarrow \beta_{i,j} &=  \beta_{i,i} = 0 
+  \end{aligned}
+    \label{eq_18_Expl}
+\end{equation}
+
+The cost matrix $\bm A\,(\vec{\beta})$ compares each $\beta_i$ with all the remaining $\beta_j$, where $i = \{1, \,2, \cdots, n_{\beta}\}, \; j = \{1, \,2, \cdots, n_{\beta}\}$ and $ n_{\beta}$ denotes the number of the pairwise different $\vec{\beta}$.
+The outcome of each possible comparison $\beta_i$ with $\beta_j$ is a cost value representing a similarity between $\beta_i$ and $\beta_j$. 
+Obviously, in the case trivial as described above $\beta_i = \beta_j$, the similarity is maximized and the cost is minimized. 
+To find the best path, i.e., proposed tracking results, the trivial entries on the diagonal entries must be prohibited. Obeying that the cost matrix $\bm A\,(\vec{\beta})$ can be reformulated as equation \eqref{eq_19}. 
+Moreover, $\bm A\,(\vec{\beta})$ is symmetrical, therefore computing one triangular part of the cost matrix is sufficient. 
+The triangular part can be filled by mirroring along with the diagonal entries $\beta_{i,i}$ as outlined for the lower triangular matrix in equation \eqref{eq_19}. 
+\newline
+
+\begin{equation}
+     \bm A_{3\times 3}\,(\vec{\beta}) = 
+     \begin{bmatrix}
+       \infty & \beta_{1,2} & \beta_{1,3}\\
+       \beta_{2,1} = \beta_{1,2} & \infty & \beta_{2,3}\\
+       \beta_{3,1} =  \beta_{1,3} & \beta_{3,2} =\beta_{2,3}  & \infty\\
+     \end{bmatrix}
+     \label{eq_19}
+\end{equation}

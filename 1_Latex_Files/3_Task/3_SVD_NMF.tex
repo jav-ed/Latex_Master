@@ -1,0 +1,314 @@
+\section{Transition properties modeling}
+\label{sec_3_3_SVD_NMF}
+In the subsection \ref{subsec_2_4_2_QT}, it has been explained that \gls{cnmc} has two built-in modal decomposition methods for the $\bm Q / \bm T$ tensors, i.e., \gls{svd} and NMF.
+There are two main concerns for which performance measurements are needed.
+First, in subsection \ref{subsec_3_3_1_SVD_Speed}, the computational costs of both methods are examined.
+Then in subsection \ref{subsec_3_3_2_SVD_Quality}, the \gls{svd} and \gls{nmf} prediction quality will be presented and assessed.
+
+\subsection{Computational cost}
+\label{subsec_3_3_1_SVD_Speed}
+In this subsection, the goal is to evaluate the computational cost of the two decomposition methods implemented in \gls{cnmc}.
+\gls{nmf} was already used in \emph{first CNMc} and it was found to be one of the most computational expensive tasks.
+With an increasing model order $L$ it became the most computational task by far, which is acknowledged by \cite{Max2021}. 
+The run time was one of the main reasons why \gls{svd} should be implemented in \gls{cnmc}. 
+To see if \gls{svd} can reduce run time, both methods shall be compared.\newline 
+
+First, it is important to mention that \gls{nmf} is executed for one single predefined mode number $r$. 
+It is possible that a selected $r$ is not optimal, since $r$ is a parameter that depends not only on the chosen dynamical system but also on other parameters, e.g., the number of centroids $K$ and training model parameter values $n_{\beta, tr}$, as well as \gls{nmf} specific attributes. 
+These are the maximal number of iterations in which the optimizer can converge and tolerance convergence.
+However, to find an appropriate $r$, \gls{nmf} can be executed multiple times with different values for $r$.
+Comparing the execution time of \gls{nmf} with multiple invocations against \gls{svd} can be regarded as an unbalanced comparison.
+Even though for a new dynamical system and its configuration the optimal $r_{opt}$ for \gls{nmf} is most likely to be found over a parameter study, for the upcoming comparison, the run time of one single \gls{nmf} solution is measured.\newline 
+
+The model for this purpose is \emph{SLS}. Since \emph{SLS} is trained with the output of 7 pairwise different model parameter values $n_{\beta,tr} = 7$, the maximal rank in \gls{svd} is limited to 7.
+Nevertheless, allowing \gls{nmf} to find a solution $r$ was defined as $r=9$, the maximal number of iterations in which the optimizer can converge is 10 million and the convergence tolerance is $1\mathrm{e}{-6}$.
+Both methods can work with sparse matrices. 
+However, the \gls{svd} solver is specifically designed to solve sparse matrices.
+The measured times for decomposing the $\bm Q / \bm T$ tensors for 7 different $L$ are listed in table \ref{tab_6_NMF_SVD}.
+It can be observed that for \gls{svd} up to $L=6$, the computational time for both $\bm Q / \bm T$ tensors is less than 1 second.
+Such an outcome is efficient for science and industry applications.
+With $L=7$ a big jump in time for both $\bm Q / \bm T$ is found.
+However, even after this increase, the decomposition took around 5 seconds, which still is acceptable.\newline 
+
+\begin{table}
+    \centering
+    \begin{tabular}{c| c c |c c  }
+        \textbf{$L$} &\textbf{SVD} $\bm Q$ & \textbf{NMF} $\bm Q$
+        &\textbf{SVD} $\bm T$ & \textbf{NMF} $\bm T$\\
+        \hline \\
+        [-0.8em]
+         $1$  & $2 \,\mathrm{e}{-4}$ s  & $64$ s & $8 \, \mathrm{e}{-05}$ s & $3 \, \mathrm{e}{-2}$  s \\
+
+         $2$  & $1 \, \mathrm{e}{-4}$ s  & $8 \, \mathrm{e}{-2}$ s  & $1 \, \mathrm{e}{-4}$ s & $1$ h   \\
+
+         $3$  & $2 \, \mathrm{e}{-4}$ s  & $10$ s  & $2 \, \mathrm{e}{-4}$ s & $0.1$ s \\
+
+         $4$  & $4 \, \mathrm{e}{-3}$ s  & $20$ s & $7 \, \mathrm{e}{-3}$ s & $1.5$ h \\
+
+         $5$  & $6 \, \mathrm{e}{-2}$ s  & $> 3$ h   & $3 \, \mathrm{e}{-2}$ s & -   \\
+
+         $6$  & $0.4$ s & -     & $0.4$ s  & -    \\
+
+         $7$  & $5.17$ s & -      & $4.52$ s & -  
+    \end{tabular}
+    \caption{Execution time for \emph{SLS} of \gls{nmf} and \gls{svd} for different $L$ }
+    \label{tab_6_NMF_SVD}
+\end{table}
+
+Calculating $\bm Q$ with \gls{nmf} for $L=1$ already takes 64 seconds. 
+This is more than \gls{svd} demanded for $L=7$. 
+The $\bm T$ tensor on the other is much faster and is below a second.
+However, as soon as $L=2$ is selected, $\bm T$ takes 1 full hour, $L=4$ more than 1 hour.
+The table for \gls{nmf} is not filled, since running $\bm Q$ for $L=5$ was taking more than 3 hours, but still did not finish. 
+Therefore, the time measurement was aborted. 
+This behavior was expected since it was already mentioned in \cite{Max2021}.
+Overall, the execution time for \gls{nmf} is not following a trend, e.g., computing $\bm T$ for $L=3$ is faster than for $L=2$ and $\bm Q$ for $L=4$ is faster than for $L=1$.
+In other words, there is no obvious rule, on whether even a small $L$ could lead to hours of run time.\newline 
+
+It can be concluded that \gls{svd} is much faster than \gls{nmf} and it also shows a clear trend, i.e. the computation time is expected to increase with $L$.
+\gls{nmf} on the other hand first requires an appropriate mode number $r$, which most likely demands a parameter study.
+However, even for a single \gls{nmf} solution, it can take hours.
+With increasing $L$ the amount of run time is generally expected to increase, even though no clear rule can be defined.
+Furthermore, it needs to be highlighted that \gls{nmf} was tested on a small model, where $n_{\beta,tr} = 7$. The author of this thesis experienced an additional increase in run time when $n_{\beta,tr}$ is selected higher. 
+Also, executing \gls{nmf} on multiple dynamical systems or model configurations might become infeasible in terms of time.
+Finally, with the implementation of \gls{svd}, the bottleneck in modeling $\bm Q / \bm T$ could be eliminated.
+
+
+\subsection{Prediction quality}
+\label{subsec_3_3_2_SVD_Quality}
+In this subsection, the quality of the \gls{svd} and \gls{nmf} $\bm Q / \bm T$ predictions are evaluated. 
+The used model configuration for this aim is \emph{SLS}.
+First, only the $\bm Q$ output with \gls{svd} followed by \gls{nmf} shall be analyzed and compared. Then, the same is done for the $\bm T$ output.\newline
+
+
+In order to see how many modes $r$ were chosen for \gls{svd} the two figures \ref{fig_54} and \ref{fig_55} are shown. 
+It can be derived that with $r = 4$, $99 \%$ of the information content could be captured. The presented results are obtained for $\bm Q$ and $L =1$.\newline
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/10_lb_Q_Cumlative_E.pdf}
+        \caption{\emph{SLS}, \gls{svd}, cumulative energy of $\bm Q$ for $L=1$}
+        \label{fig_54}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/11_lb_Q_Sing_Val.pdf}
+        \caption{\emph{SLS}, \gls{svd}, singular values of $\bm Q$ for $L=1$}
+        \label{fig_55}    
+    \end{minipage}
+\end{figure}
+
+Figures \ref{fig_56} to \ref{fig_58} depict the original $\bm{Q}(\beta_{unseen} = 28.5)$, which is generated with CNM, the \gls{cnmc} predicted $\bm{\tilde{Q}}(\beta_{unseen} = 28.5)$ and their deviation $| \bm{Q}(\beta_{unseen} = 28.5) -  \bm{\tilde{Q}}(\beta_{unseen} = 28.5) |$, respectively.
+In the graphs, the probabilities to move from centroid $c_p$ to $c_j$ are indicated. 
+Contrasting figure \ref{fig_56} and \ref{fig_57} exhibits barely noticeable differences.
+For highlighting present deviations, the direct comparison between the \gls{cnm} and \gls{cnmc} predicted $\bm Q$ tensors is given in figure \ref{fig_58}.
+It can be observed that the highest value is $max( \bm{Q}(\beta_{unseen} = 28.5) -  \bm{\tilde{Q}}(\beta_{unseen} = 28.5) |) \approx 0.0697 \approx 0.07$. 
+Note that all predicted $\bm Q$ and $\bm T$ tensors are obtained with \gls{rf} as the regression model.
+\newline
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5\textwidth}
+        \centering
+        \caption{Original $\bm{Q}(\beta_{unseen} = 28.5)$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/12_lb_0_Q_Orig_28.5.pdf}
+        \label{fig_56}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cnmc} predicted $\bm{\tilde{Q}}(\beta_{unseen} = 28.5)$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/13_lb_2_Q_Aprox_28.5.pdf}
+        \label{fig_57}    
+    \end{subfigure}
+
+    \smallskip
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \caption{Deviation $| \bm{Q}(\beta_{unseen}) -  \bm{\tilde{Q}}(\beta_{unseen}) |$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/14_lb_4_Delta_Q_28.5.pdf}
+        \label{fig_58}       
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{svd}, original $\bm{Q}(\beta_{unseen} = 28.5)$ , \gls{cnmc} predicted $\bm{\tilde{Q}}(\beta_{unseen} = 28.5)$ and  deviation $| \bm{Q}(\beta_{unseen} = 28.5) -  \bm{\tilde{Q}}(\beta_{unseen} = 28.5) |$ for $L=1$}
+    \label{fig_58_Full}       
+\end{figure}
+
+The same procedure shall now be performed with NMF. 
+The results are depicted in figures \ref{fig_59} and \ref{fig_60}.
+Note that the original \gls{cnm} $\bm{Q}(\beta_{unseen} = 28.5)$ does not change, thus figure \ref{fig_56} can be reused.  
+By exploiting figure \ref{fig_61}, it can be observed that the highest deviation for the \gls{nmf} version is $max( \bm{Q}(\beta_{unseen} = 28.5) -  \bm{\tilde{Q}}(\beta_{unseen} = 28.5) |) \approx 0.0699  \approx 0.07$.
+The maximal error of \gls{nmf} $(\approx 0.0699)$ is slightly higher than that of \gls{svd}  $(\approx 0.0697)$. 
+Nevertheless, both methods have a very similar maximal error and seeing visually other significant differences is hard.
+\newline
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5\textwidth}
+        \centering
+        \caption{\gls{cnmc} predicted $\bm{\tilde{Q}}(\beta_{unseen} = 28.5)$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/15_lb_2_Q_Aprox_28.5.pdf}
+        \label{fig_59}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \caption{Deviation $| \bm{Q}(\beta_{unseen} ) -  \bm{\tilde{Q}}(\beta_{unseen} ) |$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/16_lb_4_Delta_Q_28.5.pdf}
+        \label{fig_60}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{nmf}, \gls{cnmc} predicted $\bm{\tilde{Q}}(\beta_{unseen} = 28.5)$ and deviation $| \bm{Q}(\beta_{unseen} = 28.5) -  \bm{\tilde{Q}}(\beta_{unseen} = 28.5) |$ for $L=1$}
+\end{figure}
+
+In order to have a quantifiable error value, the Mean absolute error (MAE) following equation \eqref{eq_23} is leveraged.
+The MAE errors for \gls{svd} and \gls{nmf} are  $MAE_{SVD} = 0.002 580 628$ and $MAE_{NMF} = 0.002 490 048$, respectively.
+\gls{nmf} is slightly better than \gls{svd} with $ MAE_{SVD}  -  MAE_{NMF} \approx 1 \mathrm{e}{-4}$, which can be considered to be negligibly small. 
+Furthermore, it must be stated that \gls{svd} was only allowed to use $r_{SVD} = 4$ modes, due to the $99 \%$ energy demand, whereas \gls{nmf} used $r_{NMF} = 9$ modes.
+Given that \gls{svd} is stable in computational time, i.e., it is not assumed that for low $L$, the computational cost scales up to hours, \gls{svd} is the clear winner for this single comparison. \newline
+
+
+For the sake of completeness, the procedure shall be conducted once  as well for the $\bm T$ tensor.
+For this purpose figures \ref{fig_61} to \ref{fig_65} shall be considered.
+It can be inspected that the maximal errors for \gls{svd} and \gls{nmf} are $max( \bm{T}(\beta_{unseen} = 28.5) -  \bm{\tilde{T}}(\beta_{unseen} = 28.5) |) \approx 0.126 $ and
+ $max( \bm{T}(\beta_{unseen} = 28.5) -  \bm{\tilde{T}}(\beta_{unseen} = 28.5) | ) \approx 0.115 $, respectively. 
+The MAE errors are, $MAE_{SVD} = 0.002 275 379 $ and $MAE_{NMF} = 0.001 635 510$. 
+\gls{nmf} is again slightly better than \gls{svd} with $ MAE_{SVD}  -  MAE_{NMF} \approx 6 \mathrm{e}{-4}$, which is a deviation of $\approx 0.06 \%$ and might also be considered as negligibly small. \newline
+
+
+%------------------------------------- SVD T -----------------------------------
+\begin{figure}[!h]
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{Original \gls{cnm} $\bm{T}(\beta_{unseen} = 28.5)$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/17_lb_1_T_Orig_28.5.pdf}
+        \label{fig_61}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.5 \textwidth}
+        \centering
+        \caption{\gls{cnmc} predicted $\bm{\tilde{T}}(\beta_{unseen} = 28.5)$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/18_lb_3_T_Aprox_28.5.pdf}
+        \label{fig_62}    
+    \end{subfigure}
+    
+    \smallskip
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \caption{Deviation $| \bm{T}(\beta_{unseen}) -  \bm{\tilde{T}}(\beta_{unseen}) |$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/19_lb_5_Delta_T_28.5.pdf}
+        \label{fig_63}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{svd}, original $\bm{T}(\beta_{unseen} = 28.5)$, predicted $\bm{\tilde{T}}(\beta_{unseen} = 28.5)$ and deviation $| \bm{T}(\beta_{unseen} = 28.5) -  \bm{\tilde{T}}(\beta_{unseen} = 28.5) |$ for $L=1$}
+\end{figure}
+
+
+%------------------------------------- NMF T -----------------------------------
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5\textwidth}
+        \centering
+        \caption{\gls{cnmc} predicted $\bm{\tilde{T}}(\beta_{unseen} = 28.5)$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/20_lb_3_T_Aprox_28.5.pdf}
+        \label{fig_64}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Deviation $| \bm{T}(\beta_{unseen}) -  \bm{\tilde{T}}(\beta_{unseen}) |$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/2_Mod_CPE/21_lb_5_Delta_T_28.5.pdf}
+        \label{fig_65}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{nmf}, \gls{cnmc} predicted $\bm{\tilde{T}}(\beta_{unseen} = 28.5)$ and deviation $| \bm{T}(\beta_{unseen} = 28.5) -  \bm{\tilde{T}}(\beta_{unseen} = 28.5) |$ for $L=1$}
+\end{figure}
+
+Additional MAE errors for different $L$ and $\beta{unseen}= 28.5,\, \beta{unseen}= 32.5$ are collected in table \ref{tab_7_NMF_SVD_QT}.
+First, it can be outlined that regardless of the chosen method, \gls{svd} or \gls{nmf}, all encountered MAE errors are very small. 
+Consequently, it can be recorded that \gls{cnmc} convinces with an overall well approximation of the $\bm Q / \bm T$ tensors.
+Second, comparing \gls{svd} and \gls{nmf} through their respective MAE errors, it can be inspected that the deviation of both is mostly in the order of $ \mathcal{O} \approx 1 \mathrm{e}{-2}$. 
+It is a difference in $\approx 0.1 \%$ and can again be considered to be insignificantly small.\newline 
+
+Despite this, \gls{nmf} required the additional change given in equation \eqref{eq_33}, which did not apply to \gls{svd}. 
+The transition time entries at the indexes where the probability is positive should be positive as well. Yet, this is not always the case when \gls{nmf} is executed. To correct that, these probability entries are manually set to zero.
+This rule was also actively applied to the results presented above. 
+Still, the outcome is very satisfactory, because the modeling errors are found to be small. 
+\newline
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{c c| c c|  c c  }
+        \textbf{$L$} &$\beta_{unseen}$
+         & $\boldsymbol{MAE}_{\gls{svd}, \bm Q}$  
+         &$\boldsymbol{MAE}_{\gls{nmf}, \bm Q}$ 
+         & $\boldsymbol{MAE}_{\gls{svd}, \bm T}$  
+         &$\boldsymbol{MAE}_{\gls{nmf}, \bm T}$ \\
+        \hline \\
+        [-0.8em]
+         $1$  & $28.5$ 
+         & $0.002580628 $ & $0.002490048$ 
+         & $0.002275379 $ & $0.001635510$\\
+         
+         $1$  & $32.5$ 
+         & $0.003544923$ & $0.003650155$ 
+         & $0.011152145$ & $0.010690052$\\
+         
+         $2$  & $28.5$ 
+         & $0.001823848$ & $0.001776276$ 
+         & $0.000409955$ & $0.000371242$\\
+         
+         $2$  & $32.5$ 
+         & $0.006381635$ & $0.006053059$ 
+         & $0.002417142$ & $0.002368680$\\
+         
+         $3$  & $28.5$ 
+         & $0.000369228$ & $0.000356817$ 
+         & $0.000067680$ & $0.000062964$\\
+
+         $3$  & $32.5$ 
+         & $0.001462458$ & $0.001432738$ 
+         & $0.000346298$ & $0.000343520$\\
+         
+
+         $4$  & $28.5$ 
+         & $0.000055002$ & $0.000052682$ 
+         & $0.000009420$ & $0.000008790$\\
+
+         $4$  & $32.5$ 
+         & $0.000215147$ & $0.000212329$ 
+         & $0.000044509$ & $0.000044225$
+    
+    \end{tabular}
+    \caption{\emph{SLS}, Mean absolute error for different $L$ and two $\beta_{unseen}$}
+    \label{tab_7_NMF_SVD_QT}
+\end{table}
+
+\begin{equation}
+    \begin{aligned}
+        TGZ := \bm T ( \bm Q  > 0) \leq 0 \\
+        \bm Q ( TGZ) := 0
+    \end{aligned}
+    \label{eq_33}
+\end{equation}
+
+In summary, both methods \gls{nmf} and \gls{svd} provide a good approximation of the $\bm Q / \bm T$ tensors.
+The deviation between the prediction quality of both is negligibly small.
+However, since \gls{svd} is much faster than \gls{nmf} and does not require an additional parameter study, the recommended decomposition method is \gls{svd}.
+Furthermore, it shall be highlighted that \gls{svd} used only $r = 4$ modes for the $\bm Q$ case, whereas for \gls{nmf} $r=9$ were used. 
+Finally, as a side remark, all the displayed figures and the MAE errors are generated and calculated with \gls{cnm}'s default implemented methods. 
+\FloatBarrier

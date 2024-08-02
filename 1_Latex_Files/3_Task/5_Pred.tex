@@ -1,0 +1,27 @@
+\section{CNMc predictions}
+\label{sec_3_5_Pred}
+In this section, some representative outputs for the \gls{cnmc} predicted trajectories shall be discussed.
+For that, first, the quality measurement abilities implemented in \gls{cnmc} are elaborated.
+Next, the model \emph{SLS} is analyzed and explained in detail in the subsection \ref{subsec_3_5_1_SLS}.
+Finally, the outcome for other models shall be presented briefly in subsection \ref{subsec_3_5_2_Models}.\newline
+
+There are several methods implemented in \gls{cnmc} to assess the quality of the predicted trajectories.
+The first one is the autocorrelation, which will be calculated for all $\vec{\beta}_{unseen}$ and all provided $\vec{L}$, for the true, \gls{cnm} and \gls{cnmc} predicted trajectories.
+As usual, the output is plotted and saved as HTML files for a feature-rich visual inspection.
+For qualitative assessment, the MAE errors are calculated for all $\vec{\beta}_{unseen}$ and $\vec{L}$ for two sets.
+The first set consists of the MAE errors between the true and the \gls{cnm} predicted trajectories.
+The second set contains the MAE errors between the true and the \gls{cnmc} predicted trajectories.
+Both sets are plotted as MAE errors over $L$ and stored as HTML files.
+Furthermore, the one $L$ value which exhibits the least MAE error is printed in the terminal and can be found in the log file as well. \newline
+
+The second technique is the \gls{cpd}, which will also be computed for all the 3 trajectories, i.e., true, \gls{cnm} and \gls{cnmc} predicted trajectories.
+The \gls{cpd} depicts the probability of being at one centroid $c_i$.
+For each $\vec{\beta}_{unseen}$ and all $L$ the \gls{cpd} is plotted and saved.
+The third method displays all the 3 trajectories in the state space.
+Moreover, the trajectories are plotted as 2-dimensional graphs, i.e., each axis as a subplot over the time $t$.
+The final method calculates the MAE errors of the $\bm Q / \bm T$ tensors for all $L$.\newline 
+
+The reason why more than one quality measurement method is integrated into \gls{cnmc} is that \gls{cnmc} should be able to be applied to, among other dynamical systems, chaotic systems.
+The motion of the Lorenz system \eqref{eq_6_Lorenz} is not as complex as of the, e.g., the \emph{Four Wing} \eqref{eq_10_4_Wing}.
+Nevertheless, the Lorenz system already contains quasi-random elements, i.e., the switching from one ear to the other cannot be captured exactly with a surrogate mode. However, the characteristic of the Lorenz system and other chaotic dynamical systems as well can be replicated.
+In order to prove the latter, more than one method to measure the prediction quality is required.

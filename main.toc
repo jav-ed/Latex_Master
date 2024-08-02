@@ -1,0 +1,33 @@
+\contentsline {chapter}{List of Figures}{7}{section*.6}%
+\contentsline {chapter}{List of Tables}{9}{section*.8}%
+\contentsline {chapter}{\numberline {1}Introduction}{11}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{11}{section.1.1}%
+\contentsline {section}{\numberline {1.2}State of the art}{13}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Principles}{13}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.3}Cluster-based Network Modeling (CNM)}{14}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}First version of CNMc}{17}{subsection.1.3.1}%
+\contentsline {chapter}{\numberline {2}Methodology}{20}{chapter.2}%
+\contentsline {section}{\numberline {2.1}CNMc's data and workflow}{21}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Data generation}{25}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Clustering}{31}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Parameter Study}{34}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.4}Tracking}{35}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Tracking workflow}{38}{subsection.2.4.1}%
+\contentsline {section}{\numberline {2.5}Modeling}{45}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Modeling the centroid position evolution}{45}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Modeling Q/T}{49}{subsection.2.5.2}%
+\contentsline {chapter}{\numberline {3}Results}{52}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Tracking results}{53}{section.3.1}%
+\contentsline {section}{\numberline {3.2}CPE modeling results}{58}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Transition properties modeling}{62}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Computational cost}{63}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Prediction quality}{64}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Transition property regression models}{69}{section.3.4}%
+\contentsline {section}{\numberline {3.5}CNMc predictions}{73}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Assessment of SLS}{73}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Results of further dynamical systems}{76}{subsection.3.5.2}%
+\contentsline {chapter}{\numberline {4}Conclusion and outlook}{84}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Zusammenfassung auf Deutsch}{86}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Further implemented dynamical systems}{88}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Some basics about chaotic systems}{89}{appendix.B}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,0 +1,263 @@
+% =====================================================================
+% ============= Data generation =======================================
+% =====================================================================
+\section{Data generation}
+\label{sec_2_2_Data_Gen}
+In this section, the first main step of the 5 steps shall be explained.
+The idea of \gls{cnmc} is to create a surrogate model such that predictions for unseen $\beta_{unseen}$ can be made. 
+An unseen model parameter value $\beta_{unseen}$ is defined to be not incorporated in the training data. Generally in machine learning, the more linear independent data is available the higher the trustworthiness of the surrogate model is assumed to be.
+Linear independent data is to be described as data which provide new information. 
+Imagining any million times a million data matrix $\bm {A_{n\, x\, n}}$, where  $n = 1 \mathrm{e}{+6}$. 
+On this big data matrix $\bm A$  a modal decomposition method, e.g., the \glsfirst{svd} \cite{Brunton2019,gerbrands1981relationships}, shall be applied.\newline 
+
+To reconstruct the original matrix $\bm A$ fully with the decomposed matrices only the non-zero modes are required. The number of the non-zero modes $r$ is often much smaller than the dimension of the original matrix, i.e., $r << n$.
+If $r << n$, the measurement matrix $\bm A$ contains a high number of linear dependent data. This has the advantage of allowing the original size to be reduced. The disadvantage, however, is that $\bm A$ contains duplicated entries (rows, or columns). For this reason, $\bm A$ includes data parts which do not provide any new information. 
+In the case of $r = n$ only meaningful observations are comprised and $\bm A$ has full rank. 
+Part of feature engineering is to supply the regression model with beneficial training data and filter out redundant copies. 
+The drawback of $r = n$ is observed when the number of representative modes is chosen to be smaller than the full dimension $r < n$. 
+Consequently, valuable measurements could be lost. \newline
+
+
+Moreover, if the dimension $n$ is very large, accuracy demands may make working with matrices unavoidable. 
+As a result, more powerful computers are required and the computational time is expected to be increased.
+For this work, an attempt is made to represent non-linear differential equations by a surrogate model. 
+In addition, trajectories of many $\vec{\beta }$ can be handled quite efficiently. 
+Therefore, it attempted to provide sufficient trajectories as training data.
+Having said that the data and workflow of this step, i.e., data generation, shall be described. 
+The general overview is depicted in figure \ref{fig_4_Data_Gen}. 
+Data generation corresponding settings are passed to its step, which invokes the \gls{ode} solver for the range of selected $\vec{\beta}$. 
+The trajectories are plotted and, both, all the obtained trajectories $F_(\vec{\beta})$ and their plots are saved. Note that $\vec{\beta}$ indicates that one differential equation is solved for selected $\beta$ values within a range of model parameter values $\vec{\beta}$.\newline 
+%
+% ==============================================
+% ========== Constraint Viol Workflow =========
+% ==============================================
+\begin{figure} [!h]
+    \hspace*{-4cm} 
+    \resizebox{1.2\textwidth}{!}{
+    \input{2_Figures/2_Task/1_Data_Gen.tikz}
+    }
+    \caption{Data and workflow of the first step: Data generation}
+    \label{fig_4_Data_Gen}
+\end{figure}
+%
+%
+A detailed description will be given in the following. 
+First, in order to run this task, it should be activated in \emph{settings.py}.
+Next, the user may change local output paths, define which kind of plots shall be generated, which dynamical model should be employed and provide the range  $\vec{\beta}$.
+As for the first point, the operator can select the path where the output of this specific task shall be stored. Note, that this is an optional attribute. Also, although it was only tested on Linux, the library \emph{pathlib} was applied.
+Therefore, if the output is stored on a Windows or Mac-based operating system, which uses a different path system, no errors are expected.
+\newline
+
+Regarding the types of plots, first, for each type of plot, the user is enabled to define if these plots are desired or not. Second, all the plots are saved as HTML files. Some reasons for that were provided at the beginning of this chapter and others which are important for trajectory are the following. 
+With in-depth explorations in mind, the user might want to highlight specific regions in order to get detailed and correct information. 
+For trajectories, this can be encountered when e.g., coordinates of some points within a specified region shall be obtained. Here zooming, panning, rotation and a panel that writes out additional information about the current location of the cursor can be helpful tools. The first type of plot is the trajectory itself with the initial condition as a dot in the state-space.\newline 
+
+If desired, arrows pointing in the direction of motion of the trajectory can be included in the plots.
+The trajectory, the initial state sphere and the arrows can be made invisible by one click on the legend if desired. The second type of representation is an animated plot, i.e., each trajectory $ F(\beta)$ is available as the animated motion. The final type of display is one plot that contains all $F(\vec{\beta})$ as a sub-figure. 
+The latter type of visualization is a very valuable method to see the impact of $\beta$ across the available $\vec{\beta }$ on the trajectories $ F(\vec{\beta})$.
+Also, it can be leveraged as fast sanity check technique, i.e., if any $F(\beta )$ is from expectation, this can be determined quickly by looking at the stacked trajectory plots.
+\newline
+
+If for presentation HTML files are not desired, clicking on a button will provide a \emph{png} image of the current view state of the trajectory. Note, that the button will not be on the picture. 
+Finally, modern software, especially coding environments, understood that staring at white monitors is eye-straining. Consequently, dark working environments are set as default. For this reason, all the mentioned types of plots have a toggle implemented. 
+It allows switching between a dark default and a white representation mode.\newline  
+
+For choosing a dynamical system, two possibilities are given. 
+On the one hand, one of the 10 incorporated models can be selected by simply selecting a number, which corresponds to an integrated dynamical system. 
+On the other hand, a new dynamical system can be implemented. 
+This can be achieved without much effort by following the syntax of one of the 10 available models. The main adjustment is done by replacing the \gls{ode}. 
+The differential equations of all 10 dynamic systems that can be selected by default are given in equations \eqref{eq_6_Lorenz} to \eqref{eq_13_Insect} and the 3 sets of equations  \eqref{eq_8_Chen} to \eqref{eq_14_VDP} are found the Appendix.
+The latter 3  sets of equations are provided in the Appendix because they are not used for validating \gls{cnmc} prediction performance.
+Next to the model's name, the reference to the dynamical system can be seen.
+The variables $a$ and $b$ are constants. 
+Except for the Van der Pol, which is given in the Appendix \ref{ch_Ap_Dyna} as equation \eqref{eq_14_VDP}, all dynamical systems are 3-dimensional.\newline
+
+% ==============================================================================
+% ============================ EQUATIONS =======================================
+% ==============================================================================
+\begin{enumerate}
+    \item  \textbf{Lorenz} \cite{lorenz1963deterministic}:
+    \begin{equation}
+        \label{eq_6_Lorenz}
+        \begin{aligned}
+            \dot x &= a\, (y - x)  \\
+            \dot y &= x\, (\beta - z -y) \\
+            \dot z &= x y -\beta z
+        \end{aligned}
+    \end{equation}
+
+    \item  \textbf{Rössler} \cite{Roessler1976}:
+    \begin{equation}
+        \label{eq_7_Ross}
+        \begin{aligned}
+            \dot x &= -y -z \\
+            \dot y &= x + ay \\
+            \dot z &= b +z \, (x-\beta)\\
+        \end{aligned}
+    \end{equation}
+
+   
+
+    \item \textbf{Two Scroll} \cite{TwoScroll}:
+    \begin{equation}
+        \label{eq_9_2_Scroll}
+        \begin{aligned}
+            \dot x &= \beta \, (y-x) \\
+            \dot y &= x z \\
+            \dot z &= a - by^4
+        \end{aligned}
+        \end{equation}
+
+    \item \textbf{Four Wing} \cite{FourWing}:
+    \begin{equation}
+        \label{eq_10_4_Wing}
+        \begin{aligned}
+            \dot x &= \beta x +y +yz\\
+            \dot y &= yz - xz \\
+            \dot z &= a + bxy -z 
+        \end{aligned}
+    \end{equation}
+
+    \item \textbf{Sprott\_V\_1} \cite{sprott2020we}:
+    \begin{equation}
+        \label{eq_11_Sprott_V_1}
+        \begin{aligned}
+            \dot x &= y \\
+            \dot y &= -x - sign(z)\,y\\
+            \dot z &= y^2 - exp(-x^2) \, \beta
+        \end{aligned}
+    \end{equation}
+
+
+    \item \textbf{Tornado} \cite{sprott2020we}:
+    \begin{equation}
+        \label{eq_12_Tornado}
+        \begin{aligned}
+            \dot x &= y \, \beta \\
+            \dot y &= -x - sign(z)\,y\\
+            \dot z &= y^2 - exp(-x^2) 
+        \end{aligned}
+    \end{equation}
+
+
+    \item \textbf{Insect} \cite{sprott2020we}:
+    \begin{equation}
+        \label{eq_13_Insect}
+        \begin{aligned}
+            \dot x &= y \\\
+            \dot y &= -x - sign(z)\,y \, \beta\\
+            \dot z &= y^2 - exp(-x^2) 
+        \end{aligned}
+    \end{equation}
+
+
+\end{enumerate}
+% ==============================================================================
+% ============================ EQUATIONS =======================================
+% ==============================================================================
+
+Sprott\_V\_1, Tornado and Insect in equations \eqref{eq_11_Sprott_V_1} to \eqref{eq_13_Insect} are not present in the cited reference \cite{sprott2020we} in this expressed form. 
+The reason is that the introduced equations are a modification of the chaotic attractor proposed in \cite{sprott2020we}. The curious reader is invited to read \cite{sprott2020we} and to be convinced about the unique properties.
+The given names are made up and serve to distinguish them. 
+Upon closer inspection, it becomes clear that they differ only in the place where $\beta$ is added. 
+All 3 models are highly sensitive to $\beta $, i.e., a small change in $\beta $ results in bifurcations. 
+For follow-up improvements of \gls{cnmc}, these 3 systems can be applied as performance benchmarks for bifurcation prediction capability.\newline 
+
+Showing the trajectories of all 10 models with different $\vec{\beta} $ would claim too much many pages. Therefore, for demonstration purposes the 
+3 above-mentioned models, i.e., Sprott\_V\_1, Tornado and Insect are 
+displayed in figures \ref{fig_5_Sprott} to \ref{fig_11_Insect}.
+Figure \ref{fig_5_Sprott} depicts the dynamical system Sprott\_V\_1 \eqref{eq_11_Sprott_V_1} with $\beta =9$. 
+Figures \ref{fig_6_Tornado} to \ref{fig_8_Tornado} presents the Tornado 
+\eqref{eq_12_Tornado}
+with $\beta =16.78$ with 3 different camera perspectives.
+Observing these figures, the reader might recognize why the name Tornado was chosen. The final 3 figures \ref{fig_9_Insect} to \ref{fig_11_Insect} display the Insect \eqref{eq_13_Insect} with $\beta =7$ for 3 different perspectives.
+Other default models will be displayed in subsection \ref{subsec_3_5_2_Models}, as they were used for performing benchmarks. \newline
+
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =\textwidth]
+    % In order to insert an eps file - Only_File_Name (Without file extension)
+    {2_Figures/2_Task/2_Sprott_V1.pdf}
+    \caption{Default model: Sprott\_V\_1 \eqref{eq_11_Sprott_V_1} with $\beta =9$}
+    \label{fig_5_Sprott}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/3_Tornado.pdf}
+        \caption{Default model: Tornado \eqref{eq_12_Tornado} with $\beta =16.78$, view: 1}
+        \label{fig_6_Tornado}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/4_Tornado.pdf}
+        \caption{Default model: Tornado \eqref{eq_12_Tornado} with $\beta =16.78$, view: 2}
+        \label{fig_7_Tornado}    
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/5_Tornado.pdf}
+        \caption{Default model: Tornado \eqref{eq_12_Tornado} with $\beta =16.78$, view: 3}
+        \label{fig_8_Tornado}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/6_Insect.pdf}
+        \caption{Default model: Insect \eqref{eq_13_Insect} with $\beta =7$, view: 1}
+        \label{fig_9_Insect}    
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/7_Insect.pdf}
+        \caption{Default model: Insect \eqref{eq_13_Insect} with $\beta =7$, view: 2}
+        \label{fig_10_Insect}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/8_Insect.pdf}
+        \caption{Default model: Insect \eqref{eq_13_Insect} with $\beta =7$, view: 3}
+        \label{fig_11_Insect}    
+    \end{minipage}
+\end{figure} 
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+\newpage
+Having selected a dynamical system, the model parameter values for which the system shall be solved must be specified in \emph{settings.py}. 
+With the known range $\vec{\beta}$ the problem can be described, as already mentioned in subsection \ref{subsec_1_1_1_Principles}, with equation \eqref{eq_1_1_MPV}.
+
+\begin{equation}
+    F_{\gls{cnmc}} = \left(\dot{\vec{x}}(t), \, \vec{\beta} \right) = 
+    \left( \frac{\vec{x}(t)}{dt}, \, \vec{\beta} \right) =
+     f(\vec{x}(t), \, \vec{\beta} )
+     \tag{\ref{eq_1_1_MPV}}
+\end{equation}
+
+The solution to \eqref{eq_1_1_MPV} is obtained numerically by applying \emph{SciPy's RK45} \gls{ode} solver. If desired \gls{cnmc} allows completing this task in parallel. Additional notes on executing this task in parallel are given in section \ref{sec_Motivation}. The main reason for relying on \emph{RK45} is that it is commonly known to be a reliable option. 
+Also, in \cite{Butt2021} \emph{RK45} was directly compared with \emph{LSODA}. The outcome was that \emph{LSODA} was slightly better, however, the deviation between \emph{RK45's} and \emph{LSODA's} performance was found to be negligible. 
+In other words, both solvers fulfilled the accuracy demands. 
+Since chaotic systems are known for their \glsfirst{sdic} any deviation, even in the  $\mathcal{O} (1 \mathrm{e}{-15})$, will be amplified approximately exponentially and finally will become unacceptably high.
+Therefore, it was tested, whether the \emph{RK45} solver would allow statistical variations during the solution process. 
+For this purpose, the Lorenz system \cite{lorenz1963deterministic} was solved multiple times with different time ranges. The outcome is that \emph{RK45} has no built-in statistical variation.
+Simply put, the trajectory of the Lorenz system for one constant $\beta $ will not differ when solved multiple times on one computer.\newline
+
+
+Comparing \emph{first CNMc} and \gls{cnmc} the key takeaways are that \gls{cnmc} has 10 in-built dynamical systems. 
+However, desiring to implement a new model is also achieved in a way that is considered relatively straightforward. 
+Important settings, such as the model itself, the $\vec{\beta }$, plotting and storing outcome can be managed with the \emph{settings.py}. The plots are generated and stored such that post-processing capabilities are supplied.

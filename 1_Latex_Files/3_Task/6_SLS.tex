@@ -1,0 +1,107 @@
+\subsection{Assessment of SLS}
+\label{subsec_3_5_1_SLS}
+In this subsection, the prediction capability for the \emph{SLS} will be analyzed in detail. All the presented output is generated with \gls{svd} as the decomposition method and \gls{rf} as the $\bm Q / \bm T$ regressor.\newline
+
+The final objective of \gls{cnmc} is to capture the characteristics of the original trajectory.
+However, it is important to outline that \gls{cnmc} is trained with the \gls{cnm} predicted trajectories. 
+Thus, the outcome of \gls{cnmc} highly depends on the ability of \gls{cnm} to represent the original data. 
+Consequently, \gls{cnmc} can only be as effective as \gls{cnm} is in the first place,  with the approximation of the true data.
+Figures \ref{fig_72} and \ref{fig_73} show the true, \gls{cnm} and \gls{cnmc} predicted trajectories and a focused view on the \gls{cnm} and \gls{cnmc} trajectories, respectively.
+The output was generated for $\beta_{unseen} = 28.5$ and $L =1$.
+First, it can be observed that \gls{cnm} is not able to capture the full radius of the Lorenz attractor.
+This is caused by the low chosen number of centroids $K=10$.
+Furthermore, as mentioned at the beginning of this chapter, the goal is not to replicate the true data one-to-one, but rather to catch the significant behavior of any dynamic system.
+With the low number of centroids $K$, \gls{cnm} extracts the characteristics of the Lorenz system well.
+Second, the other aim for \gls{cnmc} is to match the \gls{cnm} data as closely as possible.
+Both figures \ref{fig_72} and \ref{fig_73} prove that \gls{cnmc} has fulfilled its task very well. \newline
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{True, \gls{cnm} and \gls{cnmc} predicted trajectories}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/4_SLS/0_lb_28.5_All.pdf}
+        \label{fig_72}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cnm} and \gls{cnmc} predicted trajectories}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/4_SLS/1_lb_28.5.pdf}
+        \label{fig_73}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, $\beta_{unseen}=28.5,\, L=1$, true, \gls{cnm} and \gls{cnmc} predicted trajectories} 
+\end{figure}
+
+
+A close-up of the movement of the different axes is shown in the picture \ref{fig_74}.
+Here, as well, the same can be observed as described above. Namely, the predicted \gls{cnmc} trajectory is not a one-to-one reproduction of the original trajectory.
+However, the characteristics, i.e., the magnitude of the motion in all 3 directions (x, y, z) and the shape of the oscillations, are very similar to the original trajectory.
+Note that even though the true and predicted trajectories are utilized to assess, whether the characteristical behavior could be extracted, a single evaluation based on the trajectories is not sufficient and often not advised or even possible.
+In complex systems, trajectories can change rapidly while dynamical features persist \cite{Fernex2021a}. 
+In \gls{cnmc} the predicted trajectories are obtained through the \gls{cnm} propagation, which itself is based on a probabilistic model, i.e. the $\bm Q$ tensor. 
+Thus, matching full trajectories becomes even more unrealistic. 
+The latter two statements highlight yet again that more than one method of measuring quality is needed. 
+To further support the generated outcome the autocorrelation and \gls{cpd} in figure \ref{fig_75} and \ref{fig_76}, respectively, shall be considered.
+It can be inspected that the \gls{cnm} and \gls{cnmc} autocorrelations are matching the true autocorrelation in the shape favorably well.
+Nonetheless, the degree of reflecting the magnitude fully decreases quite fast.
+Considering the \gls{cpd}, it can be recorded that the true \gls{cpd} could overall be reproduced satisfactorily.\newline 
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =0.75\textwidth]
+    {2_Figures/3_Task/4_SLS/2_lb_28.5_3V_All.pdf}
+    \caption{\emph{SLS}, $\beta_{unseen}=28.5, \, L=1$, true, \gls{cnm} and \gls{cnmc} predicted trajectories as 2d graphs } 
+    \label{fig_74}
+\end{figure}
+
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{autocorrelation} 
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/4_SLS/3_lb_3_all_28.5.pdf}
+        \label{fig_75}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{\gls{cpd}} 
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/4_SLS/4_lb_28.5.pdf}
+        \label{fig_76}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, $\beta_{unseen}= 28.5, \, L =1$, autocorrelation  and \gls{cpd} for true, \gls{cnm} and \gls{cnmc} predicted trajectories} 
+\end{figure}
+
+
+To illustrate the influence of $L$, figure \ref{fig_77} shall be viewed.
+It depicts the MAE error for the true and \gls{cnmc} predicted trajectories for $\beta_{unseen}= [\, 28.5,\, 32.5 \, ]$ with $L$ up to 7.
+It can be observed that the choice of $L$ has an impact on the prediction quality measured by autocorrelation.
+For $\beta_{unseen}=28.5$ and $\beta_{unseen}=32.5$, the optimal $L$ values are $L = 2$ and $L = 7$, respectively. To emphasize it even more that with the choice of $L$ the prediction quality can be regulated, figure \ref{fig_78} shall be considered.
+It displays the 3 autocorrelations for $L = 7$. 
+Matching the shape of the true autocorrelation was already established with $L =1$ as shown in figure \ref{fig_75}. In addition to that, $L=7$ improves by matching the true magnitude.
+Finally, it shall be mentioned that similar results have been accomplished with other $K$ tested values, where the highest value was $K =50$.
+
+\begin{figure}[!h]
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/4_SLS/5_lb_1_Orig_CNMc.pdf}
+        \caption{\emph{SLS}, MAE error for true and \gls{cnmc} predicted autocorrelations for $\beta_{unseen}= [\, 28.5,$ $32.5 \, ]$ and different values of $L$} 
+        \label{fig_77}
+    \end{minipage}
+        \hfill
+        \begin{minipage}{0.47\textwidth}
+            \centering
+            \includegraphics[width =\textwidth]
+            {2_Figures/3_Task/4_SLS/6_lb_3_all_32.5.pdf}
+            \caption{\emph{SLS}, $\beta_{unseen}=32.5, \, L=7$, \gls{cnm} and \gls{cnmc} predicted autocorrelation } 
+            \label{fig_78}
+        \end{minipage}
+    \end{figure}
+\FloatBarrier

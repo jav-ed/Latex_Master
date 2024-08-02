@@ -1,0 +1,189 @@
+\chapter{Methodology}
+\label{chap_2_Methodlogy}
+In this chapter, the entire pipeline for designing the proposed
+\gls{cnmc} is elaborated. For this purpose, the ideas behind 
+the individual processes are explained. 
+Results from the step tracking onwards will be presented in chapter \ref{ch_3}.
+Having said that, \gls{cnmc} consists of multiple main process steps or stages. 
+First, a broad overview of the \gls{cnmc}'s workflow shall be given.
+Followed by a detailed explanation for each major operational step. The 
+implemented process stages are presented in the same order as they are 
+executed in \gls{cnmc}. However, \gls{cnmc} is not forced 
+to go through each stage. If the output of some steps is 
+already available, the execution of the respective steps can be skipped. \newline
+
+The main idea behind such an implementation is to prevent computing the same task multiple times.
+Computational time can be reduced if the output of some \gls{cnmc} steps are available. 
+Consequently, it allows users to be flexible in their explorations. 
+It could be the case that only one step of \textsc{CNMc} is desired to be examined with different settings or even with newly implemented functions without running the full \gls{cnmc} pipeline. 
+Let the one \gls{cnmc} step be denoted as C, then it is possible to skip steps A and B if their output is already calculated and thus available.
+Also, the upcoming steps can be skipped or activated depending on the need for their respective outcomes. 
+Simply put, the mentioned flexibility enables to load data for A and B and execute only C. Executing follow-up steps or loading their data is also made selectable.
+%
+%------------------------------- SHIFT FROM INTRODUCTION ----------------------
+%
+Since the tasks of this thesis required much coding, 
+it is important to 
+mention the used programming language and the dependencies. 
+As for the programming language,
+\emph{Python 3} \cite{VanRossum2009} was chosen. For the libraries, only a few important libraries will be mentioned, because the number of used libraries is high. Note, each used module is 
+freely available on the net and no licenses are required to be purchased.
+\newline 
+
+The important libraries in terms of performing actual calculations are  
+\emph{NumPy} \cite{harris2020array}, \emph{SciPy} \cite{2020SciPy-NMeth}, \emph{Scikit-learn} \cite{scikit-learn}, \emph{pySindy} \cite{Silva2020, Kaptanoglu2022}, for multi-dimensional sparse matrix management \emph{sparse} and for plotting only \emph{plotly} \cite{plotly} was deployed. One of the reason why \emph{plotly} is preferred over \emph{Matplotlib} \cite{Hunter:2007} are post-processing capabilities, which now a re available. Note, the previous \emph{\gls{cmm}c} version used \emph{Matplotlib} \cite{Hunter:2007}, which in this work has been fully replaced by \emph{plotly} \cite{plotly}. More reasons why this modification is useful and new implemented post-processing capabilities will be given in the upcoming sections.\newline
+
+For local coding, the author's Linux-Mint-based laptop with the following hardware was deployed: CPU: Intel Core i7-4702MQ \gls{cpu}@ 2.20GHz × 4, RAM: 16GB.
+The Institute of fluid dynamics of the Technische Universität Braunschweig 
+also supported this work by providing two more powerful computation resources.
+The hardware specification will not be mentioned, due to the fact, that all computations and results elaborated in this thesis can be obtained by 
+the hardware described above (authors laptop). However, the two provided 
+resources shall be mentioned and explained if \gls{cnmc} benefits from 
+faster computers. The first bigger machine is called \emph{Buran}, it is a 
+powerful Linux-based working station and access to it is directly provided by 
+the chair of fluid dynamics. \newline 
+
+The second resource is the high-performance 
+computer or cluster available across the Technische Universität Braunschweig 
+\emph{Phoenix}. The first step, where the dynamical systems are solved through an \gls{ode} solver 
+is written in a parallel manner. This step can if specified in the \emph{settings.py} file, be performed in parallel and thus benefits from 
+multiple available cores. However, most implemented \gls{ode}s are solved within 
+a few seconds. There are also some dynamical systems implemented whose
+ODE solution can take a few minutes. Applying \gls{cnmc} on latter dynamical 
+systems results in solving their \gls{ode}s for multiple different model parameter values. Thus, deploying the parallelization can be advised in the latter mentioned time-consuming \gls{ode}s.\newline 
+
+By far the most time-intensive part of the improved \gls{cnmc} is the clustering step. The main computation for this step is done with
+{Scikit-learn} \cite{scikit-learn}. It is heavily parallelized and the 
+computation time can be reduced drastically when multiple threads are available.
+Other than that, \emph{NumPy} and \emph{SciPy} are well-optimized libraries and 
+are assumed to benefit from powerful computers. In summary, it shall be stated that a powerful machine is for sure advised when multiple dynamical 
+systems with a range of different settings shall be investigated since parallelization is available. Yet executing \gls{cnmc} on a single dynamical system, a regular laptop can be regarded as 
+a sufficient tool. 
+
+%------------------------------- SHIFT FROM INTRODUCTION ----------------------
+
+% =====================================================================
+% ============= Workflow ==============================================
+% =====================================================================
+\section{CNMc's data and workflow}
+\label{sec_2_1_Workflow}
+In this section, the 5 main points that characterize \gls{cnmc} will be discussed. 
+Before diving directly into \gls{cnmc}'s workflow some remarks 
+are important to be made.
+First, \gls{cnmc} is written from scratch, it is not simply an updated version of the described \emph{first CNMc} in subsection
+\ref{subsec_1_1_3_first_CNMc}.
+Therefore, the workflow described in this section for \gls{cnmc} will not match that of \emph{first CNMc}, e.g., \emph{first CNMc} had no concept of \emph{settings.py} and it was not utilizing \emph{Plotly} \cite{plotly} to facilitate post-processing capabilities.
+The reasons for a fresh start were given in subsection \ref{subsec_1_1_3_first_CNMc}.
+However, the difficulty of running \emph{first CNMc} and the time required to adjust \emph{first CNMc} such that a generic dynamic system could be utilized were considered more time-consuming than starting from zero. \newline 
+
+Second, the reader is reminded to have the following in mind. 
+Although it is called pipeline or workflow, \gls{cnmc} is not obliged to run the whole workflow. With \emph{settings.py} file, which will be explained below, it is possible to run only specific selected tasks. 
+The very broad concept of \gls{cnmc} was already provided at the beginning of chapter \ref{chap_1_Intro}.
+However, instead of providing data of dynamical systems for different model parameter values, the user defines a so-called \emph{settings.py} file and executes \gls{cnmc}.
+The outcome of \gls{cnmc} consists, very broadly, of the predicted trajectories and some accuracy measurements as depicted in figure 
+\ref{fig_1_CNMC_Workflow}.
+In the following, a more in-depth view shall be given.\newline 
+
+
+ The extension of \emph{settings.py} is a regular \emph{Python} file. However, it is a dictionary, thus there is no need to acquire and have specific knowledge about \emph{Python}. 
+ The syntax of \emph{Python's} dictionary is quite similar to that of the \emph{JSON} dictionary, in that the setting name is supplied within a quote mark 
+ and the argument is stated after a colon. In order to understand the main points of \gls{cnmc}, its main data and workflow are depicted \ref{fig_3_Workflow} as an XDSM diagram \cite{Lambe2012}. 
+  \newline 
+ 
+ % ============================================
+ % ================ 2nd Workflow ==============
+ % ============================================
+ \begin{sidewaysfigure} [!]
+    \hspace*{-2cm} 
+     \resizebox{\textwidth}{!}{
+     \input{2_Figures/2_Task/0_Workflow.tikz}
+     }
+     \caption{\gls{cnmc} general workflow overview}
+     \label{fig_3_Workflow}
+ \end{sidewaysfigure}
+
+The first action for executing \gls{cnmc} is to define \emph{settings.py}. It contains descriptive information about the entire pipeline, e.g., which dynamical system to use, which model parameters to select for training, which for testing, which method to use for modal decomposition and mode regression. 
+To be precise, it contains all the configuration attributes of all the 5 main \gls{cnmc} steps and some other handy extra functions. It is written in 
+a very clear way such that settings to the corresponding stages of \gls{cnmc} 
+and the extra features can be distinguished at first glance.
+First, there are separate dictionaries for each of the 5 steps to ensure that the desired settings are made where they are needed. 
+Second, instead of regular line breaks, multiline comment blocks with the stage names in the center are used. 
+Third, almost every \emph{settings.py} attribute is explained with comments. 
+Fourth, there are some cases, where 
+a specific attribute needs to be reused in other steps. 
+The user is not required to adapt it manually for all its occurrences, but rather to change it only on the first occasion, where the considered function is defined. 
+\emph{Python} will automatically ensure that all remaining steps receive the change correctly. 
+Other capabilities implemented in \emph{settings.py} are mentioned when they are actively exploited.
+In figure \ref{fig_3_Workflow} it can be observed that after passing \emph{settings.py} a so-called \emph{Informer} and a log file are obtained. 
+The \emph{Informer} is a file, which is designed to save all user-defined settings in \emph{settings.py} for each execution of \gls{cnmc}.
+Also, here the usability and readability of the output are important and have been formatted accordingly. It proves to be particularly useful when a dynamic system with different settings is to be calculated, e.g., to observe the influence of one or multiple parameters. \newline 
+
+One of the important attributes which 
+can be arbitrarily defined by the user in \emph{settings.py} and thus re-found in the \emph{Informer} is the name of the model. 
+In \gls{cnmc} multiple dynamical systems are implemented, which can be chosen by simply changing one attribute in \emph{settings.py}. 
+Different models could be calculated with the same settings, thus this clear and fast possibility to distinguish between multiple calculations is required. 
+The name of the model is not only be saved in the \emph{Informer} but it will 
+be used to generate a folder, where all of \gls{cnmc} output for this single 
+\gls{cnmc} workflow will be stored. 
+The latter should contribute to on the one hand that the \gls{cnmc} models can be easily distinguished from each other and on the other hand that all results of one model are obtained in a structured way.
+\newline 
+
+When executing \gls{cnmc} many terminal outputs are displayed. This allows the user to be kept up to date on the current progress on the one hand and to see important results directly on the other. 
+In case of unsatisfying results, \gls{cnmc} could be aborted immediately, instead of having to compute the entire workflow. In other words, if a computation expensive \gls{cnmc} task shall be performed, knowing about possible issues in the first steps can 
+be regarded as a time-saving mechanism. 
+The terminal outputs are formatted to include the date, time, type of message, the message itself and the place in the code where the message can be found. 
+The terminal outputs are colored depending on the type of the message, e.g., green is used for successful computations. 
+Colored terminal outputs are applied for the sake of readability. 
+More relevant outputs can easily be distinguished from others. 
+The log file can be considered as a memory since, in it, the terminal outputs are saved.\newline
+
+The stored terminal outputs are in the format as the terminal output described above, except that no coloring is utilized.
+An instance, where the log file can be very helpful is the following. Some implemented quality measurements give very significant information about prediction reliability. Comparing different settings in terms of prediction capability would become very challenging if the terminal outputs would be lost whenever the \gls{cnmc} terminal is closed. The described \emph{Informer} and the log file can be beneficial as explained, nevertheless, they are optional.
+That is, both come as two of the extra features mentioned above and can be turned off in \emph{settings.py}.\newline 
+
+Once \emph{settings.py} is defined, \gls{cnmc} will filter the provided input, adapt the settings if required and send the corresponding parts to their respective steps. 
+The sending of the correct settings is depicted in figure \ref{fig_3_Workflow}, where the abbreviation \emph{st} stands for settings. 
+The second abbreviation \emph{SOP} is found for all 5 stages and denotes storing output and plots. All the outcome is stored in a compressed form such that memory can be saved. All the plots are saved as HTML files. There are many reasons to do so, however, to state the most crucial ones. First, the HTML file can be opened on any operating system. 
+In other words, it does not matter if Windows, Linux or Mac is used. 
+Second, the big difference to an image is that HTML files can be upgraded with, e.g., CSS, JavaScript and PHP functions. 
+Each received HTML plot is equipped with some post-processing features, e.g., zooming, panning and taking screenshots of the modified view. When zooming in or out the axes labels are adapted accordingly. Depending on the position of 
+the cursor, a panel with the exact coordinates of one point and other information such as the $\beta $ are made visible. \newline 
+
+In the same way that data is stored in a compressed format, all HTML files are generated in such a way that additional resources are not written directly into the HTML file, but a link is used so that the required content is obtained via the Internet.  
+Other features associated with HTML plots and which data are saved will be explained in their respective section in this chapter. 
+The purpose of \gls{cnmc} is to generate a surrogate model with which predictions can be made for unknown model parameter values ${\beta}$. 
+For a revision on important terminology as model parameter value $\beta$
+the reader is referred to subsection \ref{subsec_1_1_1_Principles}. 
+Usually, in order to obtain a sound predictive model, machine learning methods require a considerable amount of data. Therefore, the \gls{ode} is solved for a set of $\vec{\beta }$. An in-depth explanation for the first is provided in 
+section \ref{sec_2_2_Data_Gen}.
+The next step is to cluster all the received trajectories deploying kmeans++ \cite{Arthur2006}. Once this has been done, tracking can take be performed.
+Here the objective is to keep track of the positions of all the centroids when $\beta$ is changed over the whole range of $\vec{\beta }$.
+A more detailed description is given in section \ref{sec_2_3_Tracking}.\newline 
+
+
+The modeling step is divided into two subtasks, which are not displayed as such in figure \ref{fig_3_Workflow}. The first subtask aims to get a model that yields all positions of all the $K$ centroids for an unseen $\beta_{unseen}$, where an unseen $\beta_{unseen}$ is any $\beta$ that was not used to train the model. In the second subtask, multiple tasks are performed. 
+First, the regular \gls{cnm} \cite{Fernex2021} shall be applied to all the tracked clusters from the tracking step. For this purpose, the format of the tracked results is adapted in a way such that \gls{cnm} can be executed without having to modify \gls{cnm} itself. By running \gls{cnm} on the tracked data of all $\vec{\beta }$, the transition property tensors $\bm Q$ and $\bm T$ for all $\vec{\beta }$ are received. \newline 
+
+Second, all the $\bm Q$ and the $\bm T$ tensors are stacked to form $\bm {Q_{stacked}}$ and $\bm {T_{stacked}}$ matrices. 
+These stacked matrices are subsequently supplied to one of the two possible implemented modal decomposition methods. 
+Third, a regression model for the obtained modes is constructed. 
+Clarifications on the modeling stage can be found in section \ref{sec_2_4_Modeling}.\newline
+
+The final step is to make the actual predictions for all provided $\beta_{unseen}$ and allow the operator to draw conclusions about the trustworthiness of the predictions. 
+For the trustworthiness, among others, the three quality measurement concepts explained in subsection 
+\ref{subsec_1_1_3_first_CNMc} 
+are leveraged. Namely, comparing the \gls{cnmc} and \gls{cnm} predicted trajectories by overlaying them directly. The two remaining techniques, which were already applied in regular \gls{cnm} \cite{Fernex2021}, are the \glsfirst{cpd} and the autocorrelation.\newline 
+
+The data and workflow in figure \ref{fig_3_Workflow} do not reveal one additional feature of the implementation of \gls{cnmc}. That is, inside the folder \emph{Inputs} multiple subfolders containing a \emph{settings.py} file, e.g., different dynamical systems, can be inserted to allow a sequential run. In the case of an empty subfolder, \gls{cnmc} will inform the user about that and continue its execution without an error. 
+As explained above, each model will have its own folder where the entire output will be stored. 
+To switch between the multiple and a single \emph{settings.py} version, the {settings.py} file outside the \emph{Inputs} folder needs to be modified. The argument for that is \emph{multiple\_Settings}.\newline 
+
+Finally, one more extra feature shall be mentioned. After having computed expensive models, it is not desired to overwrite the log file or any other output. 
+To prevent such unwanted events, it is possible to leverage the overwriting attribute in \emph{settings.py}. If overwriting is disabled, \gls{cnmc} would verify whether a folder with the specified model name already exists. 
+In the positive case, \gls{cnmc} would initially only propose an alternative model name. Only if the suggested model name would not overwrite any existing folders, the suggestion will be accepted as the new model name. 
+Both, whether the model name was chosen in \emph{settings.py} as well the new final replaced model name is going to be printed out in the terminal line.\newline 
+
+In summary, the data and workflow of \gls{cnmc} are shown in Figure \ref{fig_3_Workflow} and are sufficient for a broad understanding of the main steps.
+However, each of the 5 steps can be invoked individually, without having to run the full pipeline. Through the implementation of \emph{settings.py} \gls{cnmc} is highly flexible. All settings for the steps and the extra features can be managed with \emph{settings.py}. 
+A log file containing all terminal outputs as well a summary of chosen settings is stored in a separate file called \emph{Informer} are part of \gls{cnmc}'s tools.
+

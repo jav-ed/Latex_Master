@@ -1,0 +1,16 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces \emph {Direct feasible}\relax }}{43}{table.caption.29}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces feasible\relax }}{43}{table.caption.29}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces infeasible\relax }}{43}{table.caption.29}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Examples for feasible and infeasible best tracking paths\relax }}{43}{table.caption.29}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces MSE for different Model configurations and $\vec {\beta }_{unseen}$\relax }}{62}{table.caption.47}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Execution time for \emph {SLS} of \gls {nmf} and \gls {svd} for different $L$ \relax }}{63}{table.caption.48}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces \emph {SLS}, Mean absolute error for different $L$ and two $\beta _{unseen}$\relax }}{68}{table.caption.54}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces \emph {SLS}, Mean absolute error for comparing \gls {rf} and AdaBoost different $L$ and two $\beta _{unseen}$\relax }}{71}{table.caption.58}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

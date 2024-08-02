@@ -1,0 +1,228 @@
+\section{CPE modeling results}
+\label{sec_3_2_MOD_CPE}
+In this section, results to the \gls{cpevol} modeling explained in subsection \ref{subsec_2_4_1_CPE}, shall be presented and assessed.
+First, a selection of equations, which defines the \gls{cpevol} are given for one model configuration.
+Next, representative plots of the \gls{cpevol} for different models are analyzed.
+Finally, the predicted centroid position is compared with the actual clustered centroid position.\newline 
+
+
+Modeling the \emph{CPE} returns, among other results, analytical equations. 
+These equations describe the behavior of the centroid positions across the range $\vec{\beta}$ and can also be used for making predictions for $\vec{\beta}_{unseen}$.
+The model configuration for which they are be presented is \emph{SLS}, i.e. Lorenz system \eqref{eq_6_Lorenz}, $K= 10,\, \vec{\beta }_{tr} = [\, \beta_0 = 28 ; \, \beta_{end} =33  \,], \, n_{\beta, tr} = 7$. 
+The analytical \gls{cpevol} expressions are listed in \eqref{eq_27} to \eqref{eq_29} for the centroids  $[\,1,\, 2,\,7\,]$, respectively.
+Recalling that the behavior across the 3 different axes (x, y, z) can vary greatly, each axis has its own regression model $(\tilde x,\, \tilde y,\, \tilde z)$.
+Thus, for each label, 3 different analytical expressions are provided. \newline
+
+
+\begin{figure}[!h]
+    \begin{minipage}{.47\textwidth}
+      \begin{equation}
+        \begin{aligned}
+            \tilde x &= -0.1661 \, cos(3  \, \beta) \\
+            \tilde y &=  -0.1375 \, cos(3 \,  \beta) \\
+            \tilde z &=  0.8326 \, \beta 
+        \end{aligned}
+        \label{eq_27}
+      \end{equation}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/1_lb_1.pdf}
+        \caption{\emph{SLS}, \emph{CPE} model for centroid: 1 }
+        \label{fig_45}    
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}{.47\textwidth}
+        \begin{equation}
+            \begin{aligned}
+            \tilde x &= 0.1543 \, sin(3 \, \beta) + 0.2446 \, cos(3 \, \beta) \\
+            \tilde y &= 0.2638 \, sin(3 \, \beta) + 0.4225 \, cos(3 \, \beta) \\
+            \tilde z &= 0.4877 \, \beta
+        \end{aligned}
+        \label{eq_28}
+    \end{equation}
+\end{minipage}%
+\hfill
+\begin{minipage}{.47\textwidth}
+    \centering
+    \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/2_lb_2.pdf}
+    \caption{\emph{SLS}, \emph{CPE} model for centroid: 2 }
+    \label{fig_46}    
+\end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}{.47\textwidth}
+      \begin{equation}
+        \begin{aligned}
+            \tilde x &= -0.1866 \, \beta + 0.133 \, sin(3 \, \beta) \\
+            & \quad + 0.1411 \, cos(3 \, \beta) \\
+            \tilde y &= -0.3 \, \beta \\
+            \tilde z &= -1.0483+ 0.6358 \,\beta
+        \end{aligned}
+        \label{eq_29}
+      \end{equation}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}{.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/3_lb_7.pdf}
+        \caption{\emph{SLS}, \emph{CPE} model for centroid: 7 }
+        \label{fig_47}    
+    \end{minipage}
+\end{figure}
+
+
+Right to the equations the corresponding plots are depicted in figures \ref{fig_45} to \ref{fig_47}. 
+Here, the blue and green curves indicate true and modeled CPE, respectively.
+Each of the figures supports the choice of allowing each axis to be modeled separately.
+The z-axis appears to undergo less alteration or to be more linear than the x- and y-axis.
+If a model is supposed to be valid for all 3 axes, a more complex model, i.e., a higher of terms, is required.
+Although more flexible models fit training data increasingly better, they tend to overfit. 
+In other words, complex models capture the trained data well but could exhibit oscillations for $\vec{\beta}_{unseen}$.
+The latter is even more severe when the model is employed for extrapolation.
+The difference between interpolation and extrapolation is that for extrapolation the prediction is made with $\beta_{unseen}$ which are not in the range of the trained $\vec{\beta}_{tr}$.
+Therefore, less complexity is preferred.\newline 
+
+Next, the performance of predicting the centroid for $\vec{\beta}_{unseen}$ is elaborated.
+For this purpose, figures \ref{fig_48} to \ref{fig_52} shall be examined.
+All figures depict the original centroid positions, which are obtained through the clustering step in green and the predicted centroid positions in blue.
+On closer inspection, orange lines connecting the true and predicted centroid positions can be identified. 
+Note, that they will only be visible if the deviation between the true and predicted state is high enough.
+Figures \ref{fig_48_0} an \ref{fig_48_1} show the outcome for \emph{SLS} with $\beta_{unseen} = 28.5$ and $\beta_{unseen} = 32.5$, respectively.
+Visually, both predictions are very close to the true centroid positions.
+Because of this high performance in showed in figures \ref{fig_49_0} and \ref{fig_49_1} two examples for extrapolation are given for $\beta_{unseen} = 26.5$ and $\beta_{unseen} = 37$, respectively. 
+For the first one, the outcome is very applicable. 
+In contrast, $\beta_{unseen} = 37$ returns some deviations which are notably high.
+\newline
+ 
+
+
+% ----------------- Interpolation ----------------------------------------------
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 28.5$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/4_lb_c_28.5.pdf}
+        %MSE = 0.622
+        \label{fig_48_0}    
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 32.5$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/5_lb_c_32.5.pdf}
+        %MSE = 0.677
+        \label{fig_48_1}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, original vs. modeled centroid position, $\beta_{unseen} = 28.5$ and $\beta_{unseen} = 32.5$ }
+    \label{fig_48}    
+\end{figure}
+
+% ----------------- EXTRAPOLATION ----------------------------------------------
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 26.5$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/22_lb_c_26.5.pdf}
+        %MSE = 0.622
+        \label{fig_49_0}    
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 37$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/23_lb_c_37.0.pdf}
+        %MSE = 0.677
+        \label{fig_49_1}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, original vs. modeled centroid position, extrapolated $\beta_{unseen} = 26.5$ and $\beta_{unseen} = 37$ }
+    \label{fig_49}    
+\end{figure}
+
+
+% --------- MODEL LOrenz K= 20
+\begin{figure}[!h]
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 31.75$}
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/6_lb_c_31.75.pdf}
+        %MSE = 1.857
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 51.75$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/7_lb_c_51.75.pdf}
+        %MSE = 2.536
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{LS20}, original vs. modeled centroid position, $\beta_{unseen} = 31.75$ and $\beta_{unseen} = 51.75$}
+    \label{fig_50}    
+\end{figure}
+
+% --------- MODEL 25_Four_Wing_1_K_15 ---------
+\begin{figure}[!h]
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 8.7$}
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/8_lb_c_8.7.pdf}
+        %MSE = 1.617
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \caption{$\beta_{unseen} = 10.1$ }
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/2_Mod_CPE/9_lb_c_10.1.pdf}
+        %MSE = 1.5
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{FW15}, original vs. modeled centroid position, $\beta_{unseen} = 8.7$ and $\beta_{unseen} = 10.1$}
+    \label{fig_52}    
+    
+\end{figure}
+
+Quantitative measurements are performed by applying the Mean Square Error (MSE) following equation \eqref{eq_30_MSE}. 
+The variables are denoted as the number of samples $n$, which in this case is equal to the number of centroids $n = K$, the known $f(x_k)$ and the predicted $y_k$ centroid position.\newline
+
+\begin{equation}
+        MSE = \frac{1}{n} \, \sum_{i=1}^n \left(f(x_k) - y_k\right)^2
+        \label{eq_30_MSE}
+\end{equation}
+
+The measured MSE errors for all displayed results are summarized in table \ref{tab_5_MSE}. 
+The MSE for results of $\beta_{unseen} = 28.5$ and $\beta_{unseen} = 32.5$ in figures \ref{fig_48} is $0.622$ and $0.677$, respectively. 
+Consequently, the performance of \gls{cnmc} is also confirmed quantitatively.
+Figures in \ref{fig_50} illustrate the outcome for \emph{LS20} for $\beta_{unseen} = 31.75$ and $\beta_{unseen} = 51.75$.
+In section \ref{sec_3_1_Tracking_Results} it is explained that for  \emph{LS20} cluster network deformations appear. 
+Nevertheless, the outcome visually and quantitatively endorses the \emph{CPE} modeling capabilities.
+Figures in \ref{fig_52}  depict the outcome for \emph{FW15} for $\beta_{unseen} = 8.7$ and $\beta_{unseen} = 10.1$.
+A few orange lines are visible, however overall the outcome is very satisfactory.\newline
+
+\begin{table}
+    \centering
+    \begin{tabular}{c c c c }
+        \textbf{Figure} &\textbf{Model} & $\boldsymbol{\beta_{unseen}}$ & \textbf{MSE} \\
+        \hline \\
+        [-0.8em]
+        \ref{fig_48} & \emph{SLS}& $28.5$  & $0.622$   \\
+        \ref{fig_48} & \emph{SLS}& $32.5$  & $0.677$   \\
+        \ref{fig_49} & \emph{SLS}& $26.5$  & $1.193$   \\
+        \ref{fig_49} & \emph{SLS}& $37$  & $5.452$   \\
+        \ref{fig_50} & \emph{LS20}& $31.75$  & $1.857$ \\
+        \ref{fig_50} & \emph{LS20}& $51.75$  & $2.536$ \\
+        \ref{fig_52} & \emph{FW15}& $8.7$  & $1.617$   \\
+        \ref{fig_52} & \emph{FW15}& $10.1$  & $1.5$    
+    \end{tabular}
+    \caption{MSE for different Model configurations and $\vec{\beta}_{unseen}$}
+    \label{tab_5_MSE}
+\end{table}
+
+It can be concluded that the \emph{CPE} modeling performance is satisfying.
+In the case of a few cluster network deformations, \gls{cnmc} is capable of providing acceptable results.
+However, as shown with \emph{SLS}, if the model's training range $\vec{\beta}_{tr}$ and the number of $K$ was selected appropriately, the MSE can be minimized.

@@ -1,0 +1,98 @@
+
+% ===================================================
+% ==================== STATE OF THE ART =============
+% ===================================================
+\section{State of the art}
+\label{sec_1_1_State}
+
+The desire to get fast \gls{cfd} output is not new and also
+a data-driven approach is found in the literature. 
+This section aims to describe some evolutionary steps of \glsfirst{cnmc}.  Given that this work is built upon the most recent advancements,
+they will be explained in particular detail.
+Whereas the remaining development stages are briefly 
+summarized to mainly clarify the differences and  
+mention the reasons why improvements were desired. Since, this topic 
+demands some prior knowledge to follow \gls{cnmc}'s workflow and goal, some basic principles about important topics shall be given in their subsection.\newline
+
+The first data-driven approach, which is known to the author, 
+is by \cite[]{Kaiser2014} and shall be called \gls{cmm}.
+\gls{cnmc} is not directly built upon \gls{cmm} but on the latest version 
+of \gls{cnm} and is described in \cite[]{Fernex2021}.
+\gls{cnmc} invokes \gls{cnm} many times in order to use 
+its outcome for further progress. Therefore, it's evident that only if \gls{cnm} is understood, CNMc's
+progress can be followed. \gls{cmm} on the other hand has only a historical link to \gls{cnmc}, but no line of code of \gls{cmm} is invoked in \gls{cnmc}'s workflow. Consequently, \gls{cnm} will be explained in more detail than \gls{cmm}.
+
+\subsection{Principles}
+\label{subsec_1_1_1_Principles}
+CNM \cite[]{Fernex2021} is a method that uses some machine learning 
+techniques, graphs, and probability theory to mirror the behavior of 
+complex systems. These complex systems are described often by dynamical systems, which themselves are simply a set of 
+differential equations. Differential equations are useful to 
+capture motion. Thus, a dynamical system can be seen as a synonym for motion
+over time. Some differential equations can be 
+solved in closed form, meaning analytically. However, for most of them 
+either it is too difficult to obtain an analytical solution or the 
+analytical solution is very unhandy or unknown. Unhandy in terms of the solution
+being expressed in too many terms. Therefore, in most 
+cases, differential equations are solved numerically. Since 
+the purpose of \gls{cnm} is not to be only used for analytically 
+solvable equations, a numerical ordinary differential integrator 
+is used. \newline 
+
+The default solver is \emph{SciPy}'s \emph{RK45} solver.
+It is a widely deployed solver and can also be applied to 
+chaotic systems for integration 
+over a certain amount of time.
+Another option for solving chaotic \gls{ode}s is 
+\emph{LSODA}. The developers of \emph{pySindy} \cite{Silva2020, Kaptanoglu2022} 
+state on their homepage \cite{pysindy_Home} that 
+\emph{LSODA} even outperforms the default \emph{RK45} when it comes to chaotic dynamical systems. The reasons why for \gls{cnmc} still \emph{RK45} was chosen will be given in
+section 
+\ref{sec_2_2_Data_Gen}. 
+It is important to remember that turbulent flows are chaotic.
+This is the main reason why in this work \gls{cnmc}, has been designed to handle not only general dynamical systems but also general chaotic attractors.
+Other well-known instances where chaos is found are, e.g., the weather, the 
+motion of planets and also the financial market is believed to be chaotic.
+For more places, where chaos is found the reader is referred to \cite{Argyris2017}.\newline 
+
+Note that \gls{cnmc} is designed for all kinds of dynamical systems, it is not restricted to linear, nonlinear or chaotic systems. 
+Therefore, chaotic systems shall be recorded to be only one application example of \gls{cnmc}.
+However, because chaotic attractors were primarily exploited in the context of the performed investigations in this work, a slightly lengthier introduction to chaotic systems is provided in the appendix \ref{ch_Ap_Chaotic}.
+Two terms that will be used extensively over this entire thesis are called model parameter value $\beta$ and a range of model parameter values $\vec{\beta}$. A regular differential equation can be expressed as 
+in equation \eqref{eq_1_0_DGL}, where $F$ is denoted as the function which describes the dynamical system. 
+The vector $\vec{x}(t)$ is the state vector. 
+The form in which differential equations are viewed in this work is given in equation \eqref{eq_1_1_MPV}.
+
+\begin{equation}
+    F = \dot{\vec{x}}(t) = \frac{\vec{x}(t)}{dt} = f(\vec{x}(t))
+    \label{eq_1_0_DGL}
+\end{equation}
+\begin{equation}
+    F_{\gls{cnmc}} = \left(\dot{\vec{x}}(t), \, \vec{\beta} \right) = 
+    \left( \frac{\vec{x}(t)}{dt}, \, \vec{\beta} \right) =
+     f(\vec{x}(t), \, \vec{\beta} )
+    \label{eq_1_1_MPV}
+\end{equation}
+
+Note the vector $\vec{\beta}$ indicates a range of model parameter values,  i.e., the differential equation is solved for each model parameter value $\beta$ separately.
+The model parameter value $\beta$ is a constant and does not depend on the time, but rather it is a user-defined value. 
+In other terms, it remains unchanged over the entire timeline for which the dynamical system is solved.
+The difference between $F$ and $F_{\gls{cnmc}}$ is that $F$ is the differential equation for only one $\beta$, while $F_{\gls{cnmc}}$ can be considered as the same differential equation, however, solved, for a range of individual $\beta$ values. 
+The subscript \gls{cnmc} stresses that fact that \gls{cnmc} is performed for a range of model parameter values $\vec{\beta}$.
+Some dynamical systems, which will be used for \gls{cnmc}'s validation can be found in section \ref{sec_2_2_Data_Gen}. They are written as a set of differential equations in the $\beta$ dependent form.
+Even a tiny change in $\beta$ can result in the emergence of an entirely different trajectory. \newline
+% The behavior could exhibit such strong alterations, such 
+% that one might believe to require new underlying differential equations. 
+% These heavy transitions are called bifurcations.\newline
+
+% Although bifurcations 
+% cause the trajectory to vary seemingly arbitrary, 
+% there exist canonical bifurcation types. Explanations for  
+% deriving their equations and visualization are well covered in literature
+% and can be found, 
+% e.g., in \cite{Argyris2017,Kutz2022,Strogatz2019}. Although a detailed coverage of bifurcations is not feasible within the scope of this thesis, the method of how the trajectory is changed in such a significant way shall be outlined.
+% Namely, bifurcations can replace, remove and generate new attractors, e.g., the above introduced fix-point, limit cycle and torus attractor. 
+% Bifurcations were mentioned here only for the sake of completeness. Indeed, one of the final goals for \gls{cnmc} is the extension to handle bifurcations. However, the latter is not part of this thesis.\newline 
+
+In summary, the following key aspects can be concluded. The reason why \gls{cnmc} in future releases is believed to be able to manage real \gls{cfd} fluid flow data and make predictions for unknown model parameter values $\beta$ is that turbulent flows are chaotic. Thus, allowing \gls{cnmc} to work with chaotic attractors in the course of this thesis is considered to be the first step toward predicting entire flow fields. 
+% The second point is that there is no real unified definition of chaos, but there are some aspects that are more prevalent in the literature.

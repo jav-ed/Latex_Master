@@ -1,0 +1,248 @@
+\section{Tracking results}
+\label{sec_3_1_Tracking_Results}
+In this section, some outputs of tracking data and workflow, described in subsection \ref{subsec_2_3_1_Tracking_Workflow}, shall be presented. 
+After that, in short, the current \gls{cnmc} shall be compared to \emph{first CNMc} \newline
+
+First, two illustrative solutions for the assignment problem from the final path, as explained in subsection \ref{subsec_2_3_1_Tracking_Workflow}, are provided in figures \ref{fig_27} and \ref{fig_28}. 
+The axes are denoted as $c_k$ and $c_p$ and represent the labels of the $\beta_j$ and $\beta_i$ centroids, respectively.
+The color bar on the right side informs about the euclidean distance, which is equivalent to the cost.
+Above the solution of the assignment problem in figures \ref{fig_27} and \ref{fig_28}, the corresponding $\beta_i$ and $\beta_j$ centroid labels are given in the respective two figures, i.e., \ref{fig_27_1}, \ref{fig_27_2} and \ref{fig_28_1}, \ref{fig_28_2}.
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Ordered state, $\beta_i =32.167$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/16_lb_32.167.pdf}
+        \label{fig_27_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Ordered state, $\beta_j = 33$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/17_lb_33.000.pdf}
+        \label{fig_27_2}
+    \end{subfigure}
+    
+    \smallskip
+    \centering
+    \begin{subfigure}{\textwidth}
+        \caption{Solution to the assignment problem}
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/1_Tracking/1_LSA.pdf}
+        \label{fig_27}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Illustrative solution for the assignment problem, $\beta_i =32.167,\, \beta_j = 33 ,\, K =10$}
+    \label{fig_27_All}    
+\end{figure}
+%
+%
+The centroid $c_{k=1} (\beta_j = 33)$ has its lowest cost to 
+$c_{p=3} (\beta_i = 32.167)$. In this case, this is also the solution for the assignment problem, outlined by the blue cross. 
+However, the solution to the linear sum assignment problem is not always to choose the minimal cost for one \emph{inter} $\beta$ match.
+It could be that one centroid in $\beta_i$ is to found the closest centroid to multiple centroids in $\beta_j$. 
+Matching only based on the minimal distance does not include the restriction that exactly one centroid from $\beta_i$ must be matched with exactly one centroid from $\beta_j$. 
+The latter demand is incorporated in the solution of the linear sum assignment problem. \newline 
+
+
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Ordered state, $\beta_i =31.333$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/18_lb_31.333.pdf}
+        \label{fig_28_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{Ordered state, $\beta_j = 32.167$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/16_lb_32.167.pdf}
+        \label{fig_28_2}
+    \end{subfigure}
+    
+    \smallskip
+    \centering
+    \begin{subfigure}{\textwidth}
+        \caption{Solution to the assignment problem}
+        \includegraphics[width =\textwidth]{2_Figures/3_Task/1_Tracking/2_LSA.pdf}
+        \label{fig_28}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Illustrative solution for the assignment problem, $\beta_i =31.333,\, \beta_j = 32.167, \,K =10 $}
+    \label{fig_28_All}    
+\end{figure}
+
+Comparing figure \ref{fig_27} with the second example in figure \ref{fig_28}, it can be observed that the chosen \emph{inter} $\beta$ centroid matches can have very different shapes. 
+This can be seen by looking at the blue crosses.
+Furthermore, paying attention to the remaining possible \emph{inter} $\beta$ centroid matches, it can be stated that there is a clear trend, i.e., the next best \emph{inter} $\beta$ centroid match has a very high increase in its cost.
+For example, considering the following \emph{inter} $\beta$ match. With $c_{k=1} (\beta_j = 32.167)$ and $c_{p=1} (\beta_i = 31.333)$, the minimal cost is around $cost_{min} \approx 0.84$. The next best option jumps to $cost_{second} = 13.823$. These jumps can be seen for each \emph{inter} $\beta$ match in figure in both depicted figures \ref{fig_27} and \ref{fig_28}.
+The key essence behind this finding is that for the chosen number of centroids $K$ of this dynamical model (Lorenz system \eqref{eq_6_Lorenz}), no ambiguous regions, as explained at the beginning of this chapter, occur.\newline 
+
+Next, the tracking result of 3 different systems shall be viewed.
+The tracked state for \emph{SLS} is depicted in figures \ref{fig_29}.
+In each of the figures, one centroid is colored blue that denotes 
+the first centroid in the sequence of the underlying trajectory.
+Within the depicted range $\vec{\beta}$, it can be observed, that each label across the $\vec{\beta}$ is labeled as expected.
+No single ambiguity or mislabeling can be seen. 
+In other words, it highlights the high performance of the tracking algorithm.
+%
+%
+% ==============================================================================
+% ======================= SLS =================================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta =28$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/3_lb_28.000.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 28.833$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/4_lb_28.833.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta = 31.333$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/15_lb_31.333.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 33$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/5_lb_33.000.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Tracked states for \emph{SLS}, $K = 10,\, \vec{\beta} = [\, 28, \, 28.333, \, 31.333, \, 31.14, \, 33  \, ]$}
+    \label{fig_29}
+\end{figure}
+% ==============================================================================
+% ======================= SLS =================================================
+% ==============================================================================
+%
+The second model is the \emph{LS20}, i.e, $K= 20,\, \vec{\beta }_{tr} = [\, \beta_0 = 24.75 ; \, \beta_{end} = 53.75  \,], \, n_{\beta,tr} = 60$.
+The outcome is depicted in figures \ref{fig_32}.
+It can be noted that $\beta = 24.75$ and $\beta = 30.648$ exhibit very similar results to the \emph{SLS} model. 
+The same is true for intermediate $\beta$ values, i.e., $24.75 \leq \beta \lessapprox 30.648 $. 
+However,  with $\beta \gtrapprox 30.64$ as depicted for $\beta =  31.14$, one centroid, i.e. the centroid with the label $20$ in the right ear appears unexpectedly. 
+With this, a drastic change to the centroid placing network is imposed.
+Looking at the upcoming $\beta$ these erratic changes are found again.\newline 
+
+
+% ==============================================================================
+% ======================= LS20 =================================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta =24.75$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/6_lb_24.750.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 28.682$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/7_lb_28.682.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta = 30.648$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/7_lb_30.648.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 31.140$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/8_lb_31.140.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta = 42.936$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/9_lb_42.936.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 53.750$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/10_lb_53.750.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Tracked states for \emph{LS20}, $K = 20,\, \vec{\beta} = [\, 24.75, \, 28.682, \, 30.648, \, 31.14, \, 31.14,$ $42.936, \, 53.75  \, ]$ }
+    \label{fig_32}
+\end{figure}
+% ==============================================================================
+% ======================= LS20 =================================================
+% ==============================================================================
+Generating a tracked state with these discontinuous cluster network deformations even manually can be considered hard to impossible because tracking demands some kind of similarity. 
+If two cluster networks differ too much from each other, then necessarily at least tracked label is going to be unsatisfying. 
+Hence, it would be wrong to conclude that the tracking algorithm is not performing well, but rather the clustering algorithm itself or the range of $\vec{\beta} $ must be adapted. If the range of $\vec{\beta} $  is shortened, multiple models can be trained and tracked.\newline 
+
+\FloatBarrier
+The third model is referred to as \emph{FW15}. 
+Figures in \ref{fig_38} show the tracked state for 4 different $\beta$ values. It can be observed that for $\beta = 11$ the centroid placing has changed notably to the other $\beta$ values, thus tracking the centroids in the center for $\beta = 11$ becomes unfavorable. 
+Overall, however, the tracked state results advocate the performance of the tracking algorithm.\newline
+
+% ==============================================================================
+% ======================= FW15 =================================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta =8$ }
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/11_lb_8.000.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 8.25$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/12_lb_8.250.pdf}
+    \end{subfigure}
+
+    \smallskip
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{$\beta = 10$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/13_lb_10.000.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \caption{ $\beta = 11$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/1_Tracking/14_lb_11.000.pdf}
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{Tracked states for \emph{FW15}, $K = 15,\, \vec{\beta} = [\, 8, \, 8.25, \, 10, \, 11 \, ]$}
+    \label{fig_38}
+\end{figure}
+% ==============================================================================
+% ======================= FW15 =================================================
+% ==============================================================================
+
+It can be concluded that the tracking algorithm performs remarkably well. However, when the cluster placing network is abruptly changed from one $\beta$ to the other $\beta$, the tracking outcome gets worse and generates sudden cluster network deformation. 
+As a possible solution, splitting up the $\vec{\beta}_{tr}$ range into smaller $\vec{\beta}_{tr,i}$ ranges, can be named. This is not only seen for the \emph{LS20}, but also for other dynamical systems as illustratively shown with the center area of the \emph{FW15} system for $\beta= 11$.
+\FloatBarrier   
+

@@ -1,0 +1,157 @@
+\section{Modeling}
+\label{sec_2_4_Modeling}
+In this section, the fourth main step of \gls{cnmc}, i.e., modeling, is elaborated.
+The data and workflow is described in figure \ref{fig_42}.
+It comprises two main sub-tasks, which are modeling the \glsfirst{cpevol} and modeling the transition properties tensors $\bm Q / \bm T$. 
+The settings are as usually defined in \emph{settings.py} and the extracted attributes are distributed to the sub-tasks. 
+Modeling the \gls{cpevol} and the $\bm Q/ \bm T$ tensors can be executed separately from each other. 
+If the output of one of the two modeling sub-steps is at hand, \gls{cnmc} is not forced to recalculate both modeling sub-steps.
+Since the tracked states are used as training data to run the modeling they are prerequisites for both modeling parts.
+The modeling of the centroid position shall be explained in the upcoming subsection \ref{subsec_2_4_1_CPE}, followed by the explanation of the transition properties in subsection \ref{subsec_2_4_2_QT}.
+A comparison between this \gls{cnmc} and the \emph{first CNMc} version is provided at the end of the respective subsections.
+The results of both modeling steps can be found in section
+\ref{sec_3_2_MOD_CPE} and \ref{sec_3_3_SVD_NMF}
+
+\begin{figure} [!h]
+    \hspace*{-4cm} 
+    \resizebox{1.2\textwidth}{!}{
+    \input{2_Figures/2_Task/2_Modeling/0_Modeling.tikz}
+    }
+    \caption{Data and workflow of the fourth step: Modeling}
+    \label{fig_42}
+\end{figure}
+
+
+\subsection{Modeling the centroid position evolution}
+\label{subsec_2_4_1_CPE}
+In this subsection, the modeling of the \gls{cpevol} is described. 
+The objective is to find a surrogate model, which returns all $K$ centroid positions for an unseen $\beta_{unseen}$. 
+The training data for this are the tracked centroids from the previous step, which is described in section \ref{sec_2_3_Tracking}. 
+To explain the modeling of the \emph{CPE}, figure \ref{fig_43} shall be inspected.
+The model parameter values which shall be used to train the model $\vec{\beta_{tr}}$ are used for generating a so-called candidate library matrix $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$. The candidate library matrix $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is obtained making use of a function of \emph{pySindy} \cite{Silva2020,Kaptanoglu2022,Brunton2016}.
+In \cite{Brunton2016} the term $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is explained well. However, in brief terms, it allows the construction of a matrix, which comprises the output of defined functions. 
+These functions could be, e.g., a linear, polynomial, trigonometrical or any other non-linear function. Made-up functions that include logical conditions can also be applied. \newline 
+
+\begin{figure} [!h]
+    \hspace*{-4cm} 
+    \resizebox{1.2\textwidth}{!}{
+    \input{2_Figures/2_Task/2_Modeling/1_Pos_Mod.tikz}
+    }
+    \caption{Data and workflow of modeling the \glsfirst{cpevol}} 
+    \label{fig_43}
+\end{figure}
+
+Since, the goal is not to explain, how to operate \emph{pySindy} \cite{Brunton2016}, the curious reader is referred to the \emph{pySindy} very extensive online documentation and \cite{Silva2020,Kaptanoglu2022}.
+Nevertheless, to understand $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ equation \eqref{eq_20} shall be considered. 
+In this example, 3 different functions, denoted as $f_i$ in the first row, are employed.
+The remaining rows are the output for the chosen $f_i$.
+Furthermore, $n$ is the number of samples or the size of $\vec{\beta_{tr} }$, i.e., $n_{\beta,tr} $ and $m$ denotes the number of the features, i.e., the number of the functions $f_i$. \newline
+
+\begin{equation}
+    \boldsymbol{\Theta_{exampl(n \times m )}}(\,\vec{\beta_{tr}}) =
+    % \renewcommand\arraystretch{3} 
+    \renewcommand\arraycolsep{10pt} 
+    \begin{bmatrix}
+      f_1 = \beta & f_2 = \beta^2 & f_2 = cos(\beta)^2 - exp\,\left(\dfrac{\beta}{-0.856} \right) \\[1.5em]
+      1  & 1^2 & cos(1)^2 - exp\,\left(\dfrac{1}{-0.856} \right) \\[1.5em]
+      2 &  2^2  & cos(2)^2 - exp\,\left(\dfrac{2}{-0.856} \right) \\[1.5em]
+    \end{bmatrix}
+    \label{eq_20}
+\end{equation}
+
+The actual candidate library matrix $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ incorporates  a quadratic polynomial, the inverse $ \frac{1}{\beta}$, the exponential $exp(\beta)$ and 3 frequencies of cos and sin, i.e., $cos(\vec{\beta}_{freq}), \ sin(\vec{\beta}_{freq})$, where $\vec{\beta}_{freq} = [1, \, 2,\, 3]$. 
+There are much more complex $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$  available in \gls{cnmc}, which can be selected if desired. 
+Nonetheless, the default $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is chosen as described above.
+Once $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$  is the generated, the system of equations \eqref{eq_21} is solved. 
+Note, this is very similar to solving the well-known $\bm A \, \vec{x} =  \vec{y}$ system of equations.
+The difference is that the vectors $\vec{x}, \, \vec{y}$ can be vectors in the case of \eqref{eq_21} as well, but in general, they are the matrices $\bm{X} ,\, \bm Y$, respectively. The solution to the matrix $\bm{X}$ is the desired output.
+It contains the coefficients which assign importance to the used functions $f_i$. 
+The matrix $\bm Y$ contains the targets or the known output for the chosen functions $f_i$.
+Comparing $\bm A$ and $ \boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ mathematically, no difference exists.\newline
+ 
+\begin{equation}
+    \boldsymbol{\Theta}\,(\vec{\beta_{tr}}) \: \bm X = \bm Y
+    \label{eq_21}
+\end{equation}
+
+With staying in the \emph{pySindy} environment, the system of equations \eqref{eq_21} is solved by means of the optimizer \emph{SR3}, which is implemented in  \emph{pySindy}.
+Details and some advantages of the  \emph{SR3}  optimizer can be found in \cite{SR3}. Nevertheless, two main points shall be stated. 
+It is highly unlikely that the $\boldsymbol{\Theta}\,(\vec{\beta_{tr}}),\: \bm X,\, \bm Y$ is going to lead to a well-posed problem, i.e., the number of equations are equal to the number of unknowns and having a unique solution.
+In most cases the configuration will be ill-posed, i.e., the number of equations is not equal to the number of unknowns. 
+In the latter case, two scenarios are possible, the configuration could result in an over-or under-determined system of equations.\newline 
+
+For an over-determined system, there are more equations than unknowns. 
+Thus,  generally, no outcome that satisfies equation \eqref{eq_21} exists.
+In order to find a representation that comes close to a solution, an error metric is defined as the objective function for optimization.
+There are a lot of error metrics or norms, however, some commonly used \cite{Brunton2019} are given in equations \eqref{eq_22} to \eqref{eq_24}, where $f(x_k)$ are true values of a function and $y_k$ are their corresponding predictions.
+The under-determined system has more unknown variables than equations, thus infinitely many solutions exist. 
+To find one prominent solution, again, optimization is performed.
+Note, for practical application penalization or regularization parameter are exploited as additional constraints within the definition of the optimization problem. 
+For more about over- and under-determined systems as well as for deploying optimization for finding a satisfying result the reader is referred to \cite{Brunton2019}.\newline
+
+\begin{equation}
+    E_{\infty} = \max_{1<k<n} |f(x_k) -y_k | \quad \text{Maximum Error} \;(l_{\infty})
+    \label{eq_22}
+\end{equation}
+
+\vspace{0.1cm}
+\begin{equation}
+    E_{1} = \frac{1}{n} \sum_{k=1}^{n} |f(x_k) -y_k | \quad \text{Mean Absolute Error} \;(l_{1})
+    \label{eq_23}
+\end{equation}
+
+\vspace{0.1cm}
+\begin{equation}
+    E_{2} =  \sqrt{\frac{1}{n} \sum_{k=1}^{n} |f(x_k) -y_k |^2 }  \quad \text{Least-squares Error} \;(l_{2})
+    \label{eq_24}
+\end{equation}
+\vspace{0.1cm}
+
+The aim for modeling \emph{CPE} is to receive a regression model, which is sparse, i.e., it is described through a small number of functions $f_i$.
+For this to work, the coefficient matrix $\bm X$ must be sparse, i.e., most of its entries are zero. 
+Consequently, most of the used functions $f_i$ would be inactive and only a few $f_i$ are actively applied to capture the \emph{CPE} behavior.
+The $l_1$ norm as defined in \eqref{eq_23} and the $l_0$ are metrics which promotes sparsity.
+In simpler terms, they are leveraged to find only a few important and active functions $f_i$. 
+The $l_2$ norm as defined in \eqref{eq_24} is known for its opposite effect, i.e. to assign importance to a high number of $f_i$.
+The \emph{SR3} optimizer is a sparsity promoting optimizer, which deploys $l_0$ and $l_1$ regularization.\newline
+
+The second point which shall be mentioned about the \emph{SR3} optimizer is that it can cope with over-and under-determined systems and solves them without any additional input.
+One important note regarding the use of \emph{pySindy} is that \emph{pySindy} in this thesis is not used as it is commonly. For modeling the \emph{CPE} only the modules for generating the candidate library matrix $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ and the \emph{SR3} optimizer are utilized.\newline 
+
+Going back to the data and workflow in figure \ref{fig_43}, the candidate library matrix $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is generated. 
+Furthermore, it also has been explained how it is passed to \emph{pySindy} and how \emph{SR3} is used to find a solution. It can be observed that $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is also passed to a \emph{Linear} and \emph{Elastic net} block. The \emph{Linear} block is used to solve the system of equations \eqref{eq_21} through linear interpolation.
+The \emph{Elastic net} solves the same system of equations with the elastic net approach. In this the optimization is penalized with an $l_1$ and $l_2$ norm.
+In other words, it combines the Lasso \cite{Lasso, Brunton2019} and Ridge \cite{Brunton2019}, regression respectively. 
+The linear and elastic net solvers are invoked from the \emph{Scikit-learn} \cite{scikit-learn} library.\newline 
+
+The next step is not depicted in figure \ref{fig_43}. 
+Namely, the linear regression model is built with the full data. For \emph{pySindy} and the elastic net, the models are trained with $90 \%$ of the training data and the remaining $10 \%$ are used to test or validate the model.
+For \emph{pySindy} $20$ different models with the linear distributed thresholds starting from $0.1$ and ending at $2.0$ are generated. 
+The model which has the least mean absolute error \eqref{eq_23} will be selected as the \emph{pySindy} model.
+The mean absolute error of the linear, elastic net and the selected \emph{pySindy} will be compared against each other. 
+The one regression model which has the lowest mean absolute error is selected as the final model.\newline
+
+The described process is executed multiple times. 
+In 3-dimensions the location of a centroid is given as the coordinates of the 3 axes. 
+Since the \emph{CPE} across the 3 different axes can deviate significantly, capturing the entire behavior in one model would require a complex model. 
+A complex model, however, is not sparse anymore. 
+Thus, a regression model for each of the $K$ labels and for each of the 3 axes is required. 
+In total $3 \, K$ regression models are generated. \newline
+
+Finally, \emph{first CNMc} and \gls{cnmc} shall be compared.
+First, in \emph{first CNMc} only \emph{pySindy} with a different built-in optimizer. 
+Second, the modeling \emph{CPE} was specifically designed for the Lorenz system \eqref{eq_6_Lorenz}. 
+Third, \emph{first CNMc} entirely relies on \emph{pySindy}, no linear and elastic models are calculated and used for comparison. 
+Fourth, the way \emph{first CNMc} would perform prediction, was by transforming the active $f_i$ with their coefficients to equations such that \emph{SymPy} could be applied. 
+The disadvantage is that if $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ is changed, modifications for \emph{SymPy} are necessary.
+Also, $\boldsymbol{\Theta}\,(\vec{\beta_{tr}})$ can be used for arbitrary defined functions $f_i$, \emph{SymPy} functions, however, are restricted to some predefined functions.
+In \gls{cnmc} it is also possible to get the active $f_i$ as equations. 
+However, the prediction is obtained with a regular matrix-matrix multiplication as given in equation \eqref{eq_25}. The variables are denoted as the predicted outcome $\bm{\tilde{Y}}$, the testing data for which the prediction is desired $\bm{\Theta_s}$ and the coefficient matrix $\bm X$ from equation \eqref{eq_21}.
+
+\begin{equation}
+    \bm{\tilde{Y}} = \bm{\Theta_s} \, \bm X 
+    \label{eq_25}
+\end{equation}
+
+
+With leveraging equation \eqref{eq_25} the limitations imposed through \emph{SymPy} are removed.

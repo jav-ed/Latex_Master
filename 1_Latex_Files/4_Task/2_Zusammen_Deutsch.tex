@@ -1,0 +1,37 @@
+\chapter{Zusammenfassung auf Deutsch}
+Die Arbeit wurde an der Technischen Universität Braunschweig geschrieben.
+Da diese Arbeit auf eine Fremdsprache geschrieben wurde, soll der Anforderung der TU-Braunschweig, dass eine Zusammenfassung auf Deutsch, welche etwa 1 DIN A4-Seite beträgt, nachgekommen werden.
+Zunächst wird kurz die Motivation dieser Master-Arbeit erklärt. Im Anschluss sollen die Ergebnisse im Kurzen erörtert werden.\newline 
+
+In dieser Master-Arbeit war es Ziel, eine bereits bestehende Methode, das sog. \glsfirst{cnmc}, zu verbessern. Die Vorversion ist in \cite{Max2021} beschrieben. Hier konnte gezeigt werden, dass \gls{cnmc} für das Lorenz System, \cite{lorenz1963deterministic} vielversprechende Approximationen zulässt.
+Das Lorenz System ist recht bekannt unter den chaotischen Systemen. Ein chaotisches System ist ein dynamisches System, was selbst durch Differenzialgleichungen beschrieben wird. 
+Sinn von \gls{cnmc} ist daher, das Approximieren bzw. Vorhersagen von Trajektorien (zeitliche Lösung der Differenzialgleichung) von  dynamischen Systemen. 
+\gls{cnmc} wurde innerhalb der ersten Version speziell für das Lorenz System entwickelt, sodass es nicht für allgemeingültige dynamische System verwendet werden konnte.
+Die Limitierungen verlangten unter anderem, dass die Trajektorie kreisförmig seien müsse. Zudem, musste ein 3-dimensionales Problem vorliegen. Weiters kam hinzu, dass ein wichtiger Schritt in dem \gls{cnmc} Arbeitsablauf (Moden-Findung) mehrere Stunden in Anspruch nahm und somit die Anwendung von \gls{cnmc} unattraktiver machte. 
+Aufgrund dessen, dass es Schwierigkeiten beim Ausführen der ersten \gls{cnmc}-Version gab, wurde \gls{cnmc} von neu programmiert.\newline
+
+
+Zunächst wurde der Code nun in der Form geschrieben, dass der Nutzer nach Belieben neue dynamische Systeme einfach hinzufügen kann. Standardmäßig kommt \gls{cnmc} bereits mit 10 verschiedenen dynamischen Systemen. Danach wurden zwei wichtige Limitierungen entfernt. Die Erste, \gls{cnmc} kann inzwischen mit jedem Verhalten der Trajektorie umgehen. In anderen Worten, die Trajektorie des dynamischen Systems muss nicht kreisförmig sein. Zweitens ist \gls{cnmc} nicht mehr durch die Anzahl der Dimension restriktiert. Vereinfacht ausgedrückt, ob \gls{cnmc} auf eine 3d oder eine andere beliege dimensionale Differenzialgleichung angewendet werden soll, spielt keine Rolle mehr.
+Für den Schritt, in welchem die Moden einer Daten-Matrix gefunden werden, stehen aktuell zwei verschiedene Möglichkeiten zu Verfügung, \glsfirst{nmf} und \glsfirst{svd}. \gls{nmf} wurde bereits in der ersten Version von \gls{cnmc} verwendet. 
+Doch wurde es dahingehend weiter verbessert, dass jetzt das Finden des wichtigen Parameters, der Anzahl der verwendeten Moden, automatisiert durchgeführt wird.
+Somit kann \gls{nmf} automatisiert auf unterschiedliche dynamische System angewendet werden.
+\gls{svd} ist die zweite Methode und wurde implementiert, um die hohe Rechenzeit des \gls{nmf} zu verhindern.
+Es konnte gezeigt werden, dass \gls{svd} tatsächlich, um ein vielfaches schneller als  \gls{nmf} ist. 
+Die Rechenzeit von \gls{svd} bewegt sich im Bereich von Sekunden, wohingegen \gls{nmf} mehrere Stunden in Anspruch nehmen kann.
+Auch wurde auch gezeigt, dass beide Methoden qualitativ gleichwertige Ergebnisse liefern.\newline
+
+
+Eine weitere wichtige Änderung, welche in der aktuellen \gls{cnmc} Version implementiert ist die, dass eine sog. B-Spline Interpolation durch eine lineare Interpolation ersetzt wurde. Als Folge können unangebracht hohe Interpolationsfehler (Oszillationen) der Trajektorie umgangen werden. Durch letztere Änderung können die Ergebnisse nun auch Graph dargestellt werden, ohne dass durch die B-Spline Interpolation eingebrachte Ausreißer eine visuelle Auswertung unmöglich machen.\newline 
+
+
+Mit dieser Arbeit konnte gezeigt werden, dass \gls{cnmc} nicht nur für das Lorenz System, sondern für allgemeingültige dynamische Systeme verwendet werden kann. Hierfür wurden beispielsweise die Ergebnisse für drei andere dynamische Systeme gezeigt. Die aktuelle \gls{cnmc} Version wurde in einer modularen Art geschrieben, welche es erlaubt, einzelne Algorithmen leicht durch andere zu ersetzen. 
+Jeder einzelne Haupt-Schritt in \gls{cnmc} kann aktiviert oder deaktiviert werden. Dadurch können bereits vorhanden Ergebnisse eingeladen werden, anstatt diese jedes Mal neu zu berechnen. Das Resultat ist eine hohe Ersparnis an Rechenzeit. \gls{cnmc} kommt mit vielen Features, über eine einzige Datei lässt sich der gesamte Ablauf von \gls{cnmc} steuern. Wodurch bestimmt werden kann,  welche Parameter in den einzelnen Schritten verwendet werden, wo Ergebnisse abgespeichert und geladen werden sollen, sowie auch wo und ob die Ergebnisse visuell abgespeichert werden sollen. 
+Die Resultate werden für die visuelle Inspektion als HTML-Dateien zur Verfügung gestellt. Damit ist es möglich weitere Informationen zu erhalten, wie beispielsweise, das Ablesen von Werten an bestimmten Stellen und anderen nützlichen Funktionen, wie etwa das Rotieren, Zoomen und Ausblenden einzelner Graphen. 
+Das Ziel war es, dem Nutzer einen Post-Processor mitzugeben, sodass er auch ohne weitere kostenpflichtige Software visuelle Auswertungen vornehmen kann. Doch \gls{cnmc} hat auch eine log-Datei integriert, in welcher alle Ausgaben, wie unter anderem Ergebnisse einzelner Qualitätsmesstechniken (Metriken bzw. Normen) nachgelesen werden können.\newline
+
+
+Zusammenfassend lässt sich sagen, mit dieser Master-Thesis befindet sich \gls{cnmc} in einem Zustand, in welchem es für allgemeingültige dynamische Systeme angewendet werden kann. Das Implementieren von weiteren Systemen wurde vereinfacht und wichtige Limitierungen, wie Anzahl der Dimensional und unzulässig hohe Rechenzeit konnten beseitigt werden. Zudem ist das Tool gut dokumentiert, und bietet diverse Features an, worunter beispielsweise die Post-Processing Möglichkeiten inbegriffen sind.
+
+
+
+

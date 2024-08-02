@@ -1,0 +1,60 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_data) {$\begin{array}{c}\text{clustering settings}\end{array}$};&
+&
+&
+\\
+%Row 1
+\node [Function] (data) {$\begin{array}{c}\text{Clustering}\end{array}$};&
+\node [DataInter] (data-ode) {$\begin{array}{c}\text{kmeans++ settings,} \\ $$F(\vec{\beta})$$\end{array}$};&
+&
+\\
+%Row 2
+&
+\node [Function,stack] (ode) {$\begin{array}{c}\text{Kmeans++ }$$(\beta)$$\end{array}$};&
+&
+\node [DataIO] (right_output_ode) {$\begin{array}{c}\text{save: trajectories,} \\ \text{plots}\end{array}$};\\
+%Row 3
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (data);
+\chainin (ode) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(data) edge [DataLine] (data-ode)
+(ode) edge [DataLine] (right_output_ode)
+% Vertical edges
+(data-ode) edge [DataLine] (ode)
+(data) edge [DataLine] (output_data);
+\end{pgfonlayer}
+
+\end{tikzpicture}

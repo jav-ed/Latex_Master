@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QMissioninformers exeuction time with different surrogate models\\E$"}

@@ -1,0 +1,78 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_data) {$\begin{array}{c}\text{modelling settings}\end{array}$};&
+&
+&
+&
+\\
+%Row 1
+\node [Function] (data) {$\begin{array}{c}\text{Modeling}\end{array}$};&
+\node [DataInter] (data-ode) {$\begin{array}{c}\text{CPE settings,} \\ \text{tracked state}$$\,(\beta)$$\end{array}$};&
+\node [DataInter] (data-qt) {$\begin{array}{c}$$\boldsymbol{Q} / \boldsymbol{T}$$\text{ settings,} \\ \text{tracked state}$$\,(\beta)$$\end{array}$};&
+&
+\\
+%Row 2
+&
+\node [Function,stack] (ode) {$\begin{array}{c}\text{Model} \\ \text{CPE}$$\,(\beta)$$\end{array}$};&
+&
+&
+\node [DataIO] (right_output_ode) {$\begin{array}{c}\text{save: CPE}$$\,(\beta)$$ \\ \text{plots}\end{array}$};\\
+%Row 3
+&
+&
+\node [Function,stack] (qt) {$\begin{array}{c}\text{Model} \\ $$\boldsymbol{Q} / \boldsymbol{T} \,(\beta)$$\end{array}$};&
+&
+\node [DataIO] (right_output_qt) {$\begin{array}{c}\text{save:}$$ \boldsymbol{Q} / \boldsymbol{T} \,(\beta)$$ \\ \text{plots}\end{array}$};\\
+%Row 4
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (data);
+\chainin (ode) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (data);
+\chainin (qt) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(data) edge [DataLine] (data-ode)
+(data) edge [DataLine] (data-qt)
+(ode) edge [DataLine] (right_output_ode)
+(qt) edge [DataLine] (right_output_qt)
+% Vertical edges
+(data-ode) edge [DataLine] (ode)
+(data-qt) edge [DataLine] (qt)
+(data) edge [DataLine] (output_data);
+\end{pgfonlayer}
+
+\end{tikzpicture}

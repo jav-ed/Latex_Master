@@ -1,0 +1,177 @@
+The objective behind exploiting symmetry is to reduce computation time. 
+Having defined the cost matrix $\bm A\,(\vec{\beta})$ as given in equation \eqref{eq_19}, it can be used to again solve the assignment problem.
+Its output is denoted as path$_O\,(\vec{\beta })$ in figure \ref{fig_24_Tracking_Workflow}.\newline
+
+\textbf{3. Validity check}
+\hrule
+\vspace{0.05cm}
+\hrule
+\vspace{0.25cm}
+The validity check can also be regarded as a feasibility investigation.
+To grasp what the feasibility constraint is table \ref{tab_1} shall be analyzed.\newline 
+
+% ------------------------------------------------------------------------------
+% ------------------------------ TABLE -----------------------------------------
+% ------------------------------------------------------------------------------
+\begin{table}[!h]
+  
+  \begin{minipage}{.3\linewidth}
+    \caption{\emph{Direct feasible}}
+    \centering
+      \begin{tabular}{c|c}
+        \multicolumn{1}{c}{$\beta_i$} &  \multicolumn{1}{c}{$\beta_j$} \\
+          \hline
+          \hline
+          1 & 2 \\
+          \hline
+          2 & 3 \\
+          \hline
+          3 & 4 \\
+          \hline
+          4 & 5 \\
+          \hline
+          5 & 6 \\
+          \hline
+          6 & 7 
+          \label{tab_1}
+      \end{tabular}
+  \end{minipage}
+  \begin{minipage}{.3\linewidth}
+    \centering
+    \caption{feasible}
+    \begin{tabular}{c|c}
+      \multicolumn{1}{c}{$\beta_i$} &  \multicolumn{1}{c}{$\beta_j$} \\
+        \hline
+        \hline
+        1 & 2 \\
+        \hline
+        2 & 3 \\
+        \hline
+        3 & 6 \\
+        \hline
+        4 & 7 \\
+        \hline
+        5 & 4 \\
+        \hline
+        6 & 5 
+        \label{tab_2}
+      \end{tabular}
+    \end{minipage} 
+  \begin{minipage}{.3\linewidth}
+    \centering
+    \caption{infeasible}
+    \begin{tabular}{c|c}
+      \multicolumn{1}{c}{$\beta_i$} &  \multicolumn{1}{c}{$\beta_j$} \\
+        \hline
+        \hline
+        1 & 2 \\
+        \hline 
+        2 & 1 \\
+        \hline
+        3 & 5 \\
+        \hline
+        4 & 6 \\
+        \hline
+        5 & 7 \\
+        \hline
+        6 & 3 
+        \label{tab_3}
+      \end{tabular}
+  \end{minipage} 
+  \caption{Examples for feasible and infeasible best tracking paths}
+  \label{tab_4}
+\end{table}
+
+% ------------------------------------------------------------------------------
+% ------------------------------ TABLE -----------------------------------------
+% ------------------------------------------------------------------------------
+
+
+It can be observed that in total the 7 model parameter values $(\vec{\beta}, \, n_{\beta}=7)$ were chosen.
+The overall goal is to provide one centroid label and get its corresponding centroid positions across all the 7 model parameter values $\vec{\beta }$. 
+Therefore, a \emph{feasible linking path}, which allows the linking of all centroids of all $\beta_i$ to all the other $\beta_{\vec{j}}$ centroids, is required.
+The latter description shall be elaborated step-wise in the following.
+For instance, if the first $\beta_i = 1$, a linking to the remaining $\beta_{\vec{j}} = \{2, \, 3, \, 4, \, 5, \, 6, \, 7 \}$ is mandatory.
+The first item of table \ref{tab_1} outlines that the centroids from $\beta_i = 1$ are tracked with the centroids $\beta_j=2$.
+In other words, a clear relationship between the centroids across  $\beta_i = 1$ and $\beta_j=2$ is established. Leveraging this relationship, the proper tracked centroid position across the two $ \beta = 1$ and $\beta= 2$, are returned.\newline
+
+
+Because the centroid labels of $\beta_i = 1$ are used as the reference to match the centroid labels of $\beta_j=2$, the \emph{known linked path} can be stated as $L_{known}= \{1,\, 2\}$. The next model parameter value $\beta_j = 3$ and it is tracked with $\beta_i =2$. 
+Since $\beta_i =2$ is already incorporated in the \emph{known linked path}, the \emph{known linking path} can be extended to $L_{known}= \{1,\, 2, \, 3\}$. The next model parameter value $\beta_j = 4$ and its corresponding tracked counterpart is $\beta_i =3$. 
+Again, $\beta_i =3$ is found in the \emph{known linked path}, therefore the \emph{known linking path} can be extended to $L_{known}= \{1,\, 2, \, 3, \, 4\}$. The next model parameter value $\beta_j = 5$ and its corresponding tracked $\beta_i =4$ and so this procedure can be performed until the last $\beta_j = 7$.
+Having completed the scheme, the \emph{known linking path} is of full rank, i.e. with $n_{\beta}= 7$ all the 7 pairwise different model parameter values $\vec{\beta}$ are captured in the \emph{known linking path} $L_{known}$.
+The information gained through a full ranked $L_{known, full}$ is that all centroids of all $\beta_i$ are linked to all the other $\beta_{\vec{j}}$ centroids. 
+\newline 
+
+After having introduced the full rank $L_{known, full}$, the more straightforward definition for \emph{feasible linking path} can be stated as follows. 
+A \emph{feasible linking path} is given when $L_{known}$ has full rank $L_{known, full}$. \emph{Direct feasible} cases as shown in table \ref{tab_1} are one way of \emph{feasible linking paths}. Another, more general feasible case is provided in table \ref{tab_2}. Here, up to $\beta_i = 2$ and $\beta_j = 3$ the scheme of the \emph{direct feasible} linking path is followed.
+However, with $\beta_i = 4$ and $\beta_j = 7$ the obstacle that $\beta_j = 7$ is not present in the current $L_{known}= \{1,\, 2,\, 3,\, 6\}$, occurs. 
+This issue can be circumvented by viewing $\beta_i = 6$ and $\beta_j = 5$.
+Since $\beta_i = 6$  is in the current state of $L_{known}= \{1,\, 2,\, 3,\, 6\}$, $L_{known}$ can be extended with $\beta_j = 5$, i.e., $L_{known}= \{1,\, 2,\, 3,\, 5, \, 6\}$. 
+Note, having acquired the relationship between $\beta_i$ to $\beta_j$ is the same as knowing the relationship between $\beta_j$ to $\beta_i$.
+Applying the newly added linking perspective, it can be seen that table \ref{tab_2} also demonstrates a fulled ranked $L_{known, full}$  or a  \emph{feasible linking path}.\newline
+
+In table \ref{tab_3} an example for an incomplete linking path or an \emph{infeasible linking path} is provided, where $L_{known}$ has no full rank.
+The aim of the sub-task, validity, is to determine, whether the proposed optimized tracking path is feasible by extracting information about the rank of the final $L_{known}$. 
+Internally in \gls{cnmc}, this is achieved through logical queries utilizing mainly if statements.
+One major advantage which was not mentioned when the examples above were worked out is the following. $\beta_{i,ref} = 1$ is not necessarily the best choice for being the reference. 
+The reference $\beta_{i,ref}$ is chosen such that it has the overall highest similarity or least cost to all the other $(n_{\beta} -1)$ available $\vec{\beta}$.
+Hence, a \emph{feasible linking path} with a lower sum of cost sum is generated.\newline 
+
+This feature of a flexible reference is only providing better \emph{feasible linking paths}, when the proposed optimized tracking path is infeasible, which in general is the case. Therefore, in most cases, it is advantageous to leverage the flexible reference.
+One of the outputs of \gls{cnmc} is the percentage cost savings that could be achieved with the flexible approach. In others, by what percentage could the costs be decreased when the flexible approach is compared with the rigid approach. 
+In the rigid approach, $\beta_{i,ref} = 1$ is chosen as the reference.
+Further, in the rigid approach, the $\vec{\beta}$ are linked in increasing order, i.e. $\beta_1$ with $\beta_1$, $\beta_2$  with $\beta_2$, $\beta_3$  with $\beta_4$ and so on. Exploiting the flexible approach yields cost savings of around $20\%$ to $50\%$ An example of coping with a flexible reference is provided in the description of the following sub-step.
+\newline
+
+
+\textbf{4. Truncate, final path}
+\hrule
+\vspace{0.05cm}
+\hrule
+\vspace{0.25cm}
+If the proposed optimized tracking path is feasible (\emph{feasible linking path}), i.e. $L_{known}$ has full rank $L_{known, full}$, the truncation can be skipped. 
+Consequently, the final path is the same as the proposed optimized tracking path.
+However, as mentioned, in general, this is not the expected case.
+Therefore, an example with an incomplete $L_{known}$ shall be portrayed to explain the workflow with active truncation.\newline 
+
+
+First, the final incomplete $L_{known}$ will be used as the starting point. 
+It will be filled until full rank is reached. 
+Allowing a flexible reference $\beta_{i,ref}$ the incomplete \emph{known linked path} could be, e.g., $L_{known} = \{3, \, 4, \, 5\}$. 
+To get full rank, the remaining $L_{missing} = \{1, \, 2, \, 6, \, 7\}$ are inferred through the following concept.
+The cost $\beta_{i,j}$ between all $L_{known}$ and $L_{missing}$ are known
+through the cost matrix $\bm A\,(\vec{\beta })$.
+The one $\beta_j$ entry from $L_{missing}$ which has the highest similarity or lowest cost $\beta_{i,j}$ to the one entry $\beta_j$ of the $L_{known}$, is removed from $L_{missing}$ and added to $L_{known}$. 
+Now, the same procedure can be applied to the modified $L_{known}$ and $L_{missing}$ until $L_{missing}$ is empty and $L_{known}$ has reached full rank.
+The inferred $L_{known, full}$ is then used as the final path and sent to the next sub-task.\newline
+
+
+\textbf{5. Transform}
+\hrule
+\vspace{0.05cm}
+\hrule
+\vspace{0.25cm}
+Once the final path is determined, it is known which $\beta_i$ is linked to which $\beta_j$. 
+For all the $\beta_{i},\, \beta_j$ matches in the final path, the linear sum assignment problem is solved again.
+Two illustrative solutions are provided in section \ref{sec_3_1_Tracking_Results}.
+For further explanation, table \ref{tab_2} shall be revisited. 
+The first $\beta_{i},\, \beta_j$ link is defined as $\beta_i = 1$ and $\beta_j = 2$. Moreover, for this scenario, it is assumed that $\beta_i = \beta_{ref} = 1$. Therefore, the $\beta_{i} = 1,\, \beta_j= 2$ is denoted as a direct match.
+In simpler terms, a direct pairwise $\beta_{i},\, \beta_j$ relation, is obtained when  $\beta_i$ or $\beta_j$ is directly traced back to the reference.
+For a pairwise direct $\beta_{i},\, \beta_j$ link the 
+transformation, i.e., relabeling without changing the dynamics of the system, as explained for the ordering sub-step, is applied directly and only once.\newline
+
+
+Now, considering the next $\beta_{i},\, \beta_j$ match, i.e., $\beta_i = 2$ and $\beta_j = 3$. 
+Linking the centroids from $\beta_j = 3$ to $\beta_i = 2$ directly would have no connection to the reference $\beta_{ref} = 1$. 
+Therefore, the solution to its linear sum assignment problem must experience the same transformations as $\beta_i = 2$ did. 
+In this case it is only the transformation caused by the $(\beta_i = 1,\,\beta_j = 2)$ match.
+The idea behind the transformation stays the same, however, if no direct relation is seen, respective multiple transformations must be performed.
+Once the final path has undergone all required transformations, the output is the desired tracked state. 
+The output can be stored and plotted if desired. 
+Some types of plots, which can be generated, will be shown in the section 
+\ref{sec_3_1_Tracking_Results}.\newline
+
+Finally, in short, the difference between \emph{first CNMc} and this \gls{cnmc} version shall be mentioned. 
+The proposed tracking algorithm is neither restricted to any dimension nor to a specific dynamical system. Thus, two major limitations of \emph{first CNMc} could be removed in the current \gls{cnmc} version. 
+Also, the flexible approach yields a better feasible linking path. 

@@ -1,0 +1,149 @@
+\subsection{Modeling Q/T}
+\label{subsec_2_4_2_QT}
+In this subsection, the goal is to explain how the transition properties are modeled. 
+The transition properties are the two tensors $\bm Q$ and $\bm T$, which consist of transition probability from one centroid to another and the corresponding transition time, respectively.
+For further details about the transition properties, the reader is referred to section \ref{sec_1_1_2_CNM}.
+Modeling $\bm Q / \bm T$ means to find surrogate models that capture the trained behavior and can predict the tensors for unseen model parameter values $\bm{\tilde{Q}}(\vec{\beta}_{unseeen}) ,\, \bm{\tilde{T}}(\vec{\beta}_{unseeen})$.
+To go through the data and workflow figure \ref{fig_44} shall be considered.\newline
+
+
+\begin{figure} [!h]
+    \hspace*{-4cm} 
+    \resizebox{1.2\textwidth}{!}{
+    \input{2_Figures/2_Task/2_Modeling/2_QT_Mod.tikz}
+    }
+    \caption{Data and workflow of $\bm Q / \bm T$ modeling}
+    \label{fig_44}
+\end{figure}
+
+First, the tracked state data is loaded and adapted in the sense that CNM's data format is received. After that \gls{cnm} can be executed on the tracked state data.
+The outcome of \gls{cnm} are the transition property tensors for all the provided model parameter values $\bm Q(\vec{\beta}) ,\, \bm T(\vec{\beta})$.
+However, \gls{cnm} does not return tensors as \emph{NumPy} \cite{harris2020array} arrays, but as \emph{Python} dictionaries. 
+Thus, the next step is to transform the dictionaries to \emph{NumPy} arrays.
+$\bm Q / \bm T$ are highly sparse, i.e., $85 \% - 99\%$ of the entries can be zero. 
+The $99\%$ case is seen with a great model order, which for the Lorenz system \eqref{eq_6_Lorenz} was found to be $L \approx 7$.
+Furthermore, with an increasing $L$, saving the dictionaries as \emph{NumPy} arrays becomes inefficient and at some $L$ impossible. With $L>7$ the storage cost goes above multiple hundreds of gigabytes of RAM.
+Therefore, the dictionaries are converted into sparse matrices. \newline 
+
+Thereafter, the sparse matrices are reshaped or stacked into a single matrix, such that a modal decomposition method can be applied.
+Followed by training a regression model for each of the mode coefficients.
+The idea is that the regression models receive a $\beta_{unseen}$ and returns all the corresponding predicted modes. 
+The regression models are saved and if desired plots can be enabled via \emph{settings.py}. \newline 
+
+In this version of \gls{cnmc} two modal decomposition methods are available.
+Namely, the \glsfirst{svd} and the \glsfirst{nmf}.
+The difference between both is given in \cite{Lee1999}.
+The \gls{svd} is stated in equation \eqref{eq_26}, where the variables are designated as the input matrix $\bm A$ which shall be decomposed, the left singular matrix $ \bm U $, the diagonal singular matrix $ \bm \Sigma $ and the right singular matrix $ \bm V^T $.
+The singular matrix $ \bm \Sigma $ is mostly ordered in descending order such that the highest singular value is the first diagonal element. 
+The intuition behind the singular values is that they assign importance to the modes in the left and right singular matrices $ \bm U $ and $ \bm {V^T} $, respectively. 
+
+\begin{equation}
+    \bm A = \bm U \, \bm \Sigma \, \bm {V^T}
+    \label{eq_26}
+\end{equation}
+
+
+The big advantage of the \gls{svd} is observed when the so-called economical \gls{svd} is calculated. 
+The economical \gls{svd} removes all zero singular values, thus the dimensionality of all 3 matrices can be reduced. 
+However, from the economical \gls{svd} as a basis, all the output with all $r$ modes is available.
+There is no need to perform any additional \gls{svd} to get the output for $r$ modes, but rather the economical \gls{svd} is truncated with the number $r$ for this purpose.
+\gls{nmf}, given in equation \eqref{eq_5_NMF}, on the other hand, has the disadvantage that there is no such thing as economical NMF. 
+For every change in the number of modes $r$, a full \gls{nmf} must be recalculated.\newline
+
+\begin{equation}
+    \bm {A_{i \mu}} \approx \bm A^{\prime}_{i \mu}  = (\bm W  \bm H)_{i \mu}  = \sum_{a = 1}^{r} 
+    \bm W_{ia} \bm H_{a \mu}
+    \tag{\ref{eq_5_NMF}}
+\end{equation}
+
+
+The issue with \gls{nmf} is that the solution is obtained through an iterative optimization process. 
+The number of iterations can be in the order of millions and higher to meet the convergence criteria.
+Because the optimal $r_{opt}$ depends on the dynamical system, there is no general rule for acquiring it directly. 
+Consequently, \gls{nmf} must be run with multiple different $r$ values to find $r_{opt}$. 
+Apart from the mentioned parameter study, one single \gls{nmf} execution was found to be more computationally expensive than \gls{svd}. 
+In \cite{Max2021} \gls{nmf} was found to be the performance bottleneck of \emph{first CNMc}, which became more evident when $L$ was increased.
+In subsection 
+\ref{subsec_3_3_1_SVD_Speed}
+a comparison between \gls{nmf} and \gls{svd} regarding computational time is given.\newline
+
+
+Nevertheless, if the user wants to apply \gls{nmf}, only one attribute in \emph{settings.py} needs to be modified.
+Because of that and the overall modular structure of \gls{cnmc}, implementation of any other decomposition method should be straightforward.
+In \gls{cnmc} the study for finding $r_{opt}$ is automated and thus testing \gls{cnmc} on various dynamical systems with \gls{nmf} should be manageable. 
+The benefit of applying \gls{nmf} is that the entries of the output matrices $\bm W_{ia},\, \bm H_{a \mu}$ are all non-zero.
+This enables interpreting the $\bm W_{ia}$ matrix since both $\bm Q / \bm T$ tensors cannot contain negative entries, i.e., no negative probability and no negative transition time.\newline
+
+Depending on whether  \gls{nmf} or \gls{svd} is chosen, $r_{opt}$ is found through a parameter study or based on $99 \%$ of the information content, respectively.
+The $99 \%$ condition is met when $r_{opt}$ modes add up to $99 \%$ of the total sum of the modes. In \gls{svd} $r_{opt}$ is automatically detected and does not require any new \gls{svd} execution. A comparison between \gls{svd} and \gls{nmf} regarding prediction quality is given in 
+section
+\ref{subsec_3_3_2_SVD_Quality}.
+After the decomposition has been performed, modes that capture characteristic information are available. 
+If the modes can be predicted for any $\beta_{unseen}$, the predicted transition properties $\bm{\tilde{Q}}(\vec{\beta}_{unseeen}) ,\, \bm{\tilde{T}}(\vec{\beta}_{unseeen})$ are obtained. 
+To comply with this \gls{cnmc} has 3 built-in methods. 
+Namely, \textbf{R}andom \textbf{F}orest (RF), AdaBoost, and Gaussian Process.\newline 
+
+First, \gls{rf} is based on decision trees, but additionally deploys
+a technique called bootstrap aggregation or bagging. 
+Bagging creates multiple sets from the original dataset, which are equivalent in size. 
+However, some features are duplicated in the new datasets, whereas others are 
+neglected entirely. This allows \gls{rf} to approximate very complex functions 
+and reduce the risk of overfitting, which is encountered commonly 
+with regular decision trees. 
+Moreover, it is such a powerful tool
+that, e.g., Kilian Weinberger, a well-known Professor for machine learning 
+at Cornell University, considers \gls{rf} in one of his lectures, to be 
+one of the most powerful regression techniques that the state of the art has to offer.
+Furthermore, \gls{rf} proved to be able to approximate the training data  
+acceptable as shown in \cite{Max2021}. 
+However, as mentioned in subsection \ref{subsec_1_1_3_first_CNMc}, it faced difficulties to approximate spike-like curves. 
+Therefore, it was desired to test alternatives as well.\newline
+
+These two alternatives were chosen to be AdaBoost, and Gaussian Process.
+Both methods are well recognized and used in many machine learning applications.
+Thus, instead of motivating them and giving theoretical explanations, the reader is referred to \cite{Adaboost}, \cite{Rasmussen2004,bishop2006pattern} for AdaBoost and Gaussian Process, respectively. 
+As for the implementation, all 3 methods are invoked through \emph{Scikit-learn} \cite{scikit-learn}.
+The weak learner for AdaBoost is  \emph{Scikit-learn's} default decision tree regressor.
+The kernel utilized for the Gaussian Process is the \textbf{R}adial \textbf{B}asis \textbf{F}unction (RBF). A comparison of these 3 methods in terms of prediction capabilities is provided in section \ref{subsec_3_3_2_SVD_Quality}.\newline
+
+Since the predicted $\bm{\tilde{Q}}(\vec{\beta}_{unseeen}) ,\, \bm{\tilde{T}}(\vec{\beta}_{unseeen})$ are based on regression techniques, their output will have some deviation to the original $\bm{Q}(\vec{\beta}_{unseeen}) ,\, \bm{T}(\vec{\beta}_{unseeen})$. 
+Due to that, the physical requirements given in equations \eqref{eq_31_Q_T_prediction} may be violated. \newline
+
+\begin{equation}
+    \begin{aligned}
+        0 \leq  \,  \bm Q \leq 1\\
+        \bm T \geq 0 \\
+        \bm Q \,(\bm T > 0) > 0 \\
+        \bm T(\bm Q = 0) = 0 
+    \end{aligned}
+    \label{eq_31_Q_T_prediction}
+\end{equation}
+
+To manually enforce these physical constraints, the rules defined in equation \eqref{eq_32_Rule} are applied. 
+The smallest allowed probability is defined to be 0, thus negative probabilities are set to zero. 
+The biggest probability is 1, hence, overshoot values are set to 1.
+Also, negative transition times would result in moving backward, therefore, they are set to zero. 
+Furthermore, it is important to verify that a probability is zero if its corresponding transition time is less than or equals zero.
+In general, the deviation is in the order of $\mathcal{O}(1 \mathrm{e}{-2})$, such that the modification following equation \eqref{eq_32_Rule} can be considered reasonable. 
+  \newline
+\begin{equation}
+    \begin{aligned}
+        & \bm Q < 0 := 0 \\
+        & \bm Q > 1 := 1 \\
+        & \bm T < 0 := 0\\
+        & \bm Q \, (\bm T \leq 0) := 0
+    \end{aligned}
+    \label{eq_32_Rule}
+    \vspace{0.1cm}
+\end{equation}
+In conclusion, it can be said that modeling $\bm Q / \bm T$ \gls{cnmc} is equipped with two different modal decomposition methods, \gls{svd} and NMF.
+To choose between them one attribute in \emph{settings.py} needs to be modified.
+The application of \gls{nmf} is automated with the integrated parameter study.
+For the mode surrogate models, 3 different regression methods are available.
+Selecting between them is kept convenient, i.e. by editing one property in \emph{settings.py}. 
+
+
+
+
+
+

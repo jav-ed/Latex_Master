@@ -1,0 +1,57 @@
+{
+    "latex-workshop.synctex.synctexjs.enabled": false,
+    "cSpell.words": [
+        "Breguet's",
+        "DLR's",
+        "Kriging",
+        "Krigings",
+        "Missioninformers",
+        "RBFs",
+        "RMSE"
+    ],
+    "grammarly.overrides": [
+        {
+            "files": [
+                "**/1_Latex_Files/1_Task/1_Introduction.tex"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "academic",
+                "emotions": [
+                    "neutral",
+                    "confident",
+                    "joyful",
+                    "optimistic",
+                    "respectful",
+                    "friendly",
+                    "analytical"
+                ],
+                "goals": [
+                    "inform",
+                    "describe",
+                    "convince",
+                    "tellStory"
+                ]
+            }
+        },
+        {
+            "files": [
+                "**/1_Latex_Files/2_Task/0_Methodlogy.tex"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "american",
+                "domain": "academic",
+                "emotions": [
+                    "respectful"
+                ],
+                "goals": [
+                    "inform",
+                    "describe",
+                    "tellStory"
+                ]
+            }
+        }
+    ]
+}

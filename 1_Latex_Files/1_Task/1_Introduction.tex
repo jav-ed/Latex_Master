@@ -1,0 +1,97 @@
+
+
+\chapter{Introduction}
+\label{chap_1_Intro}
+In this work, a tool called \glsfirst{cnmc} is further developed.
+The overall goal, in very brief terms, is to generate a model, which is able to 
+predict the trajectories of general dynamical systems. The model
+shall be capable of predicting the trajectories when a model parameter
+value is changed. 
+Some basics about dynamical systems are covered in 
+subsection \ref{subsec_1_1_1_Principles} and in-depth explanations about \gls{cnmc} are given in
+chapter \ref{chap_2_Methodlogy}.\newline 
+
+However, for a short and broad introduction to \gls{cnmc} the workflow depicted in figure \ref{fig_1_CNMC_Workflow} shall be highlighted. 
+The input it receives is data of a dynamical system or space state vectors for a range of model parameter values. The two main important outcomes are some accuracy measurements and the predicted trajectory for each desired model parameter value.
+Any inexperienced user may only have a look at the predicted trajectories to 
+quickly decide visually whether the prediction matches the trained data. Since \gls{cnmc} is written in a modular manner, meaning it can be regarded as 
+a black-box function, it can easily be integrated into other existing codes or 
+workflows. \newline
+
+\begin{figure}[!h]
+  \def\svgwidth{\linewidth}
+  \input{2_Figures/1_Task/1_CNMc.pdf_tex}
+  \caption{Broad overview: Workflow of \gls{cnmc}}
+  \label{fig_1_CNMC_Workflow}
+\end{figure}
+
+% ==============================================================================
+% ==================== Motivation ==============================================
+% ==============================================================================
+\section{Motivation}
+\label{sec_Motivation}
+\gls{cfd} is an 
+indispensable technique, when aimed to obtain information about aerodynamic properties, such 
+as drag and lift distributions. Modern \gls{cfd} solvers, such as \gls{dlr}'s \emph{TAU}
+\cite{Langer2014} often solves 
+the \gls{rans} equations to obtain one flow-field. Advanced solvers like \emph{TAU} apply advanced 
+mathematical knowledge to speed up calculations and
+heavily exploit multiple \glspl{cpu} in an optimized manner. Nevertheless,
+depending on the size of the object and accuracy demands or in other terms mesh grid size, the computation often is not economically 
+efficient enough. If the object for which a flow field is desired is a full aircraft, then even with a big cluster and making use of symmetry properties of the shape of the airplane, if such exists, the computation of one single
+flow field can still easily cost one or even multiple months in computation time. \newline 
+
+In modern science, there is a trend towards relying on \glspl{gpu} instead of \glspl{cpu}. Graphic cards possess much 
+more cores than a CPU. However, even with the utilization of \glspl{gpu} and GPU-optimized \gls{cfd} solvers, the computation is still very expensive. Not only in time but also 
+in electricity costs. 
+Running calculations on a cluster for multiple months is such expensive that wind tunnel measurements can be considered to be the economically more
+efficient choice to make.
+Regarding accuracy, wind tunnel measurements and \gls{cfd} simulations with state-of-the-art solvers can be considered to be 
+equally useful. When using \gls{cfd} solvers, there is one more thing to keep 
+in mind. 
+Each outcome is only valid for one single set of input parameters.
+Within the set of input parameters, the user often is only interested 
+in the impact of one parameter, e.g., the angle of attack. Consequently,
+wanting to capture the effect of the change of the angle of attack on the flow field, 
+multiple \gls{cfd} calculations need to be performed, i.e., for each desired 
+angle of attack.
+Based on the chosen angle of attack the solver might be able to converge faster to a solution. However, the calculation time 
+needs to be added up for each desired angle of attack. 
+In terms of time and energy costs, this could again be more expensive than wind-tunnel
+measurements. Wind tunnel measurements are difficult to set up, but once a 
+configuration is available, measuring flow field properties with it, in general, is known to be faster and easier than running \gls{cfd} simulations.\newline 
+
+% ------------------------------------------------------------------------------
+Within the scope of this work, a data-driven tool was developed that allows predictions for dynamic systems. 
+In \cite{Max2021} the first version of it showed promising results. 
+However, it was dedicated to the solution of one single dynamical system, i.e., the Lorenz system \cite{lorenz1963deterministic}.
+Due to the focus on one singular dynamical system, the proposed \glsfirst{cnmc} was not verified for other dynamical systems.
+Hence, one of the major goals of this thesis is to enable \gls{cnmc} to be applied to any general dynamical system. 
+For this, it is important to state that because of two main reasons \gls{cnmc} was not built upon the first version of \gls{cnmc}, but written from scratch.
+First, since the initial version of \gls{cnmc} was designed for only a single dynamic system, extending it to a general \gls{cnmc} was considered more time-consuming than starting fresh.
+Second, not all parts of the initial version of \gls{cnmc} could be executed without errors.
+The current \gls{cnmc} is therefore developed in a modular manner, i.e., on the one hand, the implementation of any other dynamical system is straightforward. 
+To exemplify this, 10 different dynamic systems are available by default, so new dynamic systems can be added analogously.\newline 
+
+The second important aspect for allowing \gls{cnmc} to be utilized in any general dynamical system is the removal of the two limitations.
+In the first version of \gls{cnmc} the behavior of the dynamical systems had to be circular as, e.g., the ears of the Lorenz system \cite{lorenz1963deterministic} are.
+Next, its dimensionality must be strictly 3-dimensional.
+Neither is a general dynamical system is not bound to exhibit a circular motion nor to be 3-dimensional.
+By removing these two limitations \gls{cnmc} can be leveraged on any dynamical system.
+However, the first version of \gls{cnmc} employed \glsfirst{nmf} as the modal decomposition method. 
+The exploited \gls{nmf} algorithm is highly computationally intensive, which makes a universal \gls{cnmc} application economically inefficient.
+Therefore, the current \gls{cnmc} has been extended by the option to choose between the \gls{nmf} and the newly implemented \glsfirst{svd}.
+The aim is not only that \gls{cnmc} is returning results within an acceptable timescale, but also to ensure that the quality of the modal decomposition remains at least at an equal level.
+Proofs for the latter can be found in section \ref{sec_3_3_SVD_NMF}.\newline
+
+With these modifications, the current \gls{cnmc} is now able to be used in any dynamical system within a feasible time frame.
+The next addressed issue is the B-spline interpolation. 
+It is used in the propagation step of \glsfirst{cnm} \cite{Fernex2021} to smooth the predicted trajectory. 
+However, as already noted in \cite{Max2021}, when the number of the clustering centroids $K$ is $K \gtrapprox 15$, the B-spline interpolation embeds oscillations with unacceptable high deviations from the original trajectories.
+To resolve this problem, the B-spline interpolation is replaced with linear interpolation. 
+By preventing the occurrence of outliers caused by the B-spline interpolation, neither the autocorrelation defined in subsection \ref{subsec_1_1_3_first_CNMc} nor the predicted trajectories are made impractical.
+Apart from the main ability of \gls{cnmc} a high number of additional features are available, e.g., the entire pipeline of \gls{cnmc} with all its parameters can be adjusted via one file (\emph{settings.py}), an incorporated log file, storing results at desired steps, the ability to execute multiple dynamical models consequentially and activating and disabling each step of \gls{cnmc}.
+The latter is particularly designed for saving computational time.
+Also, \gls{cnmc} comes with its own post-processor. 
+It is optional to generate and save the plots. 
+However, in the case of utilizing this feature, the plots are available as HTML files which, e.g., allow extracting further information about the outcome or rotating and zooming in 3d plots.

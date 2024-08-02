@@ -1,0 +1,37 @@
+\chapter{Conclusion and outlook}
+A tool to capture and predict the behavior of nonlinear complex and chaotic dynamical systems within a range of some model parameter values $\vec{\beta}$ is presented.
+The tool is called \glsfirst{cnmc}.
+It could be shown that \gls{cnmc} is able to capture and make predictions for the well-known Lorenz system \cite{lorenz1963deterministic}.
+With having removed one of the major limitations in the first attempt of \gls{cnmc} \cite{Max2021}, the introduced version of \gls{cnmc} is not limited to any dimension anymore. 
+Furthermore, the restriction of the dynamical system to exhibit a circular trajectory is removed. 
+Since these two limitations could be removed, the presented \gls{cnmc} can be applied to any general dynamical system.
+To outline this fact, 10 different dynamical systems are implemented by default in \gls{cnmc}.
+Some of these dynamical systems were used to evaluate \gls{cnmc} performance.
+It could be observed that \gls{cnmc} is not only able to deal with the Lorenz system but also with more complicated systems.
+The objective is to represent the characteristic behavior of general dynamical systems that could be fulfilled on all tested systems.\newline 
+
+The third limitation which could be removed is the unacceptably high computational time with \glsfirst{nmf}. 
+It could be highlighted that \glsfirst{svd} returns the decomposition within seconds, instead of hours, without adding any inaccuracies.
+Moreover, \gls{svd} does not require a parameter study. 
+Executing \gls{nmf} once is already computational more expensive than \gls{svd}, but with a parameter study, \gls{nmf} becomes even more unsatisfactory in the application.
+By having removed these 3 major limitations, \gls{cnmc} can be applied to any dynamical system within a reasonable computational time on a regular laptop.
+Nevertheless, \gls{cnmc} contains algorithms, which highly benefit from computational power. Thus, faster outputs are achieved with clusters.
+Also, with having replaced the B-spline interpolation through linear interpolation, the predicted trajectories can be visually depicted appropriately without the 
+Another important introduced advancement is that the B-spline interpolation was replaced by linear interpolation. This allows to avoid unreasonably high interpolation errors (oscillations) of the trajectory and enables an appropriate visualization.
+\newline
+
+
+\gls{cnmc} Is written from scratch in a modular way such that implementing it into existing code, replacing employed algorithms with others is straightforward or used as a black-box function.
+All important parameters can be adjusted via one file (\emph{settings.py}).
+Helpful post-processing features are part of \gls{cnmc} and can also be controlled with \emph{settings.py}.
+Overall \gls{cnmc} includes a high number of features, e.g., a log file, storing results at desired steps, saving plots as HTML files which allow extracting further information about the outcome, the ability to execute multiple models consequentially, and activating and disabling each step of \gls{cnmc}.
+All displayed outputs in this thesis were generated with \gls{cnmc}. 
+Finally, one limitation which remains shall be mentioned.
+The used \gls{svd} code receives sparse matrices, however, it returns a dense matrix. The consequence is that with high model orders $L$, quickly multiple hundreds of gigabytes of RAM are required. 
+The maximal $L$ which could be achieved on the laptop of the author, which has 16 GB RAM, is $L=7$.\newline
+
+As an outlook, a new \gls{svd} algorithm should be searched for or written from scratch. 
+The demand for the new \gls{svd} solver is that it must receive sparse matrices and also returns the solution in form of sparse matrices. 
+With that $L$ could be increased, i.e., $L>7$. 
+In this thesis, it could be shown that \gls{cnmc} can handle chaotic systems well. Thus, the next step could be, replacing the current data generation step, where differential equations are solved, with actual \gls{cfd} data as input.
+Hence, the objective would be to apply \gls{cnmc} to real \gls{cfd} data to predict flow fields.

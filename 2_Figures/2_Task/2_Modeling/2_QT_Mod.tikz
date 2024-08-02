@@ -1,0 +1,107 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_cnm) {$\begin{array}{c}\text{tracked state}$$\,(\beta)$$\end{array}$};&
+&
+&
+&
+&
+&
+\\
+%Row 1
+\node [Function,stack] (cnm) {$\begin{array}{c}\text{CNM}$$ \, (\beta)  $$\end{array}$};&
+\node [DataInter] (cnm-transform) {$\begin{array}{c}\text{dicts: }$$ \boldsymbol{Q} / \boldsymbol{T} \, (\beta) $$ \end{array}$};&
+&
+&
+&
+&
+\node [DataIO] (right_output_cnm) {$\begin{array}{c}\text{save}\end{array}$};\\
+%Row 2
+&
+\node [Function,stack] (transform) {$\begin{array}{c}\text{transform}\end{array}$};&
+\node [DataInter] (transform-stack) {$\begin{array}{c}$$ \boldsymbol{Q} / \boldsymbol{T} \, (\beta) $$\end{array}$};&
+&
+&
+&
+\\
+%Row 3
+&
+&
+\node [Function] (stack) {$\begin{array}{c}\text{stacking}\end{array}$};&
+\node [DataInter] (stack-decomp) {$\begin{array}{c}$$\boldsymbol{Q} / \boldsymbol{T}_{stack} \, (\beta) $$\end{array}$};&
+&
+&
+\\
+%Row 4
+&
+&
+&
+\node [Function] (decomp) {$\begin{array}{c}\text{decomposition}\end{array}$};&
+\node [DataInter] (decomp-regr) {$\begin{array}{c}\text{modes}\end{array}$};&
+&
+\node [DataIO] (right_output_decomp) {$\begin{array}{c}\text{save, plots}\end{array}$};\\
+%Row 5
+&
+&
+&
+&
+\node [Function,stack] (regr) {$\begin{array}{c}\text{regression}\end{array}$};&
+&
+\node [DataIO] (right_output_regr) {$\begin{array}{c}\text{save, plots}\end{array}$};\\
+%Row 6
+&
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (cnm);
+\chainin (transform) [join=by ProcessHVA];
+\chainin (stack) [join=by ProcessHVA];
+\chainin (decomp) [join=by ProcessHVA];
+\chainin (regr) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(cnm) edge [DataLine] (cnm-transform)
+(transform) edge [DataLine] (transform-stack)
+(stack) edge [DataLine] (stack-decomp)
+(decomp) edge [DataLine] (decomp-regr)
+(cnm) edge [DataLine] (right_output_cnm)
+(decomp) edge [DataLine] (right_output_decomp)
+(regr) edge [DataLine] (right_output_regr)
+% Vertical edges
+(cnm-transform) edge [DataLine] (transform)
+(transform-stack) edge [DataLine] (stack)
+(stack-decomp) edge [DataLine] (decomp)
+(decomp-regr) edge [DataLine] (regr)
+(cnm) edge [DataLine] (output_cnm);
+\end{pgfonlayer}
+
+\end{tikzpicture}

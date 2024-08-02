@@ -1,0 +1,100 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_mission_Inf) {$\begin{array}{c}mission input, database\end{array}$};&
+&
+&
+&
+&
+&
+\\
+%Row 1
+\node [Function] (mission_Inf) {$\begin{array}{c}\text{missioninformer}\end{array}$};&
+\node [DataInter] (mission_Inf-st_interpol) {$\begin{array}{c}$$LoD, AoA, TSFC$$\end{array}$};&
+\node [DataInter] (mission_Inf-grad_interpol) {$\begin{array}{c}\frac{LoD}{dp}, \frac{d\alpha}{dp}, \frac{dTSFC}{dp}\end{array}$};&
+&
+&
+&
+\\
+%Row 2
+&
+\node [Function] (st_interpol) {$\begin{array}{c}\text{state intp. model:} = \tilde{S}\end{array}$};&
+&
+\node [DataInter] (st_interpol-st_fuel_burn) {$\begin{array}{c} \tilde{S}\end{array}$};&
+\node [DataInter] (st_interpol-grad_fuel_burn) {$\begin{array}{c} \tilde{S}\end{array}$};&
+&
+\\
+%Row 3
+&
+&
+\node [Function] (grad_interpol) {$\begin{array}{c}\text{grad intp. model:} = \tilde{G}\end{array}$};&
+&
+\node [DataInter] (grad_interpol-grad_fuel_burn) {$\begin{array}{c}\tilde{G}\end{array}$};&
+&
+\\
+%Row 4
+&
+&
+&
+\node [ImplicitFunction] (st_fuel_burn) {$\begin{array}{c}\text{fuel burn state} \\ \text{equation}\end{array}$};&
+&
+&
+\node [DataIO] (right_output_st_fuel_burn) {$\begin{array}{c}\text{state fuel burnt}\end{array}$};\\
+%Row 5
+&
+&
+&
+&
+\node [ImplicitFunction] (grad_fuel_burn) {$\begin{array}{c}\text{fuel burn gradient} \\ \text{equation}\end{array}$};&
+&
+\node [DataIO] (right_output_grad_fuel_burn) {$\begin{array}{c}\text{gradients fuel burnt}\end{array}$};\\
+%Row 6
+&
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(mission_Inf) edge [DataLine] (mission_Inf-st_interpol)
+(mission_Inf) edge [DataLine] (mission_Inf-grad_interpol)
+(st_interpol) edge [DataLine] (st_interpol-st_fuel_burn)
+(st_interpol) edge [DataLine] (st_interpol-grad_fuel_burn)
+(grad_interpol) edge [DataLine] (grad_interpol-grad_fuel_burn)
+(st_fuel_burn) edge [DataLine] (right_output_st_fuel_burn)
+(grad_fuel_burn) edge [DataLine] (right_output_grad_fuel_burn)
+% Vertical edges
+(mission_Inf-st_interpol) edge [DataLine] (st_interpol)
+(mission_Inf-grad_interpol) edge [DataLine] (grad_interpol)
+(st_interpol-st_fuel_burn) edge [DataLine] (st_fuel_burn)
+(st_interpol-grad_fuel_burn) edge [DataLine] (grad_fuel_burn)
+(grad_interpol-grad_fuel_burn) edge [DataLine] (grad_fuel_burn)
+(mission_Inf) edge [DataLine] (output_mission_Inf);
+\end{pgfonlayer}
+
+\end{tikzpicture}

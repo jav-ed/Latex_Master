@@ -1,0 +1,40 @@
+\chapter{Results}
+\label{ch_3}
+In this chapter, the results achieved with \gls{cnmc} shall be presented and assessed.
+First, in section \ref{sec_3_1_Tracking_Results}, the tracking algorithm is evaluated by showing the outcome for 3 different dynamical model configurations.
+Second, in section \ref{sec_3_2_MOD_CPE}, statements about the performance of modeling the \glsfirst{cpevol} are made. 
+They are supported with some representative outputs. 
+Third, in section \ref{sec_3_3_SVD_NMF} the two decomposition methods are compared in terms of computational time and prediction quality in subsection \ref{subsec_3_3_1_SVD_Speed} and \ref{subsec_3_3_2_SVD_Quality}, respectively.
+Fourth, it has been mentioned that 3 different regressors for representing the $\bm Q / \bm T$ tensor are available. 
+Their rating is given in  section \ref{sec_3_4_SVD_Regression}.
+Finally, the \gls{cnmc} predicted trajectories for different models shall be displayed and evaluated in section \ref{sec_3_5_Pred}.\newline
+
+
+For assessing the performance of \gls{cnmc} some dynamical model with a specific configuration will be used many times. 
+In order not to repeat them too often, they will be defined in the following.\newline 
+
+ \textbf{Model configurations}
+ \hrule
+ \vspace{0.05cm}
+ \hrule
+ \vspace{0.25cm}
+ The first model configuration is denoted as  \emph{SLS}, which stands for \textsl{S}mall \textbf{L}orenz \textsl{S}ystem .
+ It is the Lorenz system described with the sets of equations \eqref{eq_6_Lorenz} and the number of centroids is $K=10$. 
+ Furthermore, the model was trained with $\vec{\beta }_{tr} = [\beta_0 = 28 ; \, \beta_{end} = 33], \, n_{\beta, tr} = 7$, where the training model parameter values $\vec{\beta}_{tr}$ are chosen to start from $\beta_0 = 28$ and end at $\beta_{end} = 33$, where the total number of linearly distributed model parameter values is $n_{\beta, tr} = 7$.\newline
+
+ The second model is referred to as \emph{LS20}. 
+ It is also a Lorenz system \eqref{eq_6_Lorenz}, but with a higher number of centroids $K=20$ and the following model configuration: $\vec{\beta }_{tr} = [\, \beta_0 = 24.75 ; \, \beta_{end} = 53.75  \,], \, n_{\beta, tr} = 60$.\newline
+
+The third model is designated as \emph{FW15}. It is based on the \emph{Four Wing} set of equations \eqref{eq_10_4_Wing} and an illustrative trajectory is given in figure \ref{fig_37}.
+The number of centroids is $K=15$ and it is constructed with the following configuration $\vec{\beta }_{tr} = [\, \beta_0 = 8 ; \, \beta_{end} = 11 \,], \, n_{\beta, tr} = 13$.\newline
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width =\textwidth]
+    {2_Figures/3_Task/1_Tracking/10_1_Traj_8.pdf}
+    \caption{\emph{FW15} \eqref{eq_10_4_Wing} trajectory for $\beta = 8$}
+    \label{fig_37}
+\end{figure}
+
+
+

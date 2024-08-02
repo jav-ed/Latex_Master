@@ -1,0 +1,273 @@
+% ==============================================================================
+% =========================== Clustering =======================================
+% ==============================================================================
+\section{Clustering}
+\label{sec_2_3_Clustering}
+In this section, the second step, the clustering of all trajectories $(\vec{\beta})$, is explained. 
+The main idea is to represent $F(\vec{\beta})$ through movement on centroids.
+The data and workflow of clustering are very similar to the previous step of the data generation. It can be comprehended with figure \ref{fig_12_Clust}.
+All settings for this step can be individually configured in \emph{settings.py}.
+The $ F(\vec{\beta})$ and cluster-algorithm specific parameters are filtered and provided to the clustering algorithm. The solutions are plotted and both, the plots and the clustered output are saved.\newline 
+
+% ==============================================
+% ========== Clustering Workflow ===============
+% ==============================================
+\begin{figure} [!h]
+    \hspace*{-4cm} 
+    \resizebox{1.2\textwidth}{!}{
+    \input{2_Figures/2_Task/9_Clust.tikz}
+    }
+    \caption{Data and workflow of the second step: Clustering}
+    \label{fig_12_Clust}
+\end{figure}
+%
+%
+
+Data clustering is an unsupervised machine learning technique. 
+There are a variety of approaches that may be used for this, e.g., 
+k-means, affinity propagation, mean shift, 
+spectral clustering and Gaussian mixtures. All the 
+methods differ in their use cases, scalability,  
+metric or deployed norm and required input parameters. The latter 
+is an indicator of customization abilities. Since k-means can be used for very large
+data sets and enables easy and fast implementation, k-means is preferred. Furthermore, David Arthur et al. 
+\cite{Arthur2006} introduced k-means++, which is known 
+to outperform k-means. Therefore, \gls{cnmc} uses k-means++ 
+as its default method for data clustering. 
+Note, applying k-means++ is not new in \gls{cnmc}, but it was already applied in the regular \gls{cnm} \cite{Fernex2021}.\newline
+
+In order to 
+cover the basics of k-means and k-means++, two terms 
+should be understood.
+Picturing a box with 30 points in it, where 10 are located on the left,  10
+in the middle and 10 on the right side of the box. Adhering to such a 
+constellation, it is appealing to create 3 groups, one for 
+each overall position (left, center and right). Each group would 
+contain 10 points. These groups are called clusters and the 
+geometrical center of each cluster is called a centroid. 
+A similar thought experiment is visually depicted in \cite{Sergei_Visual}.
+Considering a dynamical system, the trajectory is retrieved by integrating the \gls{ode} numerically at discrete time steps. 
+For each time step the obtained point is described with one x-, y- and z-coordinate. 
+Applying the above-mentioned idea on, e.g., the Lorenz system \cite{lorenz1963deterministic}, defined as the set of equations in \eqref{eq_6_Lorenz}, then the resulting centroids can be seen in figure \ref{fig_13_Clust}.
+The full domains of the groups or clusters are color-coded in figure \ref{fig_14_Clust}.\newline
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/10_Clust.pdf}
+        \caption{Centroids of the Lorenz system  \eqref{eq_6_Lorenz} with $\beta =28$}
+        \label{fig_13_Clust}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/11_Clust.pdf}
+        \caption{Cluster domains of the Lorenz system \eqref{eq_6_Lorenz} with $\beta =28$}
+        \label{fig_14_Clust}    
+    \end{minipage}
+\end{figure}
+
+
+Theoretically, 
+the points which are taken to calculate a center could be assigned 
+weighting factors. However, this is not done in \gls{cnmc} and therefore only 
+be outlined as a side note. After being familiar with the concept of 
+clusters and centroids, the actual workflow of k-means shall be explained.
+For initializing 
+k-means, a number of clusters and an initial guess for the centroid 
+positions must be provided. Next, the distance between all the data 
+points and the centroids is calculated. The data points closest to a 
+centroid are assigned to these respective clusters. In other words, each data point is assigned to that cluster for which 
+the corresponding centroid exhibits the smallest distance 
+to the considered data point. 
+The geometrical mean value for all clusters is subsequently determined for all cluster-associated residents' data points. With the 
+new centroid positions, the clustering is 
+performed again. \newline 
+
+Calculating the mean of the clustered 
+data points (centroids) and performing clustering based on the 
+distance between each data point and the centroids 
+is done iteratively. The iterative process stops when 
+the difference between the prior and current 
+centroids position is equal to zero or 
+satisfies a given threshold. Other explanations with pseudo-code and  
+visualization for better understanding can be found\cite{Frochte2020} 
+and \cite{Sergei_Visual}, respectively\newline
+
+% ------------------------------------------------------------------------------
+% --------------------- PART 2 -------------------------------------------------
+% ------------------------------------------------------------------------------
+Mathematically k-means objective can be expressed 
+as an optimization problem with the centroid 
+position $\bm{\mu_}j$ as the design variable. That is given in equation
+\eqref{eq_1_k_means} (extracted from \cite{Frochte2020}), where 
+$\bm{\mu_}j$ and  $\mathrm{D}^{\prime}_j$ denote the centroid or 
+mean of the \emph{j}th cluster and the data points 
+belonging to the \emph{j}th cluster, respectively.
+The distance between all the \emph{j}th cluster data points 
+and its corresponding \emph{j}th centroid is 
+stated as $\mathrm{dist}(\bm{x}_j, \bm{\mu}_j)$.
+
+\begin{equation}
+    \label{eq_1_k_means}
+    \argmin_{\bm{\mu}_j}\sum_{j=1}^k \; \sum_{\bm{x}_j \in \mathrm{D}^{\prime}_j }
+    \mathrm{dist}(\bm{x}_j, \bm \mu_j)
+\end{equation}
+
+Usually, the k-means algorithm is deployed with a Euclidean metric 
+and equation \eqref{eq_1_k_means} becomes \eqref{eq_2_k_Means_Ly}, which
+is known as the Lloyd algorithm \cite{Frochte2020, Lloyd1982}. The
+Lloyd algorithm can be understood as the minimization of the variance.
+Thus, it is not necessarily true that k-means is equivalent to reducing 
+the variance. It is only true when the Euclidean norm is used.
+
+\begin{equation}
+    \label{eq_2_k_Means_Ly}
+    \argmin_{\bm{\mu}_j}\sum_{j=1}^k \; \sum_{\bm{x}_j \in \mathrm{D}^{\prime}_j }
+    \| \bm x_j - \bm \mu_j \|^2
+\end{equation}
+
+The clustering algorithm highly depends on the provided 
+initial centroids positions. Since in most cases, these 
+are guessed, there is no guarantee of a reliable outcome.
+Sergei Vassilvitskii, one of the founders of 
+k-means++, says in one of his presentations \cite{Sergei_Black_Art},
+finding a good set of initial points would be black art.
+Arthur et al. \cite{Arthur2006} state,
+that the speed and simplicity of k-means would be appealing, not 
+its accuracy. There are many natural examples for which 
+the algorithm generates arbitrarily bad clusterings \cite{Arthur2006}.\newline 
+
+
+An alternative or improved version of k-means is the already
+mentioned k-means++, which
+only differs in the initialization step. Instead of providing 
+initial positions for all centroids, just one centroid's 
+position is supplied. The remaining are calculated based on 
+maximal distances. In concrete, the distance between all 
+data points and the existing centroids is computed. The data point 
+which exhibits the greatest distance is added to the 
+list of collected centroids. This is done until all $k$ 
+clusters are generated. A visual depiction of this process 
+is given by Sergei Vassilvitskii in \cite{Sergei_Visual}.
+Since the outcome of k-means++ is more reliable than 
+k-means, k-means++ is deployed in \gls{cnmc}.\newline
+
+After having discussed some basics of k-means++, it shall be 
+elaborated on how and why the solution of the dynamical system should be 
+clustered. The solution of any dynamical system returns a trajectory.
+If the trajectory repeats itself or happens to come close 
+to prior trajectories without actually touching them,  
+characteristic sections can be found.
+Each characteristic section in the phase space is 
+captured by a centroid. The movement from one 
+centroid to another is supposed to portray the original
+trajectory. With a clustering algorithm, these representative 
+characteristic locations in the phase space are obtained. 
+Since the clusters shall capture an entire trajectory, it is 
+evident that the number of clusters is an
+essential parameter to choose. Latter fact becomes even 
+more clear when recalling that a trajectory can be multi-modal or complex.\newline
+
+In the case of a highly non-linear 
+trajectory, it is obvious that many clusters are demanded in
+order to minimize the loss of the original
+trajectories. The projection of the real trajectory 
+to a cluster-based movement can be compared to 
+a reduced-order model of the trajectory. In this context, 
+it is plausible to refer to the centroids as 
+representative characteristic locations. Furthermore, \gls{cnm} and thus, \gls{cnmc}, exploits graph theory. 
+Therefore, the centroids can be denoted as nodes or characteristic nodes.\newline
+
+The remaining part of this section will be devoted exclusively to the application of \gls{cnmc}. First, the leveraged kmeans++ algorithm is from the machine learning \emph{Python} library \emph{Scikit-learn} \cite{scikit-learn}. 
+Crucial settings, e.g., the number of clusters $K$, the maximal number of iterations, the tolerance as a convergence criterion and the number of different centroid seeds with which k-means is executed.
+The operator can decide if the clustering step shall be performed or skipped.
+The path for outputs can be modified and generating plots is also optional.
+For the clustering stage, there are 4 types of plots available. 
+Two types of plots are depicted in figures \ref{fig_13_Clust} and \ref{fig_14_Clust}.
+With the generated HTML plots the same features as described in section \ref{sec_2_2_Data_Gen} are available, e.g., receiving more information through pop-up panels and
+switching between a dark and white mode. 
+ \newline 
+
+The other two types of charts are not displayed here because they are intended to be studied as HTML graphs where the output can be viewed from multiple angles.
+The first type shows the clustered output of one system for two different $\beta$ next to each other. 
+The centroids are labeled randomly as will be shown in subsection \ref{subsec_2_2_1_Parameter_Study}. 
+Consequently, the centroids representing the immediate neighbors across the two separate $\beta $ have separate labels. 
+In the second remaining type of HTML graph, the closest centroids across the two different $\beta $  are connected through lines.
+Also, in the same way, as it was done for the first step in the data generation an additional HTML file containing all $\vec{\beta } $ charts is generated.
+\newline
+
+It can be concluded that the clustering step is performed by employing \emph{Scikit-learn's} kmeans++ implementation, which is well suited for a great number of points. As usual, all important settings can be controlled with \emph{settings.py}.
+
+\subsection{Parameter Study}
+\label{subsec_2_2_1_Parameter_Study}
+In this subsection, the effects on the clustering step caused by the parameter \emph{n\_init} shall be named. After that, the random labeling of the centroids is to be highlighted.
+With the parameter \emph{n\_init} it is possible to define how often the k-means algorithm will be executed with different centroid seeds \cite{scikit-learn}.
+For a reliable clustering quality \emph{n\_init} should be chosen high. However, the drawback is that with increasing \emph{n\_init} the calculation time increases unacceptably high. Having chosen \emph{n\_init} too high, the clustering part becomes the new bottleneck of the entire \gls{cnmc} pipeline. \newline
+
+To conduct the parameter study, clustering was performed using the following \emph{n\_init} values: 
+$\text{\emph{n\_init}} = \{100,\, 200, \, 400,\, 800,\, 1000, \, 1200, \, 1500 \}$. 
+Some results are presented in figures \ref{fig_15} to \ref{fig_20}.
+It can be observed that when all the different \emph{n\_init} values are compared, visually no big difference in the placing of the centroids can be perceived. 
+A graphical examination is sufficient because even with \emph{n\_init} values that differ by only by the number one ($n_{init,1} - n_{init,2} = 1 $), the centroid positions are still expected to vary slightly. 
+Simply put, only deviations on a macroscopic scale, which can be noted visually are searched for. As a conclusion it can be said that $\text{\emph{n\_init}} = 100$ and $\text{\emph{n\_init}} = 1500$ can be considered as an equally valuable clustering outcome. 
+Hence, \emph{n\_init} the computational expense can be reduced by deciding on a reasonable small value for \emph{n\_init}.\newline
+
+The second aim of this subsection was to highlight the fact that the centroids are labeled randomly. For this purpose, the depicted figures \ref{fig_15} to \ref{fig_20} shall be examined. Concretely, any of the referred figures can be compared with the remaining figures to be convinced that the labeling is not obeying any evident rule.
+
+
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+\begin{figure}[!h]
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/0_K_100.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 100$}
+        \label{fig_15}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/1_K_200.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 200$}
+        \label{fig_16}    
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/2_K_400.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 400$}
+        \label{fig_17}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/3_K_1000.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 1000$}
+        \label{fig_18}    
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+    \begin{minipage}[h]{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/4_K_1200.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 1200$}
+        \label{fig_19}    
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width =\textwidth]{2_Figures/2_Task/0_N_Study/5_K_1500.pdf}
+        \caption{Lorenz \eqref{eq_6_Lorenz}, $\beta =28$, $\text{n\_init}= 1500$}
+        \label{fig_20}    
+    \end{minipage}
+\end{figure} 
+% ==============================================================================
+% ============================ PLTS ============================================
+% ==============================================================================
+

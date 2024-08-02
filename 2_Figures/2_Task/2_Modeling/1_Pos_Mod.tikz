@@ -1,0 +1,131 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{/home/jav/Progs/Virt_Env/writing/lib/python3.12/site-packages/pyxdsm/diagram_styles.tex}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [DataIO] (output_theta) {$\begin{array}{c}\text{tracked state}$$\,(\vec{\beta})$$\end{array}$};&
+&
+&
+&
+&
+&
+\\
+%Row 1
+\node [Function] (theta) {$\begin{array}{c}$$ \boldsymbol \theta \, (\vec{\beta})  $$\end{array}$};&
+\node [DataInter] (theta-linear) {$\begin{array}{c}$$ \boldsymbol \theta \, (\vec{\beta}) $$\end{array}$};&
+\node [DataInter] (theta-pysindy) {$\begin{array}{c}$$ \boldsymbol \theta \, (\vec{\beta})  $$\end{array}$};&
+\node [DataInter] (theta-elastic) {$\begin{array}{c}$$ \boldsymbol \theta \, (\vec{\beta}) $$\end{array}$};&
+&
+&
+\\
+%Row 2
+&
+\node [Function] (linear) {$\begin{array}{c}\text{Linear}\end{array}$};&
+&
+&
+\node [DataInter] (linear-comp) {$\begin{array}{c}$$ md_{lin} $$\end{array}$};&
+&
+\\
+%Row 3
+&
+&
+\node [Function] (pysindy) {$\begin{array}{c}\text{pySindy}\end{array}$};&
+&
+\node [DataInter] (pysindy-comp) {$\begin{array}{c}$$ md_{pysind}  $$\end{array}$};&
+&
+\\
+%Row 4
+&
+&
+&
+\node [Function] (elastic) {$\begin{array}{c}\text{Elastic net}\end{array}$};&
+\node [DataInter] (elastic-comp) {$\begin{array}{c}$$ md_{elast} $$\end{array}$};&
+&
+\\
+%Row 5
+&
+&
+&
+&
+\node [Function] (comp) {$\begin{array}{c}\text{compare}\end{array}$};&
+&
+\node [DataIO] (right_output_comp) {$\begin{array}{c}\text{save: best modesl}\end{array}$};\\
+%Row 6
+&
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (theta);
+\chainin (linear) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (theta);
+\chainin (pysindy) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (theta);
+\chainin (elastic) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (elastic);
+\chainin (comp) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (linear);
+\chainin (comp) [join=by ProcessHVA];
+\end{pgfonlayer}
+}{ [start chain=process]
+ \begin{pgfonlayer}{process} 
+\chainin (pysindy);
+\chainin (comp) [join=by ProcessHVA];
+\end{pgfonlayer}
+}
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(theta) edge [DataLine] (theta-linear)
+(theta) edge [DataLine] (theta-pysindy)
+(theta) edge [DataLine] (theta-elastic)
+(linear) edge [DataLine] (linear-comp)
+(pysindy) edge [DataLine] (pysindy-comp)
+(elastic) edge [DataLine] (elastic-comp)
+(comp) edge [DataLine] (right_output_comp)
+% Vertical edges
+(theta-linear) edge [DataLine] (linear)
+(theta-pysindy) edge [DataLine] (pysindy)
+(theta-elastic) edge [DataLine] (elastic)
+(linear-comp) edge [DataLine] (comp)
+(pysindy-comp) edge [DataLine] (comp)
+(elastic-comp) edge [DataLine] (comp)
+(theta) edge [DataLine] (output_theta);
+\end{pgfonlayer}
+
+\end{tikzpicture}

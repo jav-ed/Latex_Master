@@ -1,0 +1,220 @@
+\section{Transition property regression models}
+\label{sec_3_4_SVD_Regression}
+In this section, the results of the 3 different regression methods, \glsfirst{rf}, AdaBoost and Gaussian Process (GP) are compared.
+All the 3 regressors are implemented in \gls{cnmc} and can be selected via \emph{settings.py}.
+The utilized model configuration is \emph{SLS} and the decomposition method is \gls{svd}.\newline 
+
+
+First, it shall be noted that \gls{cnmc} also offers the possibility to apply \emph{pySindy}. 
+However, \emph{pySindy} has struggled to represent the training data in the first place, thus it cannot be employed for predicting $\beta_{unseen}$.
+The latter does not mean that \emph{pySindy} is not applicable for the construction of a surrogate model for the decomposed $\bm Q / \bm T$ modes, but rather that the selected candidate library was not powerful enough. 
+Nevertheless, only results for the 3 initially mentioned regressors will be discussed.\newline 
+
+In figures \ref{fig_66} to \ref{fig_71} the true (dashed) and the approximation (solid) of the first 4 $\bm Q / \bm T$ modes are shown for the methods RF, AdaBoost and GP, respectively.
+To begin with, it can be noted that the mode behavior over different model parameter values $mod(\beta)$ is discontinuous, i.e., it exhibits spikes or sudden changes.
+In figures \ref{fig_66} and \ref{fig_67} it can be observed that \gls{rf} reflects the actual behavior of $mod(\beta)$ quite well.
+However, it encounters difficulties in capturing some spikes. 
+AdaBoost on the other hand proves in figures \ref{fig_68} and \ref{fig_69} to represent the spikes better. 
+Overall, AdaBoost outperforms \gls{rf} in mirroring training data. \newline
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5 \textwidth}
+        \centering
+        \caption{$\bm Q$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/0_model_Decomp_Regr_RF_More_Q.pdf}
+        \label{fig_66}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{$\bm T$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/1_model_Decomp_Regr_RF_More_T.pdf}
+        \label{fig_67}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{svd}, $\bm Q / \bm T$ modes approximation with \gls{rf} for $L=1$}
+\end{figure}
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5 \textwidth}
+        \centering
+        \caption{$\bm Q$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/2_model_Decomp_Regr_ABoost_More_Q.pdf}
+        \label{fig_68}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{$\bm T$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/3_model_Decomp_Regr_ABoost_More_T.pdf}
+        \label{fig_69}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{svd}, $\bm Q / \bm T$ mode approximation with AdaBoost for $L=1$}
+\end{figure}
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5 \textwidth}
+        \centering
+        \caption{$\bm Q$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/4_model_Decomp_Regr_GP_More_Q.pdf}
+        \label{fig_70}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{$\bm T$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/5_model_Decomp_Regr_GP_More_T.pdf}
+        \label{fig_71}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, \gls{svd}, $\bm Q / \bm T$ mode approximation with GP for $L=1$}
+\end{figure}
+
+Gaussian Process (GP) is a very powerful method for regression. 
+Often this is also true when reproducing $mod(\beta)$. 
+However, there are cases where the performance is insufficient, as shown in figures \ref{fig_70} and \ref{fig_71}. 
+Applying GP results in absolutely incorrect predicted tensors $\bm \tilde{Q}(\beta_{unseen}),\, \bm \tilde{T}(\beta_{unseen})$, where too many tensors entries are wrongly forced to zero. 
+Therefore, $\bm \tilde{Q}(\beta_{unseen}),\, \bm \tilde{T}(\beta_{unseen})$ will eventually lead to an unacceptably high deviation from the original trajectory.
+Consequently, the GP regression is not applicable for the decomposed $\bm Q / \bm T$ modes without further modification.\newline 
+
+The two remaining regressors are \glsfirst{rf} and AdaBoost.
+Although AdaBoost is better at capturing the true modal behavior $mod(\beta)$, there is no guarantee that it will always be equally better at predicting the modal behavior for unseen model parameter values $mod(\beta_{unseen})$.
+In table \ref{tab_8_RF_ABoost} the MAE errors for different $L$ and $\beta_{unseen} = [\, 28.5,\, 32.5\,]$ are provided. 
+Since the table exhibits much information, the results can also be read qualitatively through the graphs \ref{fig_72_QT_28} and \ref{fig_72_QT_32} for $\beta_{unseen} = 28.5$ and $\beta_{unseen} = 32.5$, respectively.
+For the visual inspection, it is important to observe the order of the vertical axis scaling.
+It can be noted that the MAE errors themselves and the deviation between the \gls{rf} and AdaBoost MAE errors are very low.
+Thus, it can be stated that \gls{rf} as well ad AdaBoost are both well-suited regressors.\newline 
+
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{c c| c c|  c c  }
+        \textbf{$L$} &$\beta_{unseen}$
+         & $\boldsymbol{MAE}_{RF, \bm Q}$  
+         &$\boldsymbol{MAE}_{AdaBoost, \bm Q}$ 
+         & $\boldsymbol{MAE}_{RF, \bm T}$  
+         &$\boldsymbol{MAE}_{AdaBoost, \bm T}$ \\
+        \hline \\
+        [-0.8em]
+         $1$  & $28.5$ 
+         & $0.002580628 $ & $0.002351781$ 
+         & $0.002275379 $ & $0.002814208$\\
+         
+         $1$  & $32.5$ 
+         & $0.003544923$ & $0.004133114$ 
+         & $0.011152145$ & $0.013054876$\\
+         
+         $2$  & $28.5$ 
+         & $0.001823848$ & $0.001871858$ 
+         & $0.000409955$ & $0.000503748$\\
+         
+         $2$  & $32.5$ 
+         & $0.006381635$ & $0.007952153$ 
+         & $0.002417142$ & $0.002660403$\\
+         
+         $3$  & $28.5$ 
+         & $0.000369228$ & $0.000386292$ 
+         & $0.000067680$ & $0.000082808$\\
+
+         $3$  & $32.5$ 
+         & $0.001462458$ & $0.001613434$ 
+         & $0.000346298$ & $0.000360097$\\
+         
+
+         $4$  & $28.5$ 
+         & $0.000055002$ & $0.000059688$ 
+         & $0.000009420$ & $0.000011500$\\
+
+         $4$  & $32.5$ 
+         & $0.000215147$ & $0.000230404$ 
+         & $0.000044509$ & $0.000046467$\\
+
+         $5$  & $28.5$ 
+         & $0.000007276$ & $0.000007712$ 
+         & $0.000001312$ & $0.000001600$\\
+
+         $5$  & $32.5$ 
+         & $0.000028663$ & $0.000030371$ 
+         & $0.000005306$ & $0.000005623$\\
+
+         $6$  & $28.5$ 
+         & $0.000000993$ & $0.000052682$ 
+         & $0.000000171$ & $0.000000206$\\
+
+         $6$  & $32.5$ 
+         & $0.000003513$ & $0.000003740$ 
+         & $0.000000629$ & $0.000000668$\\
+
+         $7$  & $28.5$ 
+         & $0.000000136$ & $0.000000149$ 
+         & $0.000000023$ & $0.000000031$ \\
+
+         $7$  & $32.5$ 
+         & $0.000000422$ & $0.000000454$ 
+         & $0.000000078$ & $0.000000082$
+
+    
+    \end{tabular}
+    \caption{\emph{SLS}, Mean absolute error for comparing \gls{rf} and AdaBoost different $L$ and two $\beta_{unseen}$}
+    \label{tab_8_RF_ABoost}
+\end{table}
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5 \textwidth}
+        \centering
+        \caption{$\bm Q$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/6_Q_28_5.pdf}
+        \label{fig_72_Q_28}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{$\bm T$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/7_T_28_5.pdf}
+        \label{fig_72_T_28}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, Mean absolute error for comparing \gls{rf} and AdaBoost different $L$ and $\beta_{unseen} = 28.5$}
+    \label{fig_72_QT_28}    
+\end{figure}
+
+\begin{figure}[!h]
+    %\vspace{0.5cm}
+    \begin{subfigure}[h]{0.5 \textwidth}
+        \centering
+        \caption{$\bm Q$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/8_Q_32_5.pdf}
+        \label{fig_72_Q_32}    
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.5 \textwidth}
+        \centering
+        \caption{$\bm T$}
+        \includegraphics[width =\textwidth]
+        {2_Figures/3_Task/3_SVD_QT/9_T_32_5.pdf}
+        \label{fig_72_T_32}    
+    \end{subfigure}
+    \vspace{-0.3cm}
+    \caption{\emph{SLS}, Mean absolute error for comparing \gls{rf} and AdaBoost different $L$ and $\beta_{unseen} = 32.5$}
+    \label{fig_72_QT_32}    
+\end{figure}
+
+
+In summary, the following can be said, \gls{rf} and AdaBoost are both performing well in regression. Furthermore, no clear winner between the two regressors can be detected. 
+The third option GP is dismissed as it sometimes has unacceptably low regression performance. 
+Finally, there is the possibility to use \emph{pySindy}, however, for that, an appropriate candidate library must be defined.
+\FloatBarrier

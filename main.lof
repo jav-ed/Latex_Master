@@ -1,0 +1,72 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Broad overview: Workflow of \gls {cnmc}\relax }}{11}{figure.caption.10}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Illustrative trajectory of the Lorenz attractor \cite {lorenz1963deterministic}, $\beta = 28$\relax }}{18}{figure.caption.11}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \gls {cnmc} general workflow overview\relax }}{22}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Data and workflow of the first step: Data generation\relax }}{26}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Default model: Sprott\_V\_1 \eqref {eq_11_Sprott_V_1} with $\beta =9$\relax }}{29}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Default model: Tornado \eqref {eq_12_Tornado} with $\beta =16.78$, view: 1\relax }}{29}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Default model: Tornado \eqref {eq_12_Tornado} with $\beta =16.78$, view: 2\relax }}{29}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Default model: Tornado \eqref {eq_12_Tornado} with $\beta =16.78$, view: 3\relax }}{30}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Default model: Insect \eqref {eq_13_Insect} with $\beta =7$, view: 1\relax }}{30}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Default model: Insect \eqref {eq_13_Insect} with $\beta =7$, view: 2\relax }}{30}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Default model: Insect \eqref {eq_13_Insect} with $\beta =7$, view: 3\relax }}{30}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Data and workflow of the second step: Clustering\relax }}{31}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Centroids of the Lorenz system \eqref {eq_6_Lorenz} with $\beta =28$\relax }}{32}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Cluster domains of the Lorenz system \eqref {eq_6_Lorenz} with $\beta =28$\relax }}{32}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 100$\relax }}{34}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 200$\relax }}{34}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 400$\relax }}{35}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.16}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 1000$\relax }}{35}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.17}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 1200$\relax }}{35}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.18}{\ignorespaces Lorenz \eqref {eq_6_Lorenz}, $\beta =28$, $\text {n\_init}= 1500$\relax }}{35}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Unrealistic tracking example for the Lorenz system with $\beta _i=31.333, \, \beta _j=32.167, \, K = 10$\relax }}{36}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.20}{\ignorespaces Ambiguous regions in the tracking example for the Lorenz system with $\beta _i=39.004,\, \beta _j = 39.987,\, K= 50$\relax }}{37}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.21}{\ignorespaces Realistic tracking example for the Lorenz system with $\beta _i=30.5$ and $\beta _j=31.333$\relax }}{38}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.22}{\ignorespaces General data and workflow overview of the third step, tracking\relax }}{40}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.23}{\ignorespaces Initial State - centroids of the Lorenz system \eqref {eq_6_Lorenz} $\beta =30.5$\relax }}{41}{figure.caption.28}%
+\contentsline {figure}{\numberline {2.24}{\ignorespaces Ordered State - centroids of the Lorenz system \eqref {eq_6_Lorenz} $\beta =30.5$\relax }}{41}{figure.caption.28}%
+\contentsline {figure}{\numberline {2.25}{\ignorespaces Data and workflow of the fourth step: Modeling\relax }}{45}{figure.caption.30}%
+\contentsline {figure}{\numberline {2.26}{\ignorespaces Data and workflow of modeling the \glsfirst {cpevol}\relax }}{46}{figure.caption.31}%
+\contentsline {figure}{\numberline {2.27}{\ignorespaces Data and workflow of $\bm {Q} / \bm {T}$ modeling\relax }}{49}{figure.caption.32}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \emph {FW15} \eqref {eq_10_4_Wing} trajectory for $\beta = 8$\relax }}{53}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Illustrative solution for the assignment problem, $\beta _i =32.167,\, \beta _j = 33 ,\, K =10$\relax }}{54}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Illustrative solution for the assignment problem, $\beta _i =31.333,\, \beta _j = 32.167, \,K =10 $\relax }}{55}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Tracked states for \emph {SLS}, $K = 10,\, \vec {\beta } = [\, 28, \, 28.333, \, 31.333, \, 31.14, \, 33 \, ]$\relax }}{56}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Tracked states for \emph {LS20}, $K = 20,\, \vec {\beta } = [\, 24.75, \, 28.682, \, 30.648, \, 31.14, \, 31.14,$ $42.936, \, 53.75 \, ]$ \relax }}{57}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Tracked states for \emph {FW15}, $K = 15,\, \vec {\beta } = [\, 8, \, 8.25, \, 10, \, 11 \, ]$\relax }}{58}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces \emph {SLS}, \emph {CPE} model for centroid: 1 \relax }}{59}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces \emph {SLS}, \emph {CPE} model for centroid: 2 \relax }}{59}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces \emph {SLS}, \emph {CPE} model for centroid: 7 \relax }}{60}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces \emph {SLS}, original vs. modeled centroid position, $\beta _{unseen} = 28.5$ and $\beta _{unseen} = 32.5$ \relax }}{60}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces \emph {SLS}, original vs. modeled centroid position, extrapolated $\beta _{unseen} = 26.5$ and $\beta _{unseen} = 37$ \relax }}{61}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces \emph {LS20}, original vs. modeled centroid position, $\beta _{unseen} = 31.75$ and $\beta _{unseen} = 51.75$\relax }}{61}{figure.caption.45}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces \emph {FW15}, original vs. modeled centroid position, $\beta _{unseen} = 8.7$ and $\beta _{unseen} = 10.1$\relax }}{62}{figure.caption.46}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces \emph {SLS}, \gls {svd}, cumulative energy of $\bm {Q}$ for $L=1$\relax }}{64}{figure.caption.49}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces \emph {SLS}, \gls {svd}, singular values of $\bm {Q}$ for $L=1$\relax }}{64}{figure.caption.49}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces \emph {SLS}, \gls {svd}, original $\bm {Q}(\beta _{unseen} = 28.5)$ , \gls {cnmc} predicted $\bm {\tilde {Q}}(\beta _{unseen} = 28.5)$ and deviation $| \bm {Q}(\beta _{unseen} = 28.5) - \bm {\tilde {Q}}(\beta _{unseen} = 28.5) |$ for $L=1$\relax }}{65}{figure.caption.50}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces \emph {SLS}, \gls {nmf}, \gls {cnmc} predicted $\bm {\tilde {Q}}(\beta _{unseen} = 28.5)$ and deviation $| \bm {Q}(\beta _{unseen} = 28.5) - \bm {\tilde {Q}}(\beta _{unseen} = 28.5) |$ for $L=1$\relax }}{66}{figure.caption.51}%
+\contentsline {figure}{\numberline {3.18}{\ignorespaces \emph {SLS}, \gls {svd}, original $\bm {T}(\beta _{unseen} = 28.5)$, predicted $\bm {\tilde {T}}(\beta _{unseen} = 28.5)$ and deviation $| \bm {T}(\beta _{unseen} = 28.5) - \bm {\tilde {T}}(\beta _{unseen} = 28.5) |$ for $L=1$\relax }}{67}{figure.caption.52}%
+\contentsline {figure}{\numberline {3.19}{\ignorespaces \emph {SLS}, \gls {nmf}, \gls {cnmc} predicted $\bm {\tilde {T}}(\beta _{unseen} = 28.5)$ and deviation $| \bm {T}(\beta _{unseen} = 28.5) - \bm {\tilde {T}}(\beta _{unseen} = 28.5) |$ for $L=1$\relax }}{68}{figure.caption.53}%
+\contentsline {figure}{\numberline {3.20}{\ignorespaces \emph {SLS}, \gls {svd}, $\bm {Q} / \bm {T}$ modes approximation with \gls {rf} for $L=1$\relax }}{70}{figure.caption.55}%
+\contentsline {figure}{\numberline {3.21}{\ignorespaces \emph {SLS}, \gls {svd}, $\bm {Q} / \bm {T}$ mode approximation with AdaBoost for $L=1$\relax }}{70}{figure.caption.56}%
+\contentsline {figure}{\numberline {3.22}{\ignorespaces \emph {SLS}, \gls {svd}, $\bm {Q} / \bm {T}$ mode approximation with GP for $L=1$\relax }}{71}{figure.caption.57}%
+\contentsline {figure}{\numberline {3.23}{\ignorespaces \emph {SLS}, Mean absolute error for comparing \gls {rf} and AdaBoost different $L$ and $\beta _{unseen} = 28.5$\relax }}{72}{figure.caption.59}%
+\contentsline {figure}{\numberline {3.24}{\ignorespaces \emph {SLS}, Mean absolute error for comparing \gls {rf} and AdaBoost different $L$ and $\beta _{unseen} = 32.5$\relax }}{72}{figure.caption.60}%
+\contentsline {figure}{\numberline {3.25}{\ignorespaces \emph {SLS}, $\beta _{unseen}=28.5,\, L=1$, true, \gls {cnm} and \gls {cnmc} predicted trajectories\relax }}{74}{figure.caption.61}%
+\contentsline {figure}{\numberline {3.26}{\ignorespaces \emph {SLS}, $\beta _{unseen}=28.5, \, L=1$, true, \gls {cnm} and \gls {cnmc} predicted trajectories as 2d graphs \relax }}{75}{figure.caption.62}%
+\contentsline {figure}{\numberline {3.27}{\ignorespaces \emph {SLS}, $\beta _{unseen}= 28.5, \, L =1$, autocorrelation and \gls {cpd} for true, \gls {cnm} and \gls {cnmc} predicted trajectories\relax }}{75}{figure.caption.63}%
+\contentsline {figure}{\numberline {3.28}{\ignorespaces \emph {SLS}, MAE error for true and \gls {cnmc} predicted autocorrelations for $\beta _{unseen}= [\, 28.5,$ $32.5 \, ]$ and different values of $L$\relax }}{76}{figure.caption.64}%
+\contentsline {figure}{\numberline {3.29}{\ignorespaces \emph {SLS}, $\beta _{unseen}=32.5, \, L=7$, \gls {cnm} and \gls {cnmc} predicted autocorrelation \relax }}{76}{figure.caption.64}%
+\contentsline {figure}{\numberline {3.30}{\ignorespaces Illustrative undesired oscillations cased by the B-spline interpolation and its impact on the predicted trajectory contrasted with linear interpolation, \emph {LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$\relax }}{77}{figure.caption.65}%
+\contentsline {figure}{\numberline {3.31}{\ignorespaces Illustrative undesired oscillations cased by the B-spline interpolation and its impact on the predicted autocorrelations contrasted with linear interpolation, \emph {LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$\relax }}{78}{figure.caption.66}%
+\contentsline {figure}{\numberline {3.32}{\ignorespaces Illustrative the B-spline interpolation and its impact on the \glspl {cpd}, \emph {LS20}, $\beta = 31.75$ and $\beta =51.75$, $L=3$\relax }}{79}{figure.caption.67}%
+\contentsline {figure}{\numberline {3.33}{\ignorespaces Results for \emph {FW50}, $\beta _{unseen} = 8.1, \, L= 2$\relax }}{81}{figure.caption.68}%
+\contentsline {figure}{\numberline {3.34}{\ignorespaces Results for \emph {Rössler15}, $\beta _{unseen} = 9.6,\, L =1$\relax }}{82}{figure.caption.69}%
+\contentsline {figure}{\numberline {3.35}{\ignorespaces Results for \emph {TS15}, $\beta _{unseen} = 5.1,\, L =2$\relax }}{83}{figure.caption.70}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
